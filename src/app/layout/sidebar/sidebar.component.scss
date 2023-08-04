@@ -1,0 +1,21 @@
+:host ::ng-deep {
+  .image_logo {
+    max-width: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 5px;
+  }
+  .avatar {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+  .avatar span {
+    font-size: 16px;
+  }
+  ion-item {
+    a {
+      padding-left: 10px !important;
+    }
+  }
+}

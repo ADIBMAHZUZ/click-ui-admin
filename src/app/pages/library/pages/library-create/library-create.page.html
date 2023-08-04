@@ -1,0 +1,422 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Library.create_library.title_create' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="createLibrary()" novalidate [formGroup]="createLibraryForm">
+    <ion-grid class="ion-padding ion-content">
+      <ion-row>
+        <ion-col size-xl="3" size-lg="4" size-md="4" size-xs="12" size-sm="6">
+          <ion-item lines="none" class="">
+            <div class="flex flex-col">
+              <div>
+                <input
+                  type="file"
+                  name="fileupload"
+                  value="fileupload"
+                  (change)="onChange($event.target.files)"
+                  #f
+                  style="display: none"
+                  formControlName="logo"
+                  accept="image/png, image/jpeg"
+                />
+                <ion-button (click)="f.click()">
+                  <!-- Please Choose file -->
+                  {{'Library.create_library.file' | translate}}
+                </ion-button>
+                <ion-label *ngIf="check_file_type">{{title}}</ion-label>
+              </div>
+              <div class="custom-span">
+                <span class="">Only png, jpeg, jpg are allowed.</span>
+              </div>
+            </div>
+          </ion-item>
+          <p class="error" *ngIf="check_file_type">
+            {{'Subscriber.create_subscriber.err_type_file' | translate}}
+          </p>
+        </ion-col>
+        <ion-col
+          size-xl="3"
+          size-lg="4"
+          size-md="4"
+          size-xs="12"
+          size-sm="6"
+          class="margin-auto-img"
+          *ngIf="img.src != '' && !check_file_type"
+        >
+          <ion-item lines="none">
+            <div class="flex flex-col justify-center">
+              <ion-thumbnail>
+                <ion-img
+                  [src]="img.src"
+                  class="object-contain h-full"
+                ></ion-img>
+              </ion-thumbnail>
+              <div class="text-center">
+                <ion-button
+                  class="margin-auto-button-delete"
+                  size="small"
+                  fill="outline"
+                  (click)="zoomPicture(img.src)"
+                  title="Edit media"
+                >
+                  <ion-icon name="eye"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Library.create_library.username' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="username"
+              name="username"
+              [(ngModel)]="username"
+              required
+              formControlName="username"
+            ></ion-input>
+          </ion-item>
+
+          <p
+            class="error"
+            *ngIf="createLibraryForm.controls['username'].touched && createLibraryForm.hasError('required', 'username')"
+          >
+            <!-- Username is required -->
+            {{'Library.create_library.err_username' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLibraryForm.controls['username'].touched && checkError && createLibraryForm.hasError('required', 'username')"
+          >
+            {{'Library.create_library.err_username' | translate}}
+          </p>
+
+          <p
+            class="error"
+            *ngIf="!createLibraryForm.controls['username'].touched && createLibraryForm.hasError('pattern', 'username')"
+          >
+            {{'Library.create_library.username_valid_err' | translate}}
+          </p>
+
+          <p
+            class="error"
+            *ngIf="createLibraryForm.controls['username'].touched && createLibraryForm.hasError('pattern', 'username')"
+          >
+            {{'Library.create_library.username_valid_err' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Library.create_library.password' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [type]="getType()"
+              [value]="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+              formControlName="password"
+            >
+            </ion-input>
+            <ion-icon
+              class="ion-align-items-center"
+              [name]="getName()"
+              slot="end"
+              (click)="toggleTextPassword()"
+            ></ion-icon>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createLibraryForm.controls['password'].touched && createLibraryForm.hasError('required', 'password')"
+          >
+            <!-- Password is required -->
+            {{'Library.create_library.err_password' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLibraryForm.controls['password'].touched && checkError && createLibraryForm.hasError('required', 'password')"
+          >
+            <!-- Password is required -->
+            {{'Library.create_library.err_password' | translate}}
+          </p>
+
+          <p
+            class="error"
+            *ngIf="createLibraryForm.hasError('minlength','password')"
+          >
+            <!-- Password must be at least 6 characters. -->
+            {{'Library.create_library.err_password_min' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Library.create_library.name' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="name"
+              name="library"
+              [(ngModel)]="name"
+              required
+              formControlName="name"
+            >
+            </ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createLibraryForm.controls['name'].touched && createLibraryForm.hasError('required', 'name')"
+          >
+            <!-- Name is required -->
+            {{'Library.create_library.err_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLibraryForm.controls['name'].touched && checkError && createLibraryForm.hasError('required', 'name')"
+          >
+            <!-- Name is required -->
+            {{'Library.create_library.err_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="createLibraryForm.hasError('maxlength','name')"
+          >
+            <!-- Password must be at least 6 characters. -->
+            {{'Library.create_library.name_max_length_err' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Library.create_library.short_name' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="short_name"
+              name="short_name"
+              [(ngModel)]="short_name"
+              required
+              formControlName="short_name"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createLibraryForm.controls['short_name'].touched && createLibraryForm.hasError('required', 'short_name')"
+          >
+            <!-- Short name is required -->
+            {{'Library.create_library.err_short_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLibraryForm.controls['short_name'].touched && checkError && createLibraryForm.hasError('required', 'short_name')"
+          >
+            <!-- Short name is required -->
+            {{'Library.create_library.err_short_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="createLibraryForm.hasError('maxlength','short_name')"
+          >
+            <!-- Password must be at least 6 characters. -->
+            {{'Library.create_library.short_max_length_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Library.create_library.address' | translate}}</ion-label
+            >
+            <ion-input
+              [value]="address"
+              name="address"
+              [(ngModel)]="address"
+              formControlName="address"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Library.create_library.email' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="email"
+              name="email"
+              [(ngModel)]="email"
+              required
+              formControlName="email"
+            >
+            </ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createLibraryForm.controls['email'].touched && createLibraryForm.hasError('required', 'email')"
+          >
+            <!-- Email is required -->
+            {{'Library.create_library.err_email' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLibraryForm.controls['email'].touched && checkError && createLibraryForm.hasError('required', 'email')"
+          >
+            <!-- Email is required -->
+            {{'Library.create_library.err_email' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="createLibraryForm.hasError('email', 'email') && createLibraryForm.controls['email'].touched && !createLibraryForm.hasError('required', 'email')"
+          >
+            <!-- Please enter a valid email address -->
+            {{'Library.create_library.err_is_email' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Library.create_library.phone' | translate}}</ion-label
+            >
+            <ion-input
+              type="text"
+              [value]="phone"
+              name="phone"
+              [(ngModel)]="phone"
+              formControlName="phone"
+              (ionChange)="checkPhone()"
+            >
+            </ion-input>
+          </ion-item>
+          <p class="error" *ngIf="!checkPhoneNumber">
+            <!-- Email is required -->
+            {{'Library.create_library.err_phone_number' | translate}}
+          </p>
+        </ion-col>
+
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Library.create_library.active' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              [value]="isActive"
+              name="isActive"
+              [(ngModel)]="isActive"
+              required
+              formControlName="isActive"
+            >
+              <p *ngFor="let item of isActiveArr">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createLibraryForm.controls['isActive'].touched && createLibraryForm.hasError('required', 'isActive')"
+          >
+            <!-- Active is required -->
+            {{'Library.create_library.err_active' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLibraryForm.controls['isActive'].touched && checkError && createLibraryForm.hasError('required', 'isActive')"
+          >
+            <!-- Active is required -->
+            {{'Library.create_library.err_active' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Library.create_library.max_subscriber' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              type="text"
+              name="max"
+              required
+              formControlName="max_subscriber"
+              (ionChange)="checkNumberMaxSub()"
+            >
+            </ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createLibraryForm.controls['max_subscriber'].touched && createLibraryForm.hasError('required', 'max_subscriber')"
+          >
+            <!-- Email is required -->
+            {{'Library.create_library.err_max_subscriber' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLibraryForm.controls['max_subscriber'].touched && checkError && createLibraryForm.hasError('required', 'max_subscriber')"
+          >
+            <!-- Email is required -->
+            {{'Library.create_library.err_max_subscriber' | translate}}
+          </p>
+
+          <p class="error" *ngIf="!checkNumber">
+            <!-- Email is required -->
+            {{'Library.create_library.err_number' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <!-- <ion-item lines = "none"> -->
+          <ion-button class="btn-submit" type="submit">
+            <ion-icon slot="end" name="save"></ion-icon>
+            <!-- Create library -->
+            {{'Library.create_library.title_create' | translate}}
+          </ion-button>
+          <!-- </ion-item> -->
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+<div [style.display]="image?'block':'none'" class="zoom-image-modal">
+  <div
+    (click)="closeZoom()"
+    class="text-white cursor-pointer text-xl font-medium text-right p-4 absolute top-0 right-0"
+  >
+    Close
+  </div>
+  <div class="zoom-image">
+    <img [src]="image" alt="" class="modal-zoom-content" />
+  </div>
+</div>

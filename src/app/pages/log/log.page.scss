@@ -1,0 +1,53 @@
+ion-item {
+    --background: none;
+    opacity:1;
+    --inner-padding-end: 0px;
+    --padding-start:0px
+}
+
+ion-item .item-native{
+    padding: 0px !important;
+}
+
+.datatable-row-group datatable-body-cell{
+    margin: auto !important;
+}
+
+.margin-right-active{
+    margin-right: 12px;
+}
+
+.iconSize{
+    font-size: 30px;
+}
+
+.table-scroll{
+    overflow: scroll;
+    height: 565px;
+}
+.table-scroll-admin{
+    overflow: scroll;
+    height: 490px;
+}
+
+.position-paging{
+    position: absolute;
+    bottom: 5px;
+    
+  }
+
+.line-log-top{
+    width: 100%; 
+    border:solid #e6e6e6; 
+    border-width: 1px 0px 0px 0px; 
+    margin: 5px 0px;
+}
+
+.line-log-bottom{
+    width: 100%; 
+    border:solid #e6e6e6; 
+    border-width: 1px 0px 0px 0px; 
+    margin-bottom: 5px;
+}
+
+  

@@ -1,0 +1,289 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Student_content.create_student.title_create' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="createStudent()" novalidate [formGroup]="createStudentForm">
+    <!-- rich text editor -->
+    <ion-grid class="ion-content">
+      <ion-row>
+        <ion-col
+          class="ion-align-self-center"
+          size-xl="3"
+          size-lg="3"
+          size-md="3"
+          size-xs="12"
+          size-sm="6"
+        >
+          <ion-item lines="none">
+            <input
+              type="file"
+              name="logo"
+              value="fileupload"
+              (change)="onChange($event.target.files)"
+              #f
+              style="display: none"
+              required
+              formControlName="logo"
+              accept="image/png, image/jpeg"
+            />
+            <ion-button (click)="f.click()">
+              {{'Student_content.create_student.file' | translate}}
+            </ion-button>
+            <ion-text color="danger">*</ion-text>
+            <ion-label *ngIf="check_file_type">{{title}}</ion-label>
+          </ion-item>
+          <p class="error" *ngIf="!checkImage && checkSubmit">
+            {{'Student_content.create_student.err_logo' | translate}}
+          </p>
+          <p class="error" *ngIf="check_file_type">
+            {{'Student_content.create_student.err_type_file' | translate}}
+          </p>
+        </ion-col>
+        <ion-col
+          *ngIf="img.src != '' && !check_file_type"
+          size-xl="3"
+          size-lg="3"
+          size-md="3"
+          size-xs="12"
+          size-sm="6"
+          class="margin-auto-img"
+        >
+          <ion-item lines="none">
+            <!-- <ion-label>Logo</ion-label> -->
+            <div class="flex flex-col">
+              <ion-thumbnail slot="start">
+                <ion-img
+                  [src]="img.src"
+                  class="object-contain h-full"
+                ></ion-img>
+              </ion-thumbnail>
+              <div class="text-center">
+                <ion-button
+                  class="margin-auto-button-delete"
+                  size="small"
+                  fill="outline"
+                  (click)="zoomPicture(img.src)"
+                  title="Edit media"
+                >
+                  <ion-icon name="eye"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col
+          class="ion-align-self-end"
+          size-xl="6"
+          size-lg="6"
+          size-md="6"
+          size-xs="12"
+          size-sm="12"
+        >
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Student_content.create_student.title' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              name="title"
+              required
+              formControlName="title"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createStudentForm.controls['title'].touched && createStudentForm.hasError('required', 'title')"
+          >
+            {{'Student_content.create_student.err_title' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createStudentForm.controls['title'].touched && checkError && createStudentForm.hasError('required', 'title')"
+          >
+            {{'Student_content.create_student.err_title' | translate}}
+          </p>
+        </ion-col>
+        <ion-col
+          class="ion-align-self-end"
+          size-xl="6"
+          size-lg="6"
+          size-md="6"
+          size-xs="12"
+          size-sm="12"
+        >
+          <ion-item lines="inset" *ngIf="checkStatus">
+            <ion-label position="floating"
+              >{{'Student_content.create_student.status' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select name="status" required formControlName="status">
+              <p *ngFor="let item of statusLibrary">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+
+          <ion-item lines="inset" *ngIf="!checkStatus">
+            <ion-label position="floating"
+              >{{'Student_content.create_student.status' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select name="status" required formControlName="status">
+              <p *ngFor="let item of statusTeacher">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+
+          <!-- <ion-item lines="inset">
+            <ion-label position="floating">{{'Student_content.create_student.status' | translate}} <ion-text color="danger">*</ion-text></ion-label>
+            <ion-input name = "status" required formControlName="status"></ion-input>
+          </ion-item> -->
+          <p
+            class="error"
+            *ngIf="createStudentForm.controls['status'].touched && createStudentForm.hasError('required', 'status')"
+          >
+            {{'Student_content.create_student.err_status' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createStudentForm.controls['status'].touched && checkError && createStudentForm.hasError('required', 'status')"
+          >
+            {{'Student_content.create_student.err_status' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset" class="margin-top-picker">
+            <!-- <ion-label position = "floating">Publish date <ion-text color="danger">*</ion-text></ion-label>
+            <ion-datetime name="push_date" displayFormat="DD/MM/YYYY" 
+            (ngModelChange)="changePublishDate()"
+            required formControlName="push_date"></ion-datetime> -->
+            <ion-label class="custom-label-picker" position="floating"
+              >{{'Student_content.create_student.publish_date' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <input
+              class="time-picker"
+              [owlDateTime]="dt1"
+              [owlDateTimeTrigger]="dt1"
+              placeholder=""
+              name="push_date"
+              required
+              formControlName="push_date"
+            />
+            <owl-date-time #dt1></owl-date-time>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createStudentForm.controls['push_date'].touched && createStudentForm.hasError('required', 'push_date')"
+          >
+            {{'Student_content.create_student.err_publish_date' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createStudentForm.controls['push_date'].touched && checkError && createStudentForm.hasError('required', 'push_date')"
+          >
+            {{'Student_content.create_student.err_publish_date' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Student_content.create_student.active' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              *ngIf="checkStatus"
+              name="isActive"
+              required
+              formControlName="isActive"
+            >
+              <p *ngFor="let item of isActiveArr">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+            <ion-select
+              *ngIf="!checkStatus"
+              name="isActive"
+              required
+              formControlName="isActive"
+            >
+              <p *ngFor="let item of isActiveArrStudent">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createStudentForm.controls['isActive'].touched && createStudentForm.hasError('required', 'isActive')"
+          >
+            {{'Student_content.create_student.err_active' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createStudentForm.controls['isActive'].touched && checkError && createStudentForm.hasError('required', 'isActive')"
+          >
+            {{'Student_content.create_student.err_active' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <!--Rich text editor -->
+      <ion-row class="ion-margin-bottom">
+        <ion-col size="12" class="min-height-col-editor">
+          <quill-editor
+            (onEditorCreated)="handleEditorCreated($event)"
+            (onContentChanged)="handleChange($event)"
+          >
+          </quill-editor>
+          <p class="error" *ngIf="!checkQuill && checkSubmit">
+            {{'Student_content.create_student.err_content' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-button class="btn-submit" type="submit">
+          <ion-icon slot="end" name="save"></ion-icon>
+          {{'Student_content.create_student.btn_create' | translate}}
+        </ion-button>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+<div [style.display]="image?'block':'none'" class="zoom-image-modal">
+  <div
+    (click)="closeZoom()"
+    class="text-white cursor-pointer text-xl font-medium text-right p-4 absolute top-0 right-0"
+  >
+    Close
+  </div>
+  <div class="zoom-image">
+    <img [src]="image" alt="" class="modal-zoom-content" />
+  </div>
+</div>

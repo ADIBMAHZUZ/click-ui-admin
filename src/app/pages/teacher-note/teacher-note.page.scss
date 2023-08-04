@@ -1,0 +1,142 @@
+.custom-name {
+  position: absolute;
+  left: 30px;
+}
+.ion-float-right {
+  float: none !important;
+  width: 100%;
+  margin: 0px;
+}
+.full-width {
+  width: 100%;
+  margin: 4px 0px !important;
+}
+
+.area {
+  width: 95%;
+  padding: 15px;
+  margin: 15px;
+  border: 1px solid #333;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+#dropZone {
+  border: 2px dashed #bbb;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 50px;
+  text-align: center;
+  font: 21pt bold arial;
+  color: #bbb;
+}
+
+.drop-file-over {
+  background: #333;
+}
+
+.uploadfilecontainer {
+  background-image: url("/assets/img/cloud-2044823_960_720.png");
+  background-repeat: no-repeat;
+  background-size: 50px;
+  background-position: bottom;
+  height: 50px;
+  width: 50px;
+  margin: 20px auto;
+  border: 2px dashed #1c8adb;
+  border-radius: 10px;
+  // margin-top: 100px;
+}
+
+.uploadfilecontainer:hover {
+  cursor: pointer;
+  background-color: #9ecbec !important;
+  opacity: 0.8;
+}
+
+.files-list {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 10px auto;
+  background: #ffffff;
+  border: 1px dashed;
+  border-radius: 12px;
+  padding: 5px;
+  color: #1c8adb;
+}
+
+.files-list .delete-file {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.files-list .delete-file img {
+  width: 30px;
+}
+
+.fancy-button {
+  --background-activated: red;
+}
+
+.iconSize {
+  // font-size: 10px;
+}
+
+.iconSizeClose {
+  font-size: 20px;
+}
+
+.my-custom-alert .alert-wrapper {
+  min-width: 300px !important;
+}
+
+.position-paging {
+  position: absolute;
+  bottom: 5px;
+}
+ion-button.item-button {
+  height: 50px;
+  width: 50px;
+  .thumbnail-teacher-note {
+    width: 40px;
+    height: auto;
+  }
+}
+
+.table-scroll-admin{
+  overflow: scroll;
+  height: 63vh;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .my-custom-alert .alert-wrapper {
+    min-width: 450px !important;
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 769px) {
+  .my-custom-alert .alert-wrapper {
+    min-width: 450px !important;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .my-custom-alert .alert-wrapper {
+    min-width: 450px !important;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .my-custom-alert .alert-wrapper {
+    min-width: 450px !important;
+  }
+}
+
+ion-col.item-col {
+  min-width: 25%;
+  min-height: 10vh;
+
+  ion-item {
+    --min-height: 10vh;
+  }
+}

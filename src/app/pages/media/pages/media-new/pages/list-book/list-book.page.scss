@@ -1,0 +1,57 @@
+.box-name {
+  height: 50px;
+  width: 200px;
+  margin: 0px auto;
+}
+
+.btn-right {
+  width: 80%;
+  margin: 0px auto;
+}
+.btn-right .margin-auto-image {
+  position: absolute;
+  right: 0;
+}
+.btn-right .margin-auto-price {
+  position: absolute;
+  left: 0;
+}
+
+.btn-right .margin-auto-image ion-button {
+  margin: 0px 0px 0px 5px !important;
+}
+
+.margin-auto-image-multi {
+  margin: 5px auto;
+  width: 200px;
+  height: 200px;
+}
+
+.margin-auto-image-multi ion-img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.border-box {
+  width: 80%;
+  border: solid #e6e6e6;
+  border-width: 1px 0px 0px 0px;
+  margin: 2px auto;
+}
+:host ::ng-deep {
+  .free {
+    padding: 0 7px;
+    background-color: green;
+    color: white;
+    border-radius: 6px;
+  }
+  .mat-item {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    img {
+      height: 250px;
+      object-fit: cover;
+    }
+  }
+}

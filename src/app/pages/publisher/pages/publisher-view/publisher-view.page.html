@@ -1,0 +1,137 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Publisher.view_publisher.title_view' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-content">
+    <ion-row>
+      <ion-col
+        *ngIf="logo != ''"
+        size-xl="3"
+        size-lg="4"
+        size-md="4"
+        size-xs="12"
+        size-sm="6"
+        class="margin-auto-img"
+      >
+        <ion-item lines="none">
+          <!-- <ion-label>Logo</ion-label> -->
+          <div class="flex flex-col">
+            <ion-thumbnail>
+              <ion-img [src]="logo" class="object-contain h-full"></ion-img>
+            </ion-thumbnail>
+            <div class="text-center">
+              <ion-button
+                class="margin-auto-button-delete"
+                size="small"
+                fill="outline"
+                (click)="zoomPicture(logo)"
+                title="Edit media"
+              >
+                <ion-icon name="eye"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Publisher.view_publisher.name' | translate}}</ion-label
+          >
+          <ion-input [value]="publisher" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Publisher.view_publisher.short_name' | translate}}</ion-label
+          >
+          <ion-input [value]="publishershort" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Publisher.view_publisher.username' | translate}}</ion-label
+          >
+          <ion-input [value]="username" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Publisher.view_publisher.active' | translate}}</ion-label
+          >
+          <ion-input [value]="isActive" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Publisher.view_publisher.address' | translate}}</ion-label
+          >
+          <ion-input [value]="address" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Publisher.view_publisher.phone' | translate}}</ion-label
+          >
+          <ion-input [value]="phone" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Publisher.view_publisher.email' | translate}}</ion-label
+          >
+          <ion-input [value]="email" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Publisher.view_publisher.storage' | translate}}</ion-label
+          >
+          <ion-input [value]="storage" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<div [style.display]="image?'block':'none'" class="zoom-image-modal">
+  <div
+    (click)="closeZoom()"
+    class="text-white cursor-pointer text-xl font-medium text-right p-4 absolute top-0 right-0"
+  >
+    Close
+  </div>
+  <div class="zoom-image">
+    <img [src]="image" alt="" class="modal-zoom-content" />
+  </div>
+</div>

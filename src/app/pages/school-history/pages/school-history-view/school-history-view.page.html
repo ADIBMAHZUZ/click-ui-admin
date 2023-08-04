@@ -1,0 +1,107 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'School_history.view_history.title_create' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-content">
+    <ion-row>
+      <ion-col
+        size-xl="3"
+        size-lg="3"
+        size-md="3"
+        size-xs="12"
+        size-sm="6"
+        class="margin-auto-img"
+      >
+        <ion-item lines="none">
+          <!-- <ion-label>Logo</ion-label> -->
+          <div class="flex flex-col justify-center">
+            <ion-thumbnail>
+              <ion-img [src]="photo" class="object-contain h-full"></ion-img>
+            </ion-thumbnail>
+            <div class="text-center">
+              <ion-button
+                class="margin-auto-button-delete"
+                size="small"
+                fill="outline"
+                (click)="zoomPicture(photo)"
+                title="Edit media"
+              >
+                <ion-icon name="eye"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item lines="inset">
+          <ion-label position="floating"
+            >{{'School_history.view_history.title' | translate}}</ion-label
+          >
+          <ion-input [value]="title" name="title" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item lines="inset">
+          <!-- <ion-label position = "floating">Publish date</ion-label>
+          <ion-datetime name="publishDate" displayFormat="DD/MM/YYYY" 
+          [value]="publishDate" readonly></ion-datetime> -->
+          <ion-label position="floating"
+            >{{'School_history.view_history.publish_date' |
+            translate}}</ion-label
+          >
+          <ion-input
+            [value]="publishDate"
+            name="publishDate"
+            readonly
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item lines="inset">
+          <ion-label position="floating"
+            >{{'School_history.view_history.active' | translate}}</ion-label
+          >
+          <ion-input [value]="isActive" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!--Rich text editor -->
+    <ion-row class="ion-margin-bottom">
+      <ion-col size="12" class="min-height-col-editor" readOnly>
+        <quill-editor
+          [(ngModel)]="htmlText"
+          (onEditorCreated)="handleEditorCreated($event)"
+        >
+        </quill-editor>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<div [style.display]="image?'block':'none'" class="zoom-image-modal">
+  <div
+    (click)="closeZoom()"
+    class="text-white cursor-pointer text-xl font-medium text-right p-4 absolute top-0 right-0"
+  >
+    Close
+  </div>
+  <div class="zoom-image">
+    <img [src]="image" alt="" class="modal-zoom-content" />
+  </div>
+</div>

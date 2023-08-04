@@ -1,0 +1,164 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title
+      >{{'Statistic_tab.tab_media_category.title' | translate}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col size="2" size-md="4" size-sm="4" size-xs="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Statistic_tab.tab_media_category.from' | translate}}</ion-label
+          >
+          <input
+            class="time-picker"
+            [owlDateTime]="from"
+            [owlDateTimeTrigger]="from"
+            style="margin-top: 5px"
+            placeholder=""
+            [min]="createdDate"
+            [(ngModel)]="dateFrom"
+            (ngModelChange)="changeDateFrom()"
+          />
+          <owl-date-time #from [pickerType]="'calendar'"> </owl-date-time>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2" size-md="4" size-sm="4" size-xs="12">
+        <ion-item lines="inset" class="margin-top-picker">
+          <ion-label position="floating" class="custom-label-picker"
+            >{{'Statistic_tab.tab_media_category.to' | translate}}</ion-label
+          >
+          <input
+            class="time-picker"
+            [owlDateTime]="to"
+            [owlDateTimeTrigger]="to"
+            style="margin-top: 5px"
+            [(ngModel)]="dateTo"
+            [min]="createdDate"
+            (ngModelChange)="changeDateTo()"
+          />
+          <owl-date-time #to [pickerType]="'calendar'"></owl-date-time>
+        </ion-item>
+      </ion-col>
+      <!-- <ion-col  size = "2" size-md = "4" size-sm = "4" size-xs = "12" style="margin-top: 7px;">
+        <ion-item lines = "inset">
+          <ion-label position="floating">{{'Statistic_tab.library' | translate}} <ion-text color="danger">*</ion-text></ion-label>
+          <ion-select name = "library" [(ngModel)]="library" (ionChange)="changeLibrary(library)">
+            <ion-select-option [value]="library_all">All</ion-select-option>
+            <p *ngFor="let item of dataLibrary">
+              <ion-select-option [value]="item.id">{{item.name}}</ion-select-option>
+            </p>
+          </ion-select>
+          </ion-item>
+      </ion-col> -->
+    </ion-row>
+    <ion-row>
+      <ion-col
+        size="2"
+        size-md="6"
+        size-sm="5"
+        size-xs="9"
+        size-lg="5"
+        size-xl="4"
+      >
+        <ion-item lines="none">
+          <h3>{{'Statistic_tab.tab_media_category.total' | translate}}</h3>
+        </ion-item>
+        <ion-item
+          lines="none"
+          *ngFor="let data of pieChartLabels[0]; index as i"
+        >
+          <h3>{{data}}</h3>
+        </ion-item>
+      </ion-col>
+      <ion-col
+        size="2"
+        size-md="6"
+        size-sm="3"
+        size-xs="3"
+        size-lg="2"
+        size-xl="1"
+      >
+        <ion-item lines="none">
+          <h3>{{total}}</h3>
+        </ion-item>
+        <ion-item lines="none" *ngFor="let data of pieChartData[0]; index as i">
+          <h3>{{data}}</h3>
+        </ion-item>
+      </ion-col>
+      <ion-col
+        *ngIf="checkDisplayPie"
+        size="5"
+        size-md="12"
+        size-sm="12"
+        size-lg="12"
+        size-xl="7"
+        size-xs="12"
+      >
+        <div>
+          <div style="overflow: scroll; margin-top: 150px; height: 670px">
+            <div style="display: block; height: 620px; width: 1200px">
+              <canvas
+                baseChart
+                [data]="pieChartData[0]"
+                [labels]="pieChartLabels[0]"
+                [chartType]="pieChartType"
+                [options]="pieChartOptions"
+                [plugins]="pieChartPlugins"
+                [legend]="pieChartLegend"
+              >
+              </canvas>
+              <!-- [colors]="pieChartColors" -->
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="12" size-xs="12">
+        <div>
+          <ngx-datatable
+            class="material"
+            [limit]="10"
+            [rows]="data"
+            [rowHeight]="'auto'"
+            [columns]="columns"
+            [columnMode]="'force'"
+            [sortType]="'multi'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+          >
+            <ngx-datatable-column name="No.">
+              <ng-template
+                let-rowIndex="rowIndex"
+                let-row="row"
+                ngx-datatable-cell-template
+              >
+                {{(rowIndex + 1)}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              *ngFor="let item of  columns"
+              name="{{item.name | titlecase}}"
+              prop="{{item.prop}}"
+            ></ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button class="btn-submit" (click)="exportDataToExcel()">
+          {{'Statistic_tab.tab_media_category.btn_export_excel' | translate}}
+          <ion-icon slot="end" name="download"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

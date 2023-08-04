@@ -1,0 +1,135 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Library.view_library.title_view' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-content">
+    <ion-row>
+      <ion-col
+        *ngIf="logo != ''"
+        size-xl="3"
+        size-lg="4"
+        size-md="4"
+        size-xs="12"
+        size-sm="6"
+        class="margin-auto-img flex justify-center"
+      >
+        <ion-item
+          class="ion-align-items-center flex flex-col items-center"
+          lines="none"
+        >
+          <!-- <ion-label>Logo</ion-label> -->
+          <div>
+            <ion-thumbnail class="ion-align-items-center">
+              <ion-img [src]="logo" class="object-contain h-full"></ion-img>
+            </ion-thumbnail>
+            <div class="text-center">
+              <ion-button
+                class="margin-auto-button-delete"
+                size="small"
+                fill="outline"
+                (click)="zoomPicture(logo)"
+                title="Edit media"
+              >
+                <ion-icon name="eye"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Library.view_library.name' | translate}}</ion-label
+          >
+          <ion-input [value]="library" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Library.view_library.short_name' | translate}}</ion-label
+          >
+          <ion-input [value]="libraryshort" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Library.view_library.username' | translate}}</ion-label
+          >
+          <ion-input [value]="username" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Library.view_library.active' | translate}}</ion-label
+          >
+          <ion-input [value]="is_active" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Library.view_library.address' | translate}}</ion-label
+          >
+          <ion-input [value]="address" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Library.view_library.max_subscriber' | translate}}</ion-label
+          >
+          <ion-input [value]="max_subscriber" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Library.view_library.phone' | translate}}</ion-label
+          >
+          <ion-input [value]="phone" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Library.view_library.email' | translate}}</ion-label
+          >
+          <ion-input [value]="email" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<div [style.display]="image?'block':'none'" class="zoom-image-modal">
+  <div
+    (click)="closeZoom()"
+    class="text-white cursor-pointer text-xl font-medium text-right p-4 absolute top-0 right-0"
+  >
+    Close
+  </div>
+  <div class="zoom-image">
+    <img [src]="image" alt="" class="modal-zoom-content" />
+  </div>
+</div>

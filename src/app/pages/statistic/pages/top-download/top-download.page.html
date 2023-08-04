@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title
+      >{{'Statistic_tab.tab_top_download.title' | translate}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col size="2" size-md="4" size-sm="4" size-xs="12">
+        <ion-item lines="inset" class="">
+          <ion-label position="floating" class="custom-label-picker">
+            {{'Statistic_tab.tab_top_download.from' | translate}}
+          </ion-label>
+          <input
+            class="time-picker"
+            [owlDateTime]="from"
+            [owlDateTimeTrigger]="from"
+            style="margin-top: 5px"
+            placeholder=""
+            [min]="createdDate"
+            [(ngModel)]="dateFrom"
+            (ngModelChange)="changeDateFrom()"
+          />
+          <owl-date-time #from [pickerType]="'calendar'"> </owl-date-time>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="2" size-md="4" size-sm="4" size-xs="12">
+        <ion-item lines="inset" class="">
+          <ion-label position="floating" class="custom-label-picker">
+            {{'Statistic_tab.tab_top_download.to' | translate}}
+          </ion-label>
+          <input
+            class="time-picker"
+            [owlDateTime]="to"
+            [owlDateTimeTrigger]="to"
+            style="margin-top: 5px"
+            placeholder=""
+            [min]="createdDate"
+            [(ngModel)]="dateTo"
+            (ngModelChange)="changeDateTo()"
+          />
+          <owl-date-time #to [pickerType]="'calendar'"></owl-date-time>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="2" size-md="4" size-sm="4" size-xs="12">
+        <div class="chooseLibrary" (click)="chooseLibrary()">
+          <div>
+            <span class="text-sm">{{'Notification.library' | translate}}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <p class="text-base m-0">{{this.library?.name}}</p>
+            <mat-icon class="text-gray-300">keyboard_arrow_down</mat-icon>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm="12" size-xs="12">
+        <div id="print-statistic-top-download">
+          <table mat-table [dataSource]="data" style="width: 100%">
+            <ng-container matColumnDef="no">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-weight: bold; font-size: medium"
+              >
+                {{'Statistic_tab.tab_top_download.table.no'|translate}}
+              </th>
+              <td mat-cell *matCellDef="let element;let i=index">{{i+1}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="title">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-weight: bold; font-size: medium"
+              >
+                {{'Statistic_tab.tab_top_download.table.title'|translate}}
+              </th>
+              <td mat-cell *matCellDef="let element">{{element?.title}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="number_of_download">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-weight: bold; font-size: medium"
+              >
+                {{'Statistic_tab.tab_top_download.table.number_of_download'|translate}}
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{element?.numberOfDownload}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="media_type">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-weight: bold; font-size: medium"
+              >
+                {{'Statistic_tab.tab_top_download.table.media_type'|translate}}
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{element?.media_type}}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns_name"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns_name;"></tr>
+          </table>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button class="btn-submit" (click)="exportDataToExcel()">
+          <ion-icon slot="end" name="download"></ion-icon>
+          {{'Statistic_tab.tab_top_download.btn_export_excel' | translate}}
+        </ion-button>
+        <ion-button class="btn-submit" (click)="htmltoPDF()">
+          <ion-icon slot="end" name="download"></ion-icon>
+          {{'Statistic_tab.tab_top_download.btn_export_pdf' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

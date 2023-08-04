@@ -1,0 +1,113 @@
+<h2 class="preview-home">{{'Profile.preview_home' | translate}}</h2>
+<ion-content [style]="homeBackground" class="no-scroll">
+  <ion-grid class="p-0">
+    <ion-row>
+      <ion-col
+        size="12"
+        size-md="6"
+        id="library"
+        class="section"
+        [style]="getBackground(0)"
+      >
+        <ion-row class="h-100 d-flex align-items-center">
+          <ion-col class="badge">
+            <ion-icon src="/assets/img/library.svg"></ion-icon>
+          </ion-col>
+          <ion-col offset="3" size="8" >
+            <h2>{{titles[0].title}}</h2>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col
+        size="12"
+        size-md="6"
+        id="school-news"
+        routerDirection="root"
+        class="section"
+        [style]="getBackground(1)"
+      >
+        <ion-row class="h-100 d-flex align-items-center">
+          <ion-col class="badge">
+            <ion-icon src="/assets/img/school_news_board.svg"></ion-icon>
+          </ion-col>
+          <ion-col offset="3" size="8" >
+            <h2>{{titles[1].title}}</h2>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col
+        size="12"
+        size-md="6"
+        id="teacher-notes"
+        routerDirection="root"
+        class="section"
+        [style]="getBackground(2)"
+      >
+        <ion-row class="h-100 d-flex align-items-center">
+          <ion-col class="badge">
+            <ion-icon src="/assets/img/teacher_note.svg"></ion-icon>
+          </ion-col>
+          <ion-col offset="3" size="8" >
+            <h2>{{titles[2].title}}</h2>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col
+        size="12"
+        size-md="6"
+        id="material"
+        routerDirection="root"
+        class="section"
+        [style]="getBackground(3)"
+      >
+        <ion-row class="h-100 d-flex align-items-center">
+          <ion-col class="badge">
+            <ion-icon src="/assets/img/learning_material.svg"></ion-icon>
+          </ion-col>
+          <ion-col offset="3" size="8" >
+            <h2>{{titles[3].title}}</h2>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col
+        size="12"
+        size-md="6"
+        id="school-history"
+        routerDirection="root"
+        class="section"
+        [style]="getBackground(4)"
+      >
+        <ion-row class="h-100 d-flex align-items-center">
+          <ion-col class="badge">
+            <ion-icon src="/assets/img/school_history.svg"></ion-icon>
+          </ion-col>
+          <ion-col offset="3" size="8" >
+            <h2>{{titles[4].title}}</h2>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col
+        size="12"
+        size-md="6"
+        id="student-content"
+        routerDirection="root"
+        class="section"
+        [style]="getBackground(5)"
+      >
+        <ion-row class="h-100 d-flex align-items-center">
+          <ion-col class="badge">
+            <ion-icon
+              src="/assets/img/student_content.svg"
+              class="pl-1"
+            ></ion-icon>
+          </ion-col>
+          <ion-col offset="3" size="8" >
+            <h2>{{titles[5].title}}</h2>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    
+  </ion-grid>
+  
+</ion-content>

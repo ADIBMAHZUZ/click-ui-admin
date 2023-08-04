@@ -1,0 +1,106 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Media.get_new.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<!-- Searchbar with a placeholder -->
+<form (ngSubmit)="onSearchMedia()" class="ion-padding ion-content">
+  <ion-row>
+    <ion-col size="2">
+      <!-- <ion-item lines="inset">
+        <ion-label position="floating"
+          >{{'Media.get_new.publisher' | translate}}
+          <ion-text color="danger">*</ion-text></ion-label
+        >
+        <ion-select
+          [value]="publisher"
+          name="publisher"
+          [(ngModel)]="publisher"
+          (ionChange)="changePublisher(publisher)"
+        >
+          <ion-select-option [value]="publisher_all">All</ion-select-option>
+          <p *ngFor="let item of dataPublisher">
+            <ion-select-option [value]="item.id"
+              >{{item.name}}</ion-select-option
+            >
+          </p>
+        </ion-select>
+      </ion-item> -->
+      <div
+        class="h-auto w-full border-b border-gray-400 pt-2 mb-3"
+        (click)="choosePublisher()"
+      >
+        <div>
+          <span class="text-sm">{{'Notification.publisher' | translate}}</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <p class="text-base m-0">{{this.publisher?.name}}</p>
+          <mat-icon class="text-gray-300">keyboard_arrow_down</mat-icon>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col size-xl="6" size-lg="6" size-xs="12" size-sm="8" size-md="8">
+      <ion-searchbar
+        name="search"
+        [(ngModel)]="searchMedia"
+        placeholder="{{'Media.get_new.search' | translate}}"
+      ></ion-searchbar>
+    </ion-col>
+    <ion-col
+      size-xl="2"
+      size-lg="2"
+      size-xs="6"
+      size-sm="6"
+      size-md="6"
+      class="ion-align-self-center"
+    >
+      <ion-button class="full-width" type="submit">
+        <ion-icon slot="end" name="search"></ion-icon>
+        {{'Media.get_new.search' | translate}}
+      </ion-button>
+    </ion-col>
+    <ion-col
+      size-xl="2"
+      size-lg="2"
+      size-xs="12"
+      size-sm="6"
+      size-md="6"
+      class="ion-align-self-center"
+    >
+      <ion-button class="ion-float-right" [routerLink]="'/media/cart'">
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+        {{'Media.get_new.btn_cart' | translate}}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</form>
+
+<ion-content>
+  <ion-tabs class="ion-content">
+    <ion-tab-bar style="overflow: auto" slot="top">
+      <ion-tab-button tab="book">
+        <ion-icon name="book"></ion-icon>
+        <ion-label>{{'Media.get_new.title_book' | translate}}</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="audio">
+        <ion-icon name="musical-note"></ion-icon>
+        <ion-label>{{'Media.get_new.title_audio' | translate}}</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="video">
+        <ion-icon name="videocam"></ion-icon>
+        <ion-label>{{'Media.get_new.title_video' | translate}}</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>

@@ -1,0 +1,19 @@
+.position-paging {
+  position: absolute;
+  bottom: 5px;
+}
+
+.table-scroll {
+  overflow: scroll;
+  height: 490px;
+}
+
+ion-item {
+  --inner-padding-end: 0px;
+  --padding-start: 0px;
+}
+
+.mat-column-message {
+  flex: none;
+  width: 30%;
+}

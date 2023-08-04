@@ -1,0 +1,226 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Library.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding ion-content">
+    <!-- Searchbar with a placeholder -->
+    <form (ngSubmit)="onSearchLibrary()">
+      <ion-row>
+        <ion-col size="6" class="ion-no-padding">
+          <ion-searchbar
+            name="search"
+            [(ngModel)]="searchLibrary"
+            placeholder="{{'Library.search' | translate}}"
+          ></ion-searchbar>
+        </ion-col>
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button class="full-width" type="submit">
+            <ion-icon slot="end" name="search"></ion-icon>
+            <!-- Search -->
+            {{'Library.search' | translate}}
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button class="ion-float-right" [routerLink]="'/library/create'">
+            <ion-icon slot="end" name="add"></ion-icon>
+            <!-- Create library -->
+            {{'Library.create' | translate}}
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button
+            class="ion-float-right"
+            (click)="deleteTeacher()"
+            [disabled]="checkList.length==0"
+          >
+            <ion-icon slot="end" name="trash"></ion-icon>
+            {{'Button.delete' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+    <ion-row>
+      <ion-col>
+        <div>
+          <ngx-datatable
+            class="material"
+            [limit]="10"
+            [rows]="data"
+            [rowHeight]="'auto'"
+            [columns]="columns"
+            [columnMode]="'force'"
+            [sortType]="'multi'"
+            [selected]="checkList"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+            [selectionType]="'checkbox'"
+            (select)="onSelect($event)"
+          >
+            <ngx-datatable-column
+              [sortable]="false"
+              [canAutoResize]="false"
+              [draggable]="false"
+              [resizeable]="false"
+            >
+              <ng-template
+                ngx-datatable-header-template
+                let-value="value"
+                let-allRowsSelected="allRowsSelected"
+                let-selectFn="selectFn"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="allRowsSelected"
+                  (change)="selectFn(!allRowsSelected)"
+                />
+              </ng-template>
+              <ng-template
+                ngx-datatable-cell-template
+                let-value="value"
+                let-isSelected="isSelected"
+                let-onCheckboxChangeFn="onCheckboxChangeFn"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="isSelected"
+                  (change)="onCheckboxChangeFn($event)"
+                />
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="70"
+              name="{{'Library.no' | translate}}"
+              prop="id"
+            >
+              <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                {{rowIndex+1}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="90"
+              name="{{'Library.username' | translate}}"
+              prop="username"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              name="{{'Library.name' | translate}}"
+              prop="name"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="90"
+              name="{{'Library.short_name' | translate}}"
+              prop="short_name"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="90"
+              name="{{'Library.phone' | translate}}"
+              prop="phone"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="150"
+              name="{{'Library.email' | translate}}"
+              prop="email"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="110"
+              name="{{'Library.current_subscriber' | translate}}"
+              prop="number_of_current_subscribers"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="130"
+              name="{{'Library.max_sub' | translate}}"
+              prop="max_subscribers"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              name="{{'Library.active' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item class="ion-float-left" lines="none">
+                  <ion-toggle
+                    class="ion-align-items-center"
+                    [(ngModel)]="row.is_active"
+                    color="primary"
+                    (ngModelChange)="deleteLibrary(row)"
+                  ></ion-toggle>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Library.actions' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item lines="none">
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/library/view/' + row.id"
+                    title="{{'Library.view' | translate}}"
+                  >
+                    <ion-icon name="eye"></ion-icon>
+                  </ion-button>
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/library/update/' + row.id"
+                    title="{{'Library.edit' | translate}}"
+                  >
+                    <ion-icon name="create"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+            <!-- Footer for datatable -->
+            <ngx-datatable-footer>
+              <ng-template
+                let-rowCount="rowCountPage"
+                let-pageSize="pageSize"
+                let-selectedCount="selectedCount"
+                let-curPage="curPage"
+                let-offset="offset"
+                ngx-datatable-footer-template
+              >
+                <app-datatable-pager
+                  (change)="changePage($event)"
+                  [page]="curPage"
+                  [visiblePagesCount]="currentVisible"
+                  [size]="pageSize"
+                  [count]="rowCountPage"
+                  [hidden]="false"
+                >
+                </app-datatable-pager>
+              </ng-template>
+            </ngx-datatable-footer>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

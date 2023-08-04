@@ -1,0 +1,74 @@
+h3 {
+  margin: 0px;
+}
+.chart canvas {
+  width: 80% !important;
+  height: 75% !important;
+  margin: 0px auto;
+}
+
+.float-right-statistic {
+  float: right;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .chart canvas {
+    width: 85% !important;
+    height: 75% !important;
+    margin: 30px auto;
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 769px) {
+  .chart canvas {
+    width: 82% !important;
+    height: 75% !important;
+    margin: 45px auto;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .chart canvas {
+    width: 50% !important;
+    height: 75% !important;
+    margin: 30px auto;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .chart canvas {
+    width: 72% !important;
+    height: 75% !important;
+    margin: 120px auto;
+  }
+}
+
+//  .ngx-datatable.material .datatable-header .datatable-header-cell{
+//      width: 150px !important;
+//      height: 50px;
+//  }
+
+.ngx-datatable.fixed-header
+  .datatable-header
+  .datatable-header-inner
+  .datatable-header-cell {
+  white-space: normal !important;
+}
+
+.ngx-datatable.fixed-header
+  .datatable-header
+  .datatable-header-inner
+  .datatable-header-cell {
+  white-space: normal !important;
+}
+.custom-label-picker {
+  font-size: 12px !important;
+}
+.time-picker {
+  height: 50px;
+  width: 100%;
+  border: none;
+}
+input:focus {
+  outline: none;
+}

@@ -1,0 +1,62 @@
+:host ::ng-deep {
+  .custom-table-quotation {
+    border: 1px solid #e5e7eb;
+  }
+  tr.mat-footer-row {
+    font-weight: bold;
+  }
+  .form {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .img {
+    height: 100px;
+    object-fit: cover;
+  }
+  .items-center {
+    align-items: center;
+  }
+  .flex {
+    display: flex;
+  }
+  .export-button {
+    background-color: #3880ff;
+    padding: 6px 16px;
+    color: #fff;
+    align-items: center;
+    font-size: 16px;
+    line-height: 25px;
+    border-radius: 6px;
+    margin-right: 16px;
+    outline: none;
+  }
+  ion-input {
+    border-bottom: 1px black solid;
+  }
+  th,
+  td {
+    padding: 10px 0px;
+  }
+  th {
+    background-color: #5895ff;
+    color: #fff;
+    letter-spacing: 1px;
+    font-weight: normal;
+  }
+  td input:focus-visible {
+    text-align: right;
+    border: none;
+    outline: none;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  .mat-form-field-wrapper {
+    padding-bottom: 0px;
+  }
+}

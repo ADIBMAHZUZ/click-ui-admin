@@ -1,0 +1,308 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Subscriber.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding ion-content">
+    <form (ngSubmit)="onSearchSubscriber()" *ngIf="!checkUserType">
+      <ion-row>
+        <ion-col
+          size-xl="2"
+          size-lg="2"
+          size-xs="6"
+          size-sm="3"
+          size-md="3"
+          style="margin-top: -12px"
+        >
+          <ion-item lines="inset" style="padding-left: 3px">
+            <ion-label position="floating"
+              >{{'Subscriber.library' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              [value]="library"
+              name="library"
+              [(ngModel)]="library"
+              (ionChange)="changeLibrary(library)"
+            >
+              <ion-select-option [value]="library_all">All</ion-select-option>
+              <p *ngFor="let item of dataLibrary">
+                <ion-select-option [value]="item.id"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xl="8" size-lg="8" size-xs="12" size-sm="6" size-md="6">
+          <ion-searchbar
+            name="search"
+            [(ngModel)]="searchSubscriber"
+            placeholder="{{'Subscriber.search' | translate}}"
+          ></ion-searchbar>
+        </ion-col>
+        <ion-col
+          size-xl="2"
+          size-lg="2"
+          size-xs="6"
+          size-sm="3"
+          size-md="3"
+          class="ion-align-self-center"
+        >
+          <ion-button class="full-width" type="submit">
+            <ion-icon slot="end" name="search"></ion-icon>
+            <!-- Search -->
+            {{'Subscriber.search' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+    <form (ngSubmit)="onSearchSubscriber()" *ngIf="checkUserType">
+      <ion-row>
+        <ion-col size="4" class="ion-no-padding">
+          <ion-searchbar
+            name="search"
+            [(ngModel)]="searchSubscriber"
+            placeholder="{{'Subscriber.search' | translate}}"
+          ></ion-searchbar>
+        </ion-col>
+
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button class="full-width" type="submit">
+            <ion-icon slot="end" name="search"></ion-icon>
+            <!-- Search -->
+            {{'Subscriber.search' | translate}}
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button class="full-width" [routerLink]="'/subscriber/create'">
+            <ion-icon slot="end" name="add"></ion-icon>
+            <!-- Create Subscriber -->
+            {{'Subscriber.create' | translate}}
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button
+            class="ion-float-right"
+            [routerLink]="'/subscriber/subscriber-import-csv'"
+          >
+            <ion-icon slot="end" name="push"></ion-icon>
+            <!-- Import CSV -->
+            {{'Subscriber.import' | translate}}
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button
+            class="ion-float-right"
+            (click)="deleteSubscriber()"
+            [disabled]="checkList.length==0"
+          >
+            <ion-icon slot="end" name="trash"></ion-icon>
+            {{'Button.delete' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+
+    <ion-row>
+      <ion-col>
+        <div>
+          <ngx-datatable
+            class="material"
+            [limit]="10"
+            [rows]="data"
+            [rowHeight]="'auto'"
+            [columns]="columns"
+            [columnMode]="'force'"
+            [sortType]="'multi'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+            [selected]="checkList"
+            [selectionType]="'checkbox'"
+            (select)="onSelect($event)"
+          >
+            <ngx-datatable-column
+              [width]="30"
+              [sortable]="false"
+              [canAutoResize]="false"
+              [draggable]="false"
+              [resizeable]="false"
+            >
+              <ng-template
+                ngx-datatable-header-template
+                let-value="value"
+                let-allRowsSelected="allRowsSelected"
+                let-selectFn="selectFn"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="allRowsSelected"
+                  (change)="selectFn(!allRowsSelected)"
+                />
+              </ng-template>
+              <ng-template
+                ngx-datatable-cell-template
+                let-value="value"
+                let-isSelected="isSelected"
+                let-onCheckboxChangeFn="onCheckboxChangeFn"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="isSelected"
+                  (change)="onCheckboxChangeFn($event)"
+                />
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="70"
+              name="{{'Subscriber.no' | translate}}"
+              prop="id"
+            >
+              <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                {{rowIndex+1}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Subscriber.username' | translate}}"
+              prop="username"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Subscriber.name' | translate}}"
+              prop="name"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Subscriber.short_name' | translate}}"
+              prop="short_name"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Subscriber.phone' | translate}}"
+              prop="phone"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="190"
+              name="{{'Subscriber.email' | translate}}"
+              prop="email"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Subscriber.status' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item
+                  *ngIf="!checkUserType"
+                  class="ion-float-left"
+                  lines="none"
+                >
+                  <ion-toggle
+                    class="ion-align-items-center"
+                    disabled
+                    [(ngModel)]="row.is_active"
+                    color="primary"
+                    (ngModelChange)="updateStatusSubscriber(row)"
+                  ></ion-toggle>
+                </ion-item>
+                <ion-item
+                  *ngIf="checkUserType"
+                  class="ion-float-left"
+                  lines="none"
+                >
+                  <ion-toggle
+                    class="ion-align-items-center"
+                    [(ngModel)]="row.is_active"
+                    color="primary"
+                    (ngModelChange)="updateStatusSubscriber(row)"
+                  ></ion-toggle>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="160"
+              name="{{'Subscriber.actions' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item lines="none">
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/subscriber/view/' + row.id"
+                    title="{{'Subscriber.view' | translate}}"
+                  >
+                    <ion-icon name="eye"></ion-icon>
+                  </ion-button>
+                  <ion-button
+                    *ngIf="checkUserType"
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/subscriber/update/' + row.id"
+                    title="{{'Subscriber.edit' | translate}}"
+                  >
+                    <ion-icon name="create"></ion-icon>
+                  </ion-button>
+                  <!-- <ion-button *ngIf="checkUserType" class="ion-align-items-center" size ="small" fill="outline" (click)="updateMaxDuration(row.id)" title="{{'Subscriber.edit' | translate}}">
+                    <ion-icon name="pencil"></ion-icon>
+                  </ion-button> -->
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+            <!-- Footer for datatable -->
+            <ngx-datatable-footer>
+              <ng-template
+                let-rowCount="rowCountPage"
+                let-pageSize="pageSize"
+                let-selectedCount="selectedCount"
+                let-curPage="curPage"
+                let-offset="offset"
+                ngx-datatable-footer-template
+              >
+                <app-datatable-pager
+                  (change)="changePage($event)"
+                  [page]="curPage"
+                  [visiblePagesCount]="currentVisible"
+                  [size]="pageSize"
+                  [count]="rowCountPage"
+                  [hidden]="false"
+                >
+                </app-datatable-pager>
+              </ng-template>
+            </ngx-datatable-footer>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

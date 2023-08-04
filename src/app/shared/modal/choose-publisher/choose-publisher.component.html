@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ "Modal.publisher" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form action="" [formGroup]="form" class="w-full p-3">
+    <div>
+      <mat-form-field class="w-full">
+        <input
+          type="text"
+          formControlName="search"
+          matInput
+          placeholder="Search"
+          (keyup.enter)="initData()"
+        />
+      </mat-form-field>
+    </div>
+
+    <mat-radio-group
+      formControlName="publisher"
+      class="flex flex-col items-start"
+    >
+      <mat-radio-button
+        class="m-1 text-base"
+        [value]="{ id: 'all', name: 'All' }"
+        *ngIf="search.value.length == 0"
+        (change)="onChange($event)"
+      >
+        All
+      </mat-radio-button>
+      <mat-radio-button
+        class="m-1 text-base"
+        *ngFor="let publisher of dataPublisher"
+        [value]="publisher"
+        (change)="onChange($event)"
+      >
+        {{ publisher?.name }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </form>
+</ion-content>
+
+<!-- <ion-footer>
+  <div class="absolute bottom-0 right-0 px-3 pb-3 pt-2">
+    <ion-button class="btn-submit" (click)="reset()">
+      <ion-icon name="refresh-outline"></ion-icon>
+      {{ "Button.reset" | translate }}
+    </ion-button>
+  </div>
+</ion-footer> -->

@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ "Modal.category" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div [formGroup]="categoryForm" class="mx-5">
+    <ion-grid>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-row>
+          <label class="font-bold mb-3"> Main Category </label>
+        </ion-row>
+
+        <mat-radio-group formControlName="mainCategory" name="main">
+          <div class="grid grid-cols-3">
+            <mat-radio-button
+              class="mb-2"
+              *ngFor="let category of mainCategory"
+              [value]="category.name"
+            >
+              {{ category.name }}
+            </mat-radio-button>
+          </div>
+        </mat-radio-group>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-row>
+          <p class="font-bold">Specific Category</p>
+        </ion-row>
+        <mat-form-field>
+          <mat-select
+            formControlName="specificCategory"
+            [multiple]="multiple"
+            panelClass="select"
+            [compareWith]="objectComparisonFunction"
+          >
+            <div class="py-2">
+              <input
+                type="text"
+                placeholder="Search..."
+                (input)="search($event)"
+                class="w-full pl-3 outline-none"
+              />
+            </div>
+            <mat-option
+              *ngFor="let category of listSpecificCategory"
+              [value]="category"
+            >
+              {{ category.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ion-col>
+
+      <div>
+        <ion-button (click)="submit()">Submit</ion-button>
+        <ion-button (click)="cancel()">Cancel</ion-button>
+      </div>
+    </ion-grid>
+  </div>
+</ion-content>

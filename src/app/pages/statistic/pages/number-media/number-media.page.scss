@@ -1,0 +1,55 @@
+.chart-media canvas {
+  // width: 300px !important;
+  height: 75% !important;
+  height: 75% !important;
+  margin: 0px auto;
+}
+
+.float-right-statistic {
+  display: block;
+  float: right;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .chart-media canvas {
+    width: 85% !important;
+    height: 75% !important;
+    margin: 30px auto;
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 769px) {
+  .chart-media canvas {
+    width: 85% !important;
+    height: 75% !important;
+    margin: 45px auto;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .chart-media canvas {
+    width: 85% !important;
+    height: 75% !important;
+    margin: 30px auto;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .chart-media canvas {
+    width: 75% !important;
+    height: 75% !important;
+    // margin: 40px auto;
+    margin-bottom: 40px;
+  }
+}
+.custom-label-picker {
+  font-size: 12px !important;
+}
+.time-picker {
+  height: 50px;
+  width: 100%;
+  border: none;
+}
+input:focus {
+  outline: none;
+}

@@ -1,0 +1,15 @@
+:host ::ng-deep {
+  .ion-item {
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    font-size: 25px;
+  }
+}

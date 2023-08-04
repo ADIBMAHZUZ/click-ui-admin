@@ -1,0 +1,32 @@
+.width-pdf-view{
+    display: block; 
+    height: 385px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px){ 
+    .width-pdf-view{
+        display: block; 
+        height: 385px;
+    }
+ }
+
+ @media only screen and (min-width: 576px) and (max-width: 769px){ 
+    .width-pdf-view{
+        display: block; 
+        height: 385px;
+    }
+ }
+
+ @media only screen and (min-width: 992px) and (max-width: 1199px){ 
+    .width-pdf-view{
+        display: block; 
+        height: 385px;
+    }
+ }
+
+ @media only screen and (min-width: 1200px){ 
+    .width-pdf-view{
+        display: block; 
+        height: 385px;
+    }
+}

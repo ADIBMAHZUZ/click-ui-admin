@@ -1,0 +1,255 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Publisher.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding ion-content">
+    <form (ngSubmit)="onSearchPublisher()">
+      <ion-row>
+        <ion-col size="6" class="ion-no-padding">
+          <ion-searchbar
+            name="search"
+            [(ngModel)]="searchPublisher"
+            placeholder="{{'Publisher.search' | translate}}"
+          ></ion-searchbar>
+        </ion-col>
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button class="full-width" type="submit">
+            <ion-icon slot="end" name="search"></ion-icon>
+            <!-- Search -->
+            {{'Publisher.search' | translate}}
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button
+            class="ion-float-right"
+            [routerLink]="'/publisher/create'"
+          >
+            <ion-icon slot="end" name="add"></ion-icon>
+            <!-- Create publisher -->
+            {{'Publisher.create' | translate}}
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button
+            class="ion-float-right"
+            (click)="deletePublisher()"
+            [disabled]="checkList.length==0"
+          >
+            <ion-icon slot="end" name="trash"></ion-icon>
+            <!-- Create publisher -->
+            {{'Button.delete' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+    <ion-row>
+      <ion-col>
+        <div>
+          <ngx-datatable
+            class="material"
+            [limit]="10"
+            [rows]="data"
+            [rowHeight]="'auto'"
+            [columns]="columns"
+            [columnMode]="'force'"
+            [sortType]="'multi'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+            [selected]="checkList"
+            [selectionType]="'checkbox'"
+            (select)="onSelect($event)"
+          >
+            <ngx-datatable-column
+              [sortable]="false"
+              [canAutoResize]="false"
+              [draggable]="false"
+              [resizeable]="false"
+            >
+              <ng-template
+                ngx-datatable-header-template
+                let-value="value"
+                let-allRowsSelected="allRowsSelected"
+                let-selectFn="selectFn"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="allRowsSelected"
+                  (change)="selectFn(!allRowsSelected)"
+                />
+              </ng-template>
+              <ng-template
+                ngx-datatable-cell-template
+                let-value="value"
+                let-isSelected="isSelected"
+                let-onCheckboxChangeFn="onCheckboxChangeFn"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="isSelected"
+                  (change)="onCheckboxChangeFn($event)"
+                />
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="70"
+              name="{{'Publisher.no' | translate}}"
+              prop="id"
+            >
+              <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                {{rowIndex+1}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="90"
+              name="{{'Publisher.username' | translate}}"
+              prop="username"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Publisher.name' | translate}}"
+              prop="name"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="90"
+              name="{{'Publisher.short_name' | translate}}"
+              prop="short_name"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="90"
+              name="{{'Publisher.phone' | translate}}"
+              prop="phone"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="150"
+              name="{{'Publisher.email' | translate}}"
+              prop="email"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="120"
+              name="{{'Publisher.current_storage' | translate}}"
+              prop="current_storage"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                {{row.current_storage}} GB
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="120"
+              name="{{'Publisher.storage' | translate}}"
+              prop="storage"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                {{row.storage}} GB
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Publisher.active' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item class="ion-float-left" lines="none">
+                  <ion-toggle
+                    class="ion-align-items-center"
+                    [(ngModel)]="row.is_active"
+                    color="primary"
+                    (ngModelChange)="updateStatusPublisher(row)"
+                  ></ion-toggle>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Publisher.actions' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item lines="none">
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/publisher/view/' + row.id"
+                    title="{{'Publisher.view' | translate}}"
+                  >
+                    <ion-icon name="eye"></ion-icon>
+                  </ion-button>
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/publisher/update/' + row.id"
+                    title="{{'Publisher.edit' | translate}}"
+                  >
+                    <ion-icon name="create"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Footer for datatable -->
+            <ngx-datatable-footer>
+              <ng-template
+                let-rowCount="rowCountPage"
+                let-pageSize="pageSize"
+                let-selectedCount="selectedCount"
+                let-curPage="curPage"
+                let-offset="offset"
+                ngx-datatable-footer-template
+              >
+                <app-datatable-pager
+                  (change)="changePage($event)"
+                  [page]="curPage"
+                  [visiblePagesCount]="currentVisible"
+                  [size]="pageSize"
+                  [count]="rowCountPage"
+                  [hidden]="false"
+                >
+                </app-datatable-pager>
+              </ng-template>
+            </ngx-datatable-footer>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

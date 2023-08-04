@@ -1,0 +1,158 @@
+ion-content {
+    background-size: cover !important;
+    --font-size: 16px;
+    max-height: 620px;
+  }
+ 
+  ion-col {
+    height: 27vh;
+  }
+  .badge {
+    position: absolute;
+    top: 0;
+    left: 5%;
+  
+    width: calc(1024px*0.08);
+    --badge-height: 18.75vh;
+    height: 18.75vh;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    border-bottom-left-radius: calc(var(--badge-height) / 2);
+    border-bottom-right-radius: calc(var(--badge-height) / 2);
+  
+    ion-icon {
+      width: calc(var(--badge-height) * 0.4);
+      height: calc(var(--badge-height) * 0.4);
+    }
+  }
+  h2 {
+    font-weight: normal;
+    font-size: calc(2.5 * var(--font-size));
+    width: 80%;
+    margin-top: calc(2.5 * var(--font-size));
+    margin-left: 5%;
+  }
+  #library {
+    --background-overlay-left: rgba(0, 0, 0, 0.338);
+    --background-overlay-right: rgba(255, 255, 255, 0.646);
+    --background-image: url('/assets/img/home-school-news.jpg');
+  
+    background-image: linear-gradient(
+        to right,
+        var(--background-overlay-left),
+        var(--background-overlay-right)
+      ),
+      var(--background-image) !important;
+    --badge-color: rgba(94, 0, 58, 0.8);
+    --icon-color: white;
+  
+    .badge {
+      background-color: var(--badge-color);
+      color: var(--icon-color);
+    }
+  }
+  #school-news {
+    --background-overlay-left: rgba(0, 0, 0, 0.338);
+    --background-overlay-right: rgba(255, 255, 255, 0.646);
+    --background-image: url('/assets/img/home-school-news.jpg');
+  
+    background-image: linear-gradient(
+        to right,
+        var(--background-overlay-left),
+        var(--background-overlay-right)
+      ),
+      var(--background-image) !important;
+    --badge-color: rgba(150, 0, 92, 0.8);
+    --icon-color: white;
+  
+    .badge {
+      background-color: var(--badge-color);
+      color: var(--icon-color);
+    }
+  }
+  #teacher-notes {
+    --background-overlay-left: rgba(0, 0, 0, 0.338);
+    --background-overlay-right: rgba(255, 255, 255, 0.646);
+    --background-image: url('/assets/img/home-school-news.jpg');
+  
+    background-image: linear-gradient(
+        to right,
+        var(--background-overlay-left),
+        var(--background-overlay-right)
+      ),
+      var(--background-image) !important;
+    --badge-color: rgba(163, 3, 3, 0.8);
+    --icon-color: white;
+  
+    .badge {
+      background-color: var(--badge-color);
+      color: var(--icon-color);
+    }
+  }
+  #material {
+    --background-overlay-left: rgba(0, 0, 0, 0.338);
+    --background-overlay-right: rgba(255, 255, 255, 0.646);
+    --background-image: url('/assets/img/home-school-news.jpg');
+  
+    background-image: linear-gradient(
+        to right,
+        var(--background-overlay-left),
+        var(--background-overlay-right)
+      ),
+      var(--background-image) !important;
+    --badge-color: rgba(248, 18, 10, 0.8);
+    --icon-color: white;
+  
+    .badge {
+      background-color: var(--badge-color);
+      color: var(--icon-color);
+    }
+  }
+  #school-history {
+    --background-overlay-left: rgba(0, 0, 0, 0.338);
+    --background-overlay-right: rgba(255, 255, 255, 0.646);
+    --background-image: url('/assets/img/home-school-news.jpg');
+  
+    background-image: linear-gradient(
+        to right,
+        var(--background-overlay-left),
+        var(--background-overlay-right)
+      ),
+      var(--background-image) !important;
+    --badge-color: rgb(255, 174, 0);
+    --icon-color: black;
+  
+    .badge {
+      background-color: var(--badge-color);
+      color: var(--icon-color);
+    }
+  }
+  #student-content {
+    --background-overlay-left: rgba(0, 0, 0, 0.338);
+    --background-overlay-right: rgba(255, 255, 255, 0.646);
+    --background-image: url('/assets/img/home-school-news.jpg');
+  
+    background-image: linear-gradient(
+        to right,
+        var(--background-overlay-left),
+        var(--background-overlay-right)
+      ),
+      var(--background-image) !important;
+    --badge-color: rgb(252, 215, 96);
+    --icon-color: black;
+  
+    .badge {
+      background-color: var(--badge-color);
+      color: var(--icon-color);
+    }
+  }
+
+  .preview-home{
+    text-align: center;
+    margin: 30px auto;
+    font-size: 40px;
+  }
+  

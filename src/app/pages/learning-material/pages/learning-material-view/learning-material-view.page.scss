@@ -1,0 +1,50 @@
+.margin-auto-img ion-thumbnail {
+  width: 250px !important;
+  margin: 5px auto !important;
+  height: 150px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .margin-auto-img ion-thumbnail {
+    width: 250px !important;
+    margin: 0px !important;
+    height: 150px;
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 769px) {
+  .margin-auto-img ion-thumbnail {
+    width: 250px !important;
+    margin: 0px !important;
+    height: 150px;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .margin-auto-img ion-thumbnail {
+    width: 250px !important;
+    margin: 0px !important;
+    height: 150px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .margin-auto-img ion-thumbnail {
+    width: 250px !important;
+    margin: 0px !important;
+    height: 150px;
+  }
+}
+
+.margin-auto-image-multi {
+  margin: 5px auto;
+  width: 120px;
+  height: 120px;
+}
+
+:host ::ng-deep {
+  .custom-label {
+    font-size: 12px;
+    margin: 0;
+  }
+}

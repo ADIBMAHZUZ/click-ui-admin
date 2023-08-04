@@ -1,0 +1,52 @@
+h3 {
+  margin: 0px;
+}
+
+.chart canvas {
+  width: 85% !important;
+  height: 75% !important;
+  margin: 0px auto;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .chart canvas {
+    width: 85% !important;
+    height: 75% !important;
+    margin: 30px auto;
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 769px) {
+  .chart canvas {
+    width: 70% !important;
+    height: 75% !important;
+    margin: 45px auto;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .chart canvas {
+    width: 60% !important;
+    height: 75% !important;
+    margin: 30px auto;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .chart canvas {
+    width: 68% !important;
+    height: 75% !important;
+    margin: 130px auto;
+  }
+}
+.custom-label-picker {
+  font-size: 12px !important;
+}
+.time-picker {
+  height: 50px;
+  width: 100%;
+  border: none;
+}
+input:focus {
+  outline: none;
+}

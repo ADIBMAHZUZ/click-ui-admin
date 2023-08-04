@@ -1,0 +1,370 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Media.update_media.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="updateMedia()" novalidate [formGroup]="updateMediaForm">
+    <ion-grid class="ion-padding">
+      <ion-row>
+        <ion-col size-xl="3" size-lg="4" size-md="4" size-xs="12" size-sm="6">
+          <ion-item lines="none">
+            <div class="flex flex-col">
+              <div>
+                <input
+                  type="file"
+                  name="fileupload"
+                  value="fileupload"
+                  (change)="onChange($event.target.files)"
+                  #f
+                  style="display: none"
+                  accept="image/png, image/jpeg"
+                  multiple
+                />
+                <ion-button (click)="f.click()">
+                  {{'Media.update_media.file' | translate}}
+                </ion-button>
+                <ion-text color="danger">*</ion-text>
+              </div>
+              <div class="custom-span">
+                <span class=""
+                  >Only png, jpeg, jpg are allowed. (Portrait size – A4)</span
+                >
+              </div>
+            </div>
+          </ion-item>
+          <p class="error" *ngIf="!checkImage && checkSubmit">
+            {{'Media.update_media.file_err' | translate}}
+          </p>
+        </ion-col>
+        <ion-col
+          *ngFor="let item of images; index as index"
+          size-xs="6"
+          size-sm="3"
+          size-md="3"
+          size-lg="3"
+          size-xl="2"
+        >
+          <ion-item lines="none">
+            <ion-thumbnail class="margin-auto-image-multi">
+              <ion-img
+                [src]="item.image"
+                class="object-contain h-full"
+              ></ion-img>
+            </ion-thumbnail>
+          </ion-item>
+          <div class="text-center">
+            <ion-button
+              class="margin-auto-button-delete"
+              size="small"
+              fill="outline"
+              (click)="zoomPicture(item.image)"
+              title="View media"
+            >
+              <ion-icon name="eye"></ion-icon>
+            </ion-button>
+            <ion-button
+              class="margin-auto-button-delete"
+              size="small"
+              fill="outline"
+              (click)="deleteImage(index)"
+              title="Edit media"
+            >
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-col>
+        <ion-col
+          *ngFor="let item of images_change; index as index"
+          size-xs="6"
+          size-sm="3"
+          size-md="3"
+          size-lg="3"
+          size-xl="2"
+        >
+          <ion-item lines="none">
+            <ion-thumbnail class="margin-auto-image-multi">
+              <ion-img [src]="item"></ion-img>
+            </ion-thumbnail>
+          </ion-item>
+          <div class="text-center">
+            <ion-button
+              class="margin-auto-button-delete"
+              size="small"
+              fill="outline"
+              (click)="zoomPicture(item)"
+              title="View media"
+            >
+              <ion-icon name="eye"></ion-icon>
+            </ion-button>
+            <ion-button
+              class="margin-auto-button-delete"
+              size="small"
+              fill="outline"
+              (click)="deleteImage(index)"
+              title="Edit media"
+            >
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item lines="inset">
+            <ion-label position="floating">
+              {{'Media.update_media.name' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              name="name"
+              [value]="name"
+              [(ngModel)]="name"
+              required
+              formControlName="name"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="updateMediaForm.controls['name'].touched && updateMediaForm.hasError('required', 'name')"
+          >
+            {{'Media.update_media.name_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!updateMediaForm.controls['name'].touched && checkError && updateMediaForm.hasError('required', 'name')"
+          >
+            {{'Media.update_media.name_err' | translate}}
+          </p>
+        </ion-col>
+
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset" class="margin-top-picker">
+            <ion-label class="custom-label-picker" position="floating"
+              >Release Date
+            </ion-label>
+            <input
+              class="time-picker"
+              [owlDateTime]="dt1"
+              [owlDateTimeTrigger]="dt1"
+              style="margin-top: 5px !important"
+              placeholder=""
+              name="release_date"
+              [(ngModel)]="publishDate"
+              formControlName="release_date"
+            />
+            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="updateMediaForm.controls['release_date'].touched && updateMediaForm.hasError('required', 'release_date')"
+          >
+            {{'Media.update_media.release_date_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!updateMediaForm.controls['release_date'].touched && checkError && updateMediaForm.hasError('required', 'release_date')"
+          >
+            {{'Media.update_media.release_date_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Media.update_media.file' | translate}}</ion-label
+            >
+            <ion-input [value]="mediaType | titlecase" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Media.update_media.is_active' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              name="isActive"
+              [value]="isActive"
+              [(ngModel)]="isActive"
+              required
+              formControlName="isActive"
+            >
+              <p *ngFor="let item of isActiveArr">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="updateMediaForm.controls['isActive'].touched && updateMediaForm.hasError('required', 'isActive')"
+          >
+            {{'Media.update_media.is_active_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!updateMediaForm.controls['isActive'].touched && checkError && updateMediaForm.hasError('required', 'isActive')"
+          >
+            {{'Media.update_media.is_active_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item
+            lines="inset"
+            size-xl="6"
+            size-lg="6"
+            size-md="6"
+            size-xs="12"
+            size-sm="12"
+          >
+            <ion-label position="floating"
+              >{{'Media.create_media.isbn' | translate}}</ion-label
+            >
+            <ion-input name="isbn" formControlName="isbn"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col
+          class=""
+          size-xl="6"
+          size-lg="6"
+          size-md="6"
+          size-xs="12"
+          size-sm="12"
+        >
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Media.update_media.author' | translate}}
+            </ion-label>
+            <ion-input
+              name="author"
+              [value]="author"
+              [(ngModel)]="author"
+              formControlName="author"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <!-- <ion-item lines="inset">
+            <ion-label position="floating">{{'Media.update_media.category' | translate}} <ion-text color="danger">*</ion-text></ion-label>
+            <ion-select [value]="category" name="category" 
+            [(ngModel)]="category" formControlName="category" multiple="true">
+                <p *ngFor="let item of categories">
+                    <ion-select-option [value]="item.id">{{item.name}}</ion-select-option>
+                </p>
+            </ion-select>
+          </ion-item> -->
+          <ion-item
+            class="cursor-pointer md:mt-[9px] md:mb-2"
+            (click)="chooseCategory()"
+          >
+            <div class="h-full w-full">
+              <ion-label class="custom-label">
+                {{'Media.create_media.category' | translate}}
+                <span style="color: red">*</span>
+              </ion-label>
+              <span *ngIf="mainCategory.value"> {{mainCategory.value}} </span>
+            </div>
+          </ion-item>
+          <p *ngFor="let item of specificCategory?.value">{{item?.name}}</p>
+          <p
+            class="error"
+            *ngIf="checkError && updateMediaForm.hasError('required', 'mainCategory')"
+          >
+            {{'Media.create_media.main_category_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="checkError && updateMediaForm.hasError('required', 'specificCategory')"
+          >
+            {{'Media.create_media.specific_category_err' | translate}}
+          </p>
+        </ion-col>
+
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating">
+              {{'Media.create_media.price_per_copy' | translate}}
+            </ion-label>
+            <ion-input
+              name="price_per_copy"
+              type="number"
+              inputmode="numeric"
+              formControlName="price_per_copy"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf=" updateMediaForm.hasError('required','price_per_copy') "
+          >
+            {{'Media.create_media.price_required' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf=" updateMediaForm.hasError('min','price_per_copy') "
+          >
+            {{'Media.create_media.price_min' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <!-- <ion-row>
+        <ion-col class="ion-align-self-center" size-xl="3" size-lg="3" size-md="3" size-xs="12" size-sm="6">
+          <ion-item lines="none">
+            <input type="file" name="file_media" value="fileupload111" (change)="onChangeMedia($event.target.files)" #g style="display: none;" accept="audio/mpeg, video/mp4, application/pdf">
+            <ion-button (click)="g.click()">
+              {{'Media.update_media.file_media' | translate}}
+            </ion-button>
+            <ion-text color="danger">*</ion-text>
+            <ion-label>{{title}}</ion-label>
+          </ion-item>
+      
+          <p class="error" *ngIf="!checkImage1">
+            {{'Media.update_media.file_media_err' | translate}}
+          </p>
+
+          <p class="error" *ngIf="check_file_type">
+            {{'Media.update_media.file_media_valid_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row> -->
+
+      <ion-row>
+        <ion-button class="btn-submit" type="submit">
+          <ion-icon slot="end" name="save"></ion-icon>
+          {{'Media.update_media.btn_update' | translate}}
+        </ion-button>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+<div [style.display]="image?'block':'none'" class="zoom-image-modal">
+  <div
+    (click)="closeZoom()"
+    class="text-white cursor-pointer text-xl font-medium text-right p-4 absolute top-0 right-0"
+  >
+    Close
+  </div>
+  <div class="zoom-image">
+    <img [src]="image" alt="" class="modal-zoom-content" />
+  </div>
+</div>

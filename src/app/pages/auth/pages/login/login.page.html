@@ -1,0 +1,116 @@
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="ion-align-self-center" size="3">
+        <ion-row class="ion-justify-content-center">
+          <ion-col class="ion-align-self-center"
+            ><img src="assets/img/CLICk_Logo.png"
+          /></ion-col>
+          <!-- <ion-col class="ion-align-self-center"><img src="assets/img/PINKAST.jpeg"></ion-col> -->
+        </ion-row>
+
+        <form (ngSubmit)="onLogin()" novalidate [formGroup]="loginForm">
+          <ion-segment value="en" (ionChange)="segmentChanged($event)">
+            <ion-segment-button value="en">
+              <ion-label><img src="assets/img/flag-en.png" /></ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="ms">
+              <ion-label><img src="assets/img/flag-ms.png" /></ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+          <ion-item>
+            <ion-label position="stacked"
+              >{{ 'LOGIN.username' | translate }}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <!-- <ion-label position="floating">Username <ion-text color="danger">*</ion-text></ion-label> -->
+            <ion-input
+              (keyup.enter)="onLogin()"
+              type="text"
+              formControlName="username"
+              (ionChange)="changeUsername()"
+              autocapitalize="sentences"
+              autocomplete
+            ></ion-input>
+          </ion-item>
+
+          <ion-text
+            *ngIf="username.touched && loginForm.hasError('required', 'username')"
+            color="danger"
+            padding
+          >
+            {{ 'LOGIN.err_username' | translate }}
+          </ion-text>
+
+          <ion-text
+            *ngIf="(!username.touched && checkError && loginForm.hasError('required', 'username'))"
+            color="danger"
+            padding
+          >
+            {{ 'LOGIN.err_username' | translate }}
+          </ion-text>
+
+          <ion-text *ngIf="error && isFormSubmitted" color="danger" padding
+            >{{error}}</ion-text
+          >
+
+          <ion-item>
+            <ion-label position="stacked"
+              >{{ 'LOGIN.password' | translate }}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <div class="flex justify-between flex-nowrap w-full items-center">
+              <ion-input
+                (keyup.enter)="onLogin()"
+                [type]="hide?'password':'text'"
+                formControlName="password"
+                (ionChange)="changePassword()"
+                autocapitalize="sentences"
+                autocomplete
+                class="w-11/12"
+              ></ion-input>
+              <ion-icon
+                [name]="hide?'eye-off-outline':'eye-outline'"
+                (click)="hide=!hide"
+                class="eye-icon w-1/12"
+              ></ion-icon>
+            </div>
+          </ion-item>
+
+          <ion-text
+            *ngIf="!check_user_type"
+            color="danger"
+            padding
+            class="ion-text-center"
+            >{{error_user_type}}</ion-text
+          >
+
+          <ion-text
+            *ngIf="(!password.touched && checkError && loginForm.hasError('required', 'password'))"
+            color="danger"
+            padding
+            >{{ 'LOGIN.err_password' | translate }}
+          </ion-text>
+
+          <div class="ion-padding-top">
+            <ion-button expand="block" type="submit" class="ion-no-margin"
+              >{{ 'LOGIN.name_button' | translate }}</ion-button
+            >
+          </div>
+
+          <div class="ion-padding-top ion-text-right">
+            <a routerDirection="root" [routerLink]="'/auth/forgot-password'"
+              >{{ 'LOGIN.forgot' | translate }}</a
+            >
+          </div>
+
+          <ion-label></ion-label>
+        </form>
+      </ion-col>
+    </ion-row>
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 py-3">
+      Version: 2.10.1
+    </div>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,1242 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Profile.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-row *ngIf="!checkUserType">
+        <ion-col size-xl="3" size-lg="4" size-md="4" size-xs="12" size-sm="6">
+          <ion-item lines="none">
+            <div class="">
+              <input type="file" name="logo_library" value="fileupload" (change)="onChangeLogo($event.target.files)" #f
+                style="display: none" accept="image/png, image/jpeg" />
+              <ion-button (click)="f.click()">
+                {{'School_history.create_history.file' | translate}}
+              </ion-button>
+              <div class="custom-span">
+                <span class="">Only png, jpeg, jpg are allowed.</span>
+              </div>
+            </div>
+
+            <ion-label *ngIf="check_file_type_logo">{{title_logo}}</ion-label>
+
+            <!-- <ion-text color="danger">*</ion-text> -->
+          </ion-item>
+          <!-- <p class="error" *ngIf="!checkImageLogo && checkSubmit">
+            {{'School_history.create_history.err_logo' | translate}}
+          </p> -->
+          <p class="error" *ngIf="check_file_type_logo">
+            {{'Subscriber.create_subscriber.err_type_file' | translate}}
+          </p>
+        </ion-col>
+
+        <ion-col size-xl="3" size-lg="4" size-md="4" size-xs="12" size-sm="6" class="margin-auto-img"
+          *ngIf="img_logo.src != '' && !check_file_type_logo">
+          <ion-item lines="none">
+            <!-- <ion-label>Logo</ion-label> -->
+            <div class="flex flex-col">
+              <div>
+                <ion-thumbnail slot="start">
+                  <ion-img src="{{img_logo.src?img_logo.src:img_logo}}" class="object-contain h-full">
+                  </ion-img>
+                </ion-thumbnail>
+              </div>
+              <div class="text-center">
+                <ion-button class="margin-auto-button-delete" size="small" fill="outline"
+                  (click)="zoomPicture(img_logo.src?img_logo.src:img_logo)" title="Edit media">
+                  <ion-icon name="eye"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating">{{'Profile.username' | translate}}</ion-label>
+            <ion-input [value]="username" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating">{{'Profile.email' | translate}}</ion-label>
+            <ion-input [value]="email" formControlName="email"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <!-- Name and short name of no subscriber -->
+      <ion-row *ngIf="!checkUserType">
+        <ion-col class="ion-align-self-center" size="6">
+          <ion-item lines="inset">
+            <ion-label position="floating">{{'Profile.name' | translate}}
+              <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input name="name_library" [(ngModel)]="name" required type="text" [readonly]="checkUserType"
+              formControlName="name" (ionInput)="changeName()"></ion-input>
+          </ion-item>
+          <p class="error" *ngIf="form.controls['name'].touched && form.hasError('required', 'name')">
+            <!-- Username is required -->
+            {{'Library.create_library.err_name' | translate}}
+          </p>
+        </ion-col>
+
+        <ion-col class="ion-align-self-center" size="6">
+          <ion-item lines="inset">
+            <ion-label position="floating">{{'Profile.short_name' | translate}}
+              <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input name="short_name" [(ngModel)]="short_name" required type="text" [readonly]="checkUserType"
+              formControlName="short_name" (ionInput)="changeName()"></ion-input>
+          </ion-item>
+          <p class="error" *ngIf="form.controls['short_name'].touched && form.hasError('required', 'short_name')">
+            <!-- Username is required -->
+            {{'Library.create_library.err_short_name' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <!-- Name and short name of subscriber -->
+      <ion-row *ngIf="checkUserType">
+        <ion-col class="ion-align-self-center" size="6">
+          <ion-item lines="inset">
+            <ion-label position="floating">{{'Profile.name' | translate}}</ion-label>
+            <ion-input name="name" [(ngModel)]="name" type="text" readonly formControlName="name" [value]="name">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col class="ion-align-self-center" size="6">
+          <ion-item lines="inset">
+            <ion-label position="floating">{{'Profile.short_name' | translate}}</ion-label>
+            <ion-input name="short_name" [(ngModel)]="short_name" type="text" readonly formControlName="short_name">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="ion-align-self-center" size="6">
+          <ion-item lines="inset">
+            <ion-label position="floating">{{'Profile.phone' | translate}}
+            </ion-label>
+            <ion-input type="text" name="phone" [(ngModel)]="phone" formControlName="phone" type="text"
+              [readonly]="checkUserType" (ionChange)="checkPhone()" (ionInput)="changeName()"></ion-input>
+          </ion-item>
+          <p class="error" *ngIf="!checkPhoneNumber">
+            {{'Library.create_library.err_phone_number' | translate}}
+          </p>
+        </ion-col>
+
+        <ion-col class="ion-align-self-center" size="6">
+          <ion-item lines="inset">
+            <ion-label position="floating">{{'Profile.address' | translate}}
+            </ion-label>
+            <ion-input name="address" [(ngModel)]="address" type="text" [readonly]="checkUserType"
+              (ionInput)="changeName()" formControlName="address"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <div *ngIf="checkUserTypeLibrary">
+        <ion-row>
+          <ion-col>
+            <h2>{{'Profile.title_profile' | translate}}</h2>
+          </ion-col>
+        </ion-row>
+
+        <!-- Tilte English -->
+        <ion-row>
+          <ion-col>
+            <h4>{{'Profile.title_en' | translate}}</h4>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.media_title' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="media" required type="text" [value]="media_title_en" [(ngModel)]="media_title_en"
+                formControlName="media" (ionInput)="changeName()"></ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['media'].touched && form.hasError('required', 'media')">
+              {{'Profile.media_title_err' | translate}}
+            </p>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.title_school_news' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="school_news" required type="text" [value]="school_news_board_title_en"
+                [(ngModel)]="school_news_board_title_en" formControlName="snew" (ionInput)="changeName()"></ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['snew'].touched && form.hasError('required', 'snew')">
+              {{'Profile.title_school_news_err' | translate}}
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.title_teacher_note' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="teacher_note" required type="text" [value]="teacher_notes_title_en"
+                [(ngModel)]="teacher_notes_title_en" formControlName="note" (ionInput)="changeName()"></ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['note'].touched && form.hasError('required', 'note')">
+              {{'Profile.title_teacher_note_err' | translate}}
+            </p>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.title_learning_material' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="learning_material" required type="text" [value]="learning_material_title_en"
+                [(ngModel)]="learning_material_title_en" formControlName="material" (ionInput)="changeName()">
+              </ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['material'].touched && form.hasError('required', 'material')">
+              {{'Profile.title_learning_material_err' | translate}}
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.title_school_history' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="school_history" required type="text" [value]="the_school_history_title_en"
+                [(ngModel)]="the_school_history_title_en" formControlName="history" (ionInput)="changeName()">
+              </ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['history'].touched && form.hasError('required', 'history')">
+              {{'Profile.title_school_history_err' | translate}}
+            </p>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.title_stident_content' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="student_content" required type="text" [value]="student_content_title_en"
+                [(ngModel)]="student_content_title_en" formControlName="student" (ionInput)="changeName()"></ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['student'].touched && form.hasError('required', 'student')">
+              {{'Profile.title_stident_content_err' | translate}}
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <!-- Title Malaysia -->
+        <ion-row>
+          <ion-col>
+            <h4>{{'Profile.title_ms' | translate}}</h4>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.media_title' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="media" required type="text" [value]="media_title_ms" [(ngModel)]="media_title_ms"
+                formControlName="media_ms" (ionInput)="changeName()"></ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['media_ms'].touched && form.hasError('required', 'media_ms')">
+              {{'Profile.media_title_err' | translate}}
+            </p>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.title_school_news' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="school_news" required type="text" [value]="school_news_board_title_ms"
+                [(ngModel)]="school_news_board_title_ms" formControlName="snew_ms" (ionInput)="changeName()">
+              </ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['snew_ms'].touched && form.hasError('required', 'snew_ms')">
+              {{'Profile.title_school_news_err' | translate}}
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.title_teacher_note' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="teacher_note" required type="text" [value]="teacher_notes_title_ms"
+                [(ngModel)]="teacher_notes_title_ms" formControlName="note_ms" (ionInput)="changeName()"></ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['note_ms'].touched && form.hasError('required', 'note_ms')">
+              {{'Profile.title_teacher_note_err' | translate}}
+            </p>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.title_learning_material' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="learning_material_ms" required type="text" [value]="learning_material_title_ms"
+                [(ngModel)]="learning_material_title_ms" formControlName="material_ms" (ionInput)="changeName()">
+              </ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['material_ms'].touched && form.hasError('required', 'material_ms')">
+              {{'Profile.title_learning_material_err' | translate}}
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.title_school_history' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="school_history" required type="text" [value]="the_school_history_title_ms"
+                [(ngModel)]="the_school_history_title_ms" formControlName="history_ms" (ionInput)="changeName()">
+              </ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['history_ms'].touched && form.hasError('required', 'history_ms')">
+              {{'Profile.title_school_history_err' | translate}}
+            </p>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset">
+              <ion-label position="floating">{{'Profile.title_stident_content' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-input name="student_content" required type="text" [value]="student_content_title_ms"
+                [(ngModel)]="student_content_title_ms" formControlName="student_ms" (ionInput)="changeName()">
+              </ion-input>
+            </ion-item>
+            <p class="error" *ngIf="form.controls['student_ms'].touched && form.hasError('required', 'student_ms')">
+              {{'Profile.title_stident_content_err' | translate}}
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <h2>{{'Profile.choose_option' | translate}}</h2>
+          </ion-col>
+        </ion-row>
+
+        <ion-radio-group value="{{value_default}}">
+          <ion-row>
+            <ion-col size-xl="2" size-lg="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let item of option">
+              <ion-item lines="full" class="ion-margin-end">
+                <ion-label *ngIf="!checkLanguage">{{item.val}}</ion-label>
+                <ion-label *ngIf="checkLanguage">{{item.val_ms}}</ion-label>
+                <ion-radio slot="start" value="{{item.value}}" (ionFocus)="changeOptionTheme(item.id)"></ion-radio>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-radio-group>
+
+        <ion-row style="margin-top: 100px">
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset" size-md="6" size-xs="12" size-sm="12">
+              <ion-label position="floating">{{'Profile.entry_background' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-select [(ngModel)]="dataProfile.entire_background_type" name="background"
+                formControlName="background" (ionChange)="changeOption()">
+                <p *ngFor="let item of backgroundOptions">
+                  <ion-select-option *ngIf="checkLanguage" [value]="item.value">{{item.name_ms}}</ion-select-option>
+                  <ion-select-option *ngIf="!checkLanguage" [value]="item.value">{{item.name}}</ion-select-option>
+                </p>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px" *ngIf="checkEntriesBackground">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+
+              <div style="margin-right: 40px">
+                {{'Profile.choose_color' | translate}}
+              </div>
+              <input matInput [(colorPicker)]="dataProfile.entire_background_color"
+                [style.background]="dataProfile.entire_background_color"
+                (colorPickerChange)="updateFirestoreColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpPosition]="'auto'"
+                formControlName="backgroundColor" />
+
+            </ion-item>
+            <!-- [cpPresetColors]="presetValues" -->
+            <ion-row *ngIf="!checkEntriesBackground">
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <input type="file" name="logo" value="fileupload" (change)="onChange($event.target.files)" #f
+                    style="display: none" accept="image/png, image/jpeg" />
+                  <ion-button (click)="f.click()">
+                    {{'School_history.create_history.file' | translate}}
+                  </ion-button>
+                  <ion-text color="danger">*</ion-text>
+                  <ion-label *ngIf="check_file_type">{{title}}</ion-label>
+                </ion-item>
+                <p class="error" *ngIf="check_file_type">
+                  {{'Subscriber.create_subscriber.err_type_file' | translate}}
+                </p>
+                <p class="error" *ngIf="checkSubmit && !checkImage">
+                  {{'Profile.err_file' | translate}}
+                </p>
+              </ion-col>
+
+              <ion-col size="6" class="margin-auto-img"
+                *ngIf="!check_file_type && dataProfile.entire_background_image != null">
+                <ion-item lines="none">
+                  <!-- <ion-label>Logo</ion-label> -->
+                  <ion-thumbnail slot="start" style="width: 250px; height: 150px">
+                    <ion-img [src]="dataProfile.entire_background_image"></ion-img>
+                  </ion-thumbnail>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item lines="none">
+              <h2>{{'Profile.title_media' | translate}}</h2>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 40px">
+                {{'Profile.media_title_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.media_title_color" [style.background]="dataProfile.media_title_color"
+                (colorPickerChange)="updateColorTitleMedia($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="colorTitleMedia" />
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.media_badge_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.media_badge_color" [style.background]="dataProfile.media_badge_color"
+                (colorPickerChange)="updateMediaBadgeColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaBadge" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 40px">
+                {{'Profile.media_icon_corlor' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.media_icon_color" [style.background]="dataProfile.media_icon_color"
+                (colorPickerChange)="updateColorIconMedia($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaIcon" />
+            </ion-item>
+          </ion-col>
+
+          <!-- <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px;" >
+              <div style="margin-right: 20px;">Choose media transparent</div>
+              <input  [(colorPicker)]="color_transparent"
+              [style.background]="color_transparent"  (colorPickerChange)="updateMediaTransparent($event)" 
+              [cpOKButton] = "true"
+              [cpOKButtonText] = "'Select'"
+              [cpCancelButton] = "true"
+              [cpOutputFormat]="'rgba'"
+              [cpPosition]="'top-right'"
+              [cpWidth]="'175px'"
+              formControlName="mediaTransparent"
+            />
+            </ion-item>
+          </ion-col> -->
+        </ion-row>
+
+        <ion-row *ngIf="!checkEntriesBackground">
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.media_border_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.media_border_color"
+                [style.background]="dataProfile.media_border_color" (colorPickerChange)="updateMediaBorderColor($event)"
+                [cpOKButton]="true" [cpOKButtonText]="'Select'" [cpCancelButton]="true" [cpOutputFormat]="'rgba'"
+                [cpWidth]="'175px'" [cpPosition]="'top-right'" formControlName="mediaBorder" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset" size-md="6" size-xs="12" size-sm="12">
+              <ion-label position="floating">{{'Profile.media_bg_type' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-select name="background" required [(ngModel)]="dataProfile.media_background_type"
+                formControlName="mediaBackgroundType" (ionChange)="changeMediaBackgroundType()">
+                <p *ngFor="let item of backgroundOptions">
+                  <ion-select-option *ngIf="checkLanguage" [value]="item.value">{{item.name_ms}}</ion-select-option>
+                  <ion-select-option *ngIf="!checkLanguage" [value]="item.value">{{item.name}}</ion-select-option>
+                </p>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px"
+              *ngIf="checkMediaBackground && dataProfile.media_background_type != 'transparent'">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.choose_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.media_background_color"
+                [style.background]="dataProfile.media_background_color"
+                (colorPickerChange)="updateBackgroundMedia($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpPosition]="'top-right'" [cpHeight]="'290px'"
+                formControlName="backgroundMediaColor" />
+            </ion-item>
+            <!-- [cpPresetColors]="presetValues" -->
+            <ion-row *ngIf="!checkMediaBackground && dataProfile.media_background_type != 'transparent'">
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <input type="file" name="media" value="fileupload" (change)="onChangeMedia($event.target.files)" #f
+                    style="display: none" accept="image/png, image/jpeg" />
+                  <ion-button (click)="f.click()">
+                    {{'School_history.create_history.file' | translate}}
+                  </ion-button>
+                  <ion-text color="danger">*</ion-text>
+                  <ion-label *ngIf="check_file_type_media">{{title_media}}</ion-label>
+                </ion-item>
+                <p class="error" *ngIf="check_file_type_media">
+                  {{'Subscriber.create_subscriber.err_type_file' | translate}}
+                </p>
+                <p class="error" *ngIf="checkSubmit && !checkImageMedia">
+                  {{'Profile.err_file' | translate}}
+                </p>
+              </ion-col>
+
+              <ion-col size="6" class="margin-auto-img"
+                *ngIf="!check_file_type_media && dataProfile.media_background_image != null">
+                <ion-item lines="none">
+                  <!-- <ion-label>Logo</ion-label> -->
+                  <ion-thumbnail slot="start" style="width: 250px; height: 150px">
+                    <ion-img [src]="dataProfile.media_background_image"></ion-img>
+                  </ion-thumbnail>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item lines="none">
+              <h2>{{'Profile.title_news' | translate}}</h2>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 40px">
+                {{'Profile.news_title_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.school_news_board_title_color"
+                [style.background]="dataProfile.school_news_board_title_color"
+                (colorPickerChange)="updateColorTitleNews($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'" />
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 20px">
+                {{'Profile.news_badge_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.school_news_board_badge_color"
+                [style.background]="dataProfile.school_news_board_badge_color"
+                (colorPickerChange)="updateNewsBadgeColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 40px">
+                {{'Profile.news_icon_corlor' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.school_news_board_icon_color"
+                [style.background]="dataProfile.school_news_board_icon_color"
+                (colorPickerChange)="updateColorIconNews($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaIcon" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="!checkEntriesBackground">
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.news_border_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.school_news_board_border_color"
+                [style.background]="dataProfile.school_news_board_border_color"
+                (colorPickerChange)="updateNewsBorderColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaBorder" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset" size-md="6" size-xs="12" size-sm="12">
+              <ion-label position="floating">{{'Profile.news_bg_type' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-select name="background" [(ngModel)]="dataProfile.school_news_board_background_type" required
+                formControlName="newsBackgroundType" (ionChange)="changeNewsBackgroundType()">
+                <p *ngFor="let item of backgroundOptions">
+                  <ion-select-option *ngIf="!checkLanguage" [value]="item.value">{{item.name}}</ion-select-option>
+                  <ion-select-option *ngIf="checkLanguage" [value]="item.value">{{item.name_ms}}</ion-select-option>
+                </p>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px"
+              *ngIf="checkNewsBackground && dataProfile.school_news_board_background_type != 'transparent'">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.choose_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.school_news_board_background_color"
+                [style.background]="dataProfile.school_news_board_background_color"
+                (colorPickerChange)="updateBackgroundNews($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpPosition]="'top-right'" [cpHeight]="'290px'"
+                formControlName="backgroundMediaColor" />
+            </ion-item>
+            <!-- [cpPresetColors]="presetValues" -->
+            <ion-row *ngIf="!checkNewsBackground && dataProfile.school_news_board_background_type != 'transparent'">
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <input type="file" name="news" value="fileupload" (change)="onChangeNews($event.target.files)" #f
+                    style="display: none" accept="image/png, image/jpeg" />
+                  <ion-button (click)="f.click()">
+                    {{'School_history.create_history.file' | translate}}
+                  </ion-button>
+                  <ion-text color="danger">*</ion-text>
+                  <ion-label *ngIf="check_file_type_news">{{title_news}}</ion-label>
+                </ion-item>
+                <p class="error" *ngIf="check_file_type_news">
+                  {{'Subscriber.create_subscriber.err_type_file' | translate}}
+                </p>
+                <p class="error" *ngIf="checkSubmit && !checkImageNews">
+                  {{'Profile.err_file' | translate}}
+                </p>
+              </ion-col>
+
+              <ion-col size="6" class="margin-auto-img"
+                *ngIf="!check_file_type_news && dataProfile.school_news_board_background_image != null">
+                <ion-item lines="none">
+                  <!-- <ion-label>Logo</ion-label> -->
+                  <ion-thumbnail slot="start" style="width: 250px; height: 150px">
+                    <ion-img [src]="dataProfile.school_news_board_background_image"></ion-img>
+                  </ion-thumbnail>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <!-- teacher note -->
+        <ion-row>
+          <ion-col>
+            <ion-item lines="none">
+              <h2>{{'Profile.title_note' | translate}}</h2>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 40px">
+                {{'Profile.note_title_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.teacher_notes_title_color"
+                [style.background]="dataProfile.teacher_notes_title_color"
+                (colorPickerChange)="updateColorTitleNote($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'" />
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 20px">
+                {{'Profile.note_badge_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.teacher_notes_badge_color"
+                [style.background]="dataProfile.teacher_notes_badge_color"
+                (colorPickerChange)="updateNoteBadgeColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 40px">
+                {{'Profile.note_icon_corlor' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.teacher_notes_icon_color"
+                [style.background]="dataProfile.teacher_notes_icon_color"
+                (colorPickerChange)="updateColorIconNote($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaIcon" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="!checkEntriesBackground">
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.note_border_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.teacher_notes_border_color"
+                [style.background]="dataProfile.teacher_notes_border_color"
+                (colorPickerChange)="updateNoteBorderColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaBorder" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset" size-md="6" size-xs="12" size-sm="12">
+              <ion-label position="floating">{{'Profile.note_bg_type' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-select name="background" [(ngModel)]="dataProfile.teacher_notes_background_type" required
+                formControlName="noteBackgroundType" (ionChange)="changeNoteBackgroundType()">
+                <p *ngFor="let item of backgroundOptions">
+                  <ion-select-option *ngIf="checkLanguage" [value]="item.value">{{item.name_ms}}</ion-select-option>
+                  <ion-select-option *ngIf="!checkLanguage" [value]="item.value">{{item.name}}</ion-select-option>
+                </p>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px"
+              *ngIf="checkNoteBackground && dataProfile.teacher_notes_background_type != 'transparent'">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.choose_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.teacher_notes_background_color"
+                [style.background]="dataProfile.teacher_notes_background_color"
+                (colorPickerChange)="updateBackgroundNote($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpPosition]="'top-right'" [cpHeight]="'290px'"
+                formControlName="backgroundMediaColor" />
+            </ion-item>
+            <!-- [cpPresetColors]="presetValues" -->
+            <ion-row *ngIf="!checkNoteBackground && dataProfile.teacher_notes_background_type != 'transparent'">
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <input type="file" name="note" value="fileupload" (change)="onChangeNote($event.target.files)" #f
+                    style="display: none" accept="image/png, image/jpeg" />
+                  <ion-button (click)="f.click()">
+                    {{'School_history.create_history.file' | translate}}
+                  </ion-button>
+                  <ion-text color="danger">*</ion-text>
+                  <ion-label *ngIf="check_file_type_note">{{title_note}}</ion-label>
+                </ion-item>
+                <p class="error" *ngIf="check_file_type_note">
+                  {{'Subscriber.create_subscriber.err_type_file' | translate}}
+                </p>
+                <p class="error" *ngIf="checkSubmit && !checkImageNote">
+                  {{'Profile.err_file' | translate}}
+                </p>
+              </ion-col>
+
+              <ion-col size="6" class="margin-auto-img"
+                *ngIf="!check_file_type_note && dataProfile.teacher_notes_background_image != null">
+                <ion-item lines="none">
+                  <!-- <ion-label>Logo</ion-label> -->
+                  <ion-thumbnail slot="start" style="width: 250px; height: 150px">
+                    <ion-img [src]="dataProfile.teacher_notes_background_image"></ion-img>
+                  </ion-thumbnail>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <!-- Learning material -->
+        <ion-row>
+          <ion-col>
+            <ion-item lines="none">
+              <h2>{{'Profile.title_material' | translate}}</h2>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 40px">
+                {{'Profile.material_title_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.learning_material_title_color"
+                [style.background]="dataProfile.learning_material_title_color"
+                (colorPickerChange)="updateColorTitleMaterial($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'" />
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 20px">
+                {{'Profile.material_badge_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.learning_material_badge_color"
+                [style.background]="dataProfile.learning_material_badge_color"
+                (colorPickerChange)="updateMaterialBadgeColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 40px">
+                {{'Profile.material_icon_corlor' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.learning_material_icon_color"
+                [style.background]="dataProfile.learning_material_icon_color"
+                (colorPickerChange)="updateColorIconMaterial($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaIcon" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="!checkEntriesBackground">
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.material_border_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.learning_material_border_color"
+                [style.background]="dataProfile.learning_material_border_color"
+                (colorPickerChange)="updateMaterialBorderColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaBorder" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset" size-md="6" size-xs="12" size-sm="12">
+              <ion-label position="floating">{{'Profile.material_bg_type' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-select name="background" [(ngModel)]="dataProfile.learning_material_background_type" required
+                formControlName="materialBackgroundType" (ionChange)="changeMaterialBackgroundType()">
+                <p *ngFor="let item of backgroundOptions">
+                  <ion-select-option *ngIf="!checkLanguage" [value]="item.value">{{item.name}}</ion-select-option>
+                  <ion-select-option *ngIf="checkLanguage" [value]="item.value">{{item.name_ms}}</ion-select-option>
+                </p>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px"
+              *ngIf="checkMaterialBackground && dataProfile.learning_material_background_type != 'transparent'">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.choose_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.learning_material_background_color"
+                [style.background]="dataProfile.learning_material_background_color"
+                (colorPickerChange)="updateBackgroundMaterial($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpPosition]="'top-right'" [cpHeight]="'290px'"
+                formControlName="backgroundMediaColor" />
+            </ion-item>
+            <!-- [cpPresetColors]="presetValues" -->
+            <ion-row *ngIf="!checkMaterialBackground && dataProfile.learning_material_background_type != 'transparent'">
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <input type="file" name="material" value="fileupload" (change)="onChangeMaterial($event.target.files)"
+                    #f style="display: none" accept="image/png, image/jpeg" />
+                  <ion-button (click)="f.click()">
+                    {{'School_history.create_history.file' | translate}}
+                  </ion-button>
+                  <ion-text color="danger">*</ion-text>
+                  <ion-label *ngIf="check_file_type_material">{{title_material}}</ion-label>
+                </ion-item>
+                <p class="error" *ngIf="check_file_type_material">
+                  {{'Subscriber.create_subscriber.err_type_file' | translate}}
+                </p>
+                <p class="error" *ngIf="checkSubmit && !checkImageMaterial">
+                  {{'Profile.err_file' | translate}}
+                </p>
+              </ion-col>
+
+              <ion-col size="6" class="margin-auto-img"
+                *ngIf="!check_file_type_material && dataProfile.learning_material_background_image != null">
+                <ion-item lines="none">
+                  <!-- <ion-label>Logo</ion-label> -->
+                  <ion-thumbnail slot="start" style="width: 250px; height: 150px">
+                    <ion-img [src]="dataProfile.learning_material_background_image"></ion-img>
+                  </ion-thumbnail>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <!-- School history -->
+        <ion-row>
+          <ion-col>
+            <ion-item lines="none">
+              <h2>{{'Profile.title_history' | translate}}</h2>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 40px">
+                {{'Profile.history_title_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.the_school_history_title_color"
+                [style.background]="dataProfile.the_school_history_title_color"
+                (colorPickerChange)="updateColorTitleSchool($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'" />
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 20px">
+                {{'Profile.history_badge_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.the_school_history_badge_color"
+                [style.background]="dataProfile.the_school_history_badge_color"
+                (colorPickerChange)="updateSchoolBadgeColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 40px">
+                {{'Profile.history_icon_corlor' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.the_school_history_icon_color"
+                [style.background]="dataProfile.the_school_history_icon_color"
+                (colorPickerChange)="updateColorIconSchool($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaIcon" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="!checkEntriesBackground">
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.history_border_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.the_school_history_border_color"
+                [style.background]="dataProfile.the_school_history_border_color"
+                (colorPickerChange)="updateSchoolBorderColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaBorder" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset" size-md="6" size-xs="12" size-sm="12">
+              <ion-label position="floating">{{'Profile.history_bg_type' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-select [(ngModel)]="dataProfile.the_school_history_background_type" name="background" required
+                formControlName="schoolBackgroundType" (ionChange)="changeSchoolBackgroundType()">
+                <p *ngFor="let item of backgroundOptions">
+                  <ion-select-option *ngIf="checkLanguage" [value]="item.value">{{item.name_ms}}</ion-select-option>
+                  <ion-select-option *ngIf="!checkLanguage" [value]="item.value">{{item.name}}</ion-select-option>
+                </p>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px"
+              *ngIf="checkSchoolBackground && dataProfile.the_school_history_background_type != 'transparent'">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.choose_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.the_school_history_background_color"
+                [style.background]="dataProfile.the_school_history_background_color"
+                (colorPickerChange)="updateBackgroundSchool($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpPosition]="'top-right'" [cpHeight]="'290px'"
+                formControlName="backgroundMediaColor" />
+            </ion-item>
+            <!-- [cpPresetColors]="presetValues" -->
+            <ion-row *ngIf="!checkSchoolBackground && dataProfile.the_school_history_background_type != 'transparent'">
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <input type="file" name="history" value="fileupload" (change)="onChangeSchool($event.target.files)" #f
+                    style="display: none" accept="image/png, image/jpeg" />
+                  <ion-button (click)="f.click()">
+                    {{'School_history.create_history.file' | translate}}
+                  </ion-button>
+                  <ion-text color="danger">*</ion-text>
+                  <ion-label *ngIf="check_file_type_school">{{title_school}}</ion-label>
+                </ion-item>
+                <p class="error" *ngIf="check_file_type_school">
+                  {{'Subscriber.create_subscriber.err_type_file' | translate}}
+                </p>
+                <p class="error" *ngIf="checkSubmit && !checkImageSchool">
+                  {{'Profile.err_file' | translate}}
+                </p>
+              </ion-col>
+
+              <ion-col size="6" class="margin-auto-img"
+                *ngIf="!check_file_type_school && dataProfile.the_school_history_background_image != null">
+                <ion-item lines="none">
+                  <!-- <ion-label>Logo</ion-label> -->
+                  <ion-thumbnail slot="start" style="width: 250px; height: 150px">
+                    <ion-img [src]="dataProfile.the_school_history_background_image"></ion-img>
+                  </ion-thumbnail>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <!-- Student content -->
+        <ion-row>
+          <ion-col>
+            <ion-item lines="none">
+              <h2>{{'Profile.title_student' | translate}}</h2>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 40px">
+                {{'Profile.student_title_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.student_content_title_color"
+                [style.background]="dataProfile.student_content_title_color"
+                (colorPickerChange)="updateColorTitleStudent($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'" />
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 20px">
+                {{'Profile.student_badge_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.student_content_badge_color"
+                [style.background]="dataProfile.student_content_badge_color"
+                (colorPickerChange)="updateStudentBadgeColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <div style="margin-right: 40px">
+                {{'Profile.student_icon_corlor' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.student_content_icon_color"
+                [style.background]="dataProfile.student_content_icon_color"
+                (colorPickerChange)="updateColorIconStudent($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaIcon" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="!checkEntriesBackground">
+          <ion-col class="ion-align-self-center">
+            <ion-item style="margin-top: 16px">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.student_border_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.student_content_border_color"
+                [style.background]="dataProfile.student_content_border_color"
+                (colorPickerChange)="updateStudentBorderColor($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpWidth]="'175px'" [cpPosition]="'top-right'"
+                formControlName="mediaBorder" />
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item lines="inset" size-md="6" size-xs="12" size-sm="12">
+              <ion-label position="floating">{{'Profile.student_bg_type' | translate}}
+                <ion-text color="danger">*</ion-text>
+              </ion-label>
+              <ion-select [(ngModel)]="dataProfile.student_content_background_type" name="background" required
+                formControlName="studentBackgroundType" (ionChange)="changeStudentBackgroundType()">
+                <p *ngFor="let item of backgroundOptions">
+                  <ion-select-option *ngIf="!checkLanguage" [value]="item.value">{{item.name}}</ion-select-option>
+                  <ion-select-option *ngIf="checkLanguage" [value]="item.value">{{item.name_ms}}</ion-select-option>
+                </p>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col class="ion-align-self-center" size="6">
+            <ion-item style="margin-top: 16px"
+              *ngIf="checkStudentBackground && dataProfile.the_school_history_background_type != 'transparent'">
+              <!-- <ion-label position="floating">Choose color <ion-text color="danger">*</ion-text></ion-label> -->
+              <div style="margin-right: 20px">
+                {{'Profile.choose_color' | translate}}
+              </div>
+              <input [(colorPicker)]="dataProfile.student_content_background_color"
+                [style.background]="dataProfile.student_content_background_color"
+                (colorPickerChange)="updateBackgroundStudent($event)" [cpOKButton]="true" [cpOKButtonText]="'Select'"
+                [cpCancelButton]="true" [cpOutputFormat]="'rgba'" [cpPosition]="'top-right'" [cpHeight]="'290px'"
+                formControlName="backgroundMediaColor" />
+            </ion-item>
+            <!-- [cpPresetColors]="presetValues" -->
+            <ion-row *ngIf="!checkStudentBackground && dataProfile.the_school_history_background_type != 'transparent'">
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <input type="file" name="student" value="fileupload" (change)="onChangeStudent($event.target.files)"
+                    #f style="display: none" accept="image/png, image/jpeg" />
+                  <ion-button (click)="f.click()">
+                    {{'School_history.create_history.file' | translate}}
+                  </ion-button>
+                  <ion-text color="danger">*</ion-text>
+                  <ion-label *ngIf="check_file_type_student">{{title_student}}</ion-label>
+                </ion-item>
+                <p class="error" *ngIf="check_file_type_student">
+                  {{'Subscriber.create_subscriber.err_type_file' | translate}}
+                </p>
+                <p class="error" *ngIf="!checkImageStudent && checkSubmit">
+                  {{'Profile.err_file' | translate}}
+                </p>
+              </ion-col>
+
+              <ion-col size="6" class="margin-auto-img"
+                *ngIf="!check_file_type_student && dataProfile.student_content_background_image != null">
+                <ion-item lines="none">
+                  <!-- <ion-label>Logo</ion-label> -->
+                  <ion-thumbnail slot="start" style="width: 250px; height: 150px">
+                    <ion-img [src]="dataProfile.student_content_background_image"></ion-img>
+                  </ion-thumbnail>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <ion-row>
+        <div class="ion-padding-top ion-text-right" *ngIf="!checkUserType" style="margin-right: 20px">
+          <ion-button type="submit" class="ion-no-margin">
+            <ion-icon slot="end" name="save"></ion-icon>
+            {{'Profile.btn_update' | translate}}
+          </ion-button>
+        </div>
+        <div class="ion-padding-top ion-text-right" *ngIf="checkUserTypeLibrary" style="margin-right: 20px">
+          <ion-button (click)="previewHomePage()" class="ion-no-margin">
+            <ion-icon slot="end" name="eye"></ion-icon>
+            {{'Profile.preview_home' | translate}}
+          </ion-button>
+        </div>
+        <div class="ion-padding-top ion-text-right" *ngIf="checkUserTypeLibrary">
+          <ion-button (click)="deleteAccount()" class="ion-no-margin">
+            <ion-icon slot="end" name="trash"></ion-icon>
+            {{'Profile.delete' | translate}}
+          </ion-button>
+        </div>
+      </ion-row>
+    </form>
+  </ion-grid>
+</ion-content>
+<div [style.display]="image?'block':'none'" class="zoom-image-modal">
+  <div (click)="closeZoom()"
+    class="text-white cursor-pointer text-xl font-medium text-right p-4 absolute top-0 right-0">
+    Close
+  </div>
+  <div class="zoom-image">
+    <img [src]="image" alt="" class="modal-zoom-content" />
+  </div>
+</div>

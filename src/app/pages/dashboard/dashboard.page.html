@@ -1,0 +1,48 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="6">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Dashboard.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="overflow-hidden">
+  <div>
+    <ion-grid class="ion-content">
+      <div *ngIf="!checkPublisher">
+        <h1 class="text-center mb-8">
+          Total Numbers of Registrants in {{year}}
+        </h1>
+        <div class="md:w-4/5 md:flex md:justify-around mx-auto my-0">
+          <div *ngFor="let item of totalRegister" [routerLink]="item?.url">
+            <div class="ion-item">{{item?.quantity}}</div>
+            <p class="pt-4 text-center">
+              {{"Dashboard."+item?.title | translate}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="md:mt-15 mt-10">
+        <h1 class="text-center mb-8">Total Numbers of Upload in {{year}}</h1>
+        <div class="md:w-4/5 md:flex md:justify-around mx-auto my-0">
+          <div
+            *ngFor="let item of totalUpload"
+            [routerLink]="checkPublisher?item?.url:null"
+          >
+            <div class="ion-item">{{item?.quantity}}</div>
+            <p class="pt-4 text-center">
+              {{"Dashboard."+item?.title | translate}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </ion-grid>
+  </div>
+</ion-content>

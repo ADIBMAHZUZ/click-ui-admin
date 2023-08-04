@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Upload file</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="center">
+    <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" 
+    (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" webkitDirectory>
+        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" webkitDirectory>
+          Drop files here
+          <button style="margin-left: 10px;" type="button" (click)="openFileSelector()">Browse Files</button>
+        </ng-template>
+    </ngx-file-drop>
+    <div class="upload-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody class="upload-name-style">
+                <tr *ngFor="let item of files; let i=index">
+                    <td><strong>{{ item.relativePath }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+  </div>
+  <ion-grid class="ion-padding">
+    <form (ngSubmit)="uploadFile()">
+      <ion-row>
+        <ion-button class="btn-submit" type="submit">
+          <ion-icon slot="end" name="save"></ion-icon>
+          Create media
+        </ion-button>
+      </ion-row>
+      
+    </form>
+  </ion-grid>
+</ion-content>

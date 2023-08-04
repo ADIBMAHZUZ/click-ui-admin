@@ -1,0 +1,49 @@
+<ion-app>
+  <ion-split-pane when="xs" contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-toolbar class="">
+        <div class="w-full flex justify-center pt-2 border-r-[3px]">
+          <img
+            src="../../../assets/img/CLICk_Logo.png"
+            alt=""
+            class="max-h-25 w-1/2"
+          />
+        </div>
+      </ion-toolbar>
+      <ion-content class="border-r-[3px]">
+        <ion-list>
+          <app-sidebar></app-sidebar>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+    <div class="ion-page" id="main-content">
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+          <ion-title slot="end">
+            <div class="avatar">
+              <img [src]="img_logo" alt="" class="image_logo" />
+              <span>{{ userName }}</span>
+            </div>
+          </ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content id="main-content">
+        <ion-router-outlet id="main-content"> </ion-router-outlet>
+      </ion-content>
+    </div>
+  </ion-split-pane>
+</ion-app>
+
+<!-- <app-upload
+  style="
+    z-index: 200;
+    height: 200px;
+    position: absolute;
+    bottom: 60px;
+    right: 60px;
+  "
+></app-upload> -->

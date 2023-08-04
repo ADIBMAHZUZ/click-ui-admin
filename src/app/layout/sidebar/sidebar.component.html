@@ -1,0 +1,58 @@
+<ion-menu-toggle [autoHide]="false" *ngFor="let p of appPages; let i = index">
+  <div *ngFor="let role of p.roles; let i = index">
+    <ion-item
+      *ngIf="role == user_type || role == 'full'"
+      [routerLink]="[p.url]"
+      routerDirection="root"
+      lines="none"
+      detail="false"
+      routerLinkActive="selected"
+    >
+      <ion-icon
+        slot="start"
+        class="mr-3"
+        [src]="!p.ion ? p.src : ''"
+        [ios]="p.icon + '-outline'"
+        [md]="p.icon + '-sharp'"
+      ></ion-icon>
+
+      <ion-badge
+        *ngIf="p.title == 'notification' && countNotification != 0"
+        slot="end"
+        >{{ countNotification }}</ion-badge
+      >
+
+      <ion-badge
+        *ngIf="
+          p.title == 'media' &&
+          user_type == 'librarian' &&
+          countExpiredMedia != 0
+        "
+        slot="end"
+        >{{ countExpiredMedia }}</ion-badge
+      >
+      <ion-label>{{ p.title | translate }}</ion-label>
+    </ion-item>
+    <div
+      *ngIf="p.title == 'logout'"
+      style="border: solid #dedfe1; border-width: 1px 0 0 0"
+    ></div>
+    <div *ngIf="p.title == 'storage'">
+      <div *ngIf="role == user_type">
+        <ion-progress-bar
+          style="margin-left: 40px"
+          color="primary"
+          [value]="percent_storage"
+        ></ion-progress-bar>
+        <div style="margin-left: 40px; margin-top: 10px">
+          {{ storage_used }}
+        </div>
+        <ion-button
+          style="margin-left: 40px; margin-top: 10px"
+          (click)="buyStorageModal()"
+          >{{ "buy_now" | translate }}
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-menu-toggle>

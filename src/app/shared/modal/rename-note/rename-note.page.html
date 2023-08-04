@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'Teacher_note.title_rename' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <form (ngSubmit)="renameNote()" id="formRename"  novalidate [formGroup]="renameForm">
+      <ion-row>
+        <ion-col>
+          <ion-item lines="inset">
+            <ion-label position="floating">{{'Teacher_note.name' | translate}} <ion-text color="danger">*</ion-text></ion-label>
+            <ion-input name="nameNote"  required (ionChange)="checkName()"
+              [value]="nameNote" [(ngModel)]="nameNote" formControlName="nameNote"></ion-input>
+          </ion-item>
+          <p class="error" *ngIf="renameForm.controls['nameNote'].touched && renameForm.hasError('required', 'nameNote')">
+            {{'Teacher_note.name_err' | translate}}
+          </p>
+          <p class="error" *ngIf="!renameForm.controls['nameNote'].touched && checkError && renameForm.hasError('required', 'nameNote')">
+            {{'Teacher_note.name_err' | translate}}
+          </p>
+          <P class="error" *ngIf="renameForm.controls['nameNote'].touched && renameForm.hasError('pattern', 'nameNote')">
+            {{'Teacher_note.name_valid_err' | translate}}
+          </P> 
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-margin-top">
+        <ion-col>
+          <ion-button class="btn-submit" type="submit" [disabled]="checkEmptyName">
+              <ion-icon slot="end" name="save"></ion-icon>
+              {{'Teacher_note.btn_rename_submit' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
+</ion-content>

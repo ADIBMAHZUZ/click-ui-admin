@@ -1,0 +1,111 @@
+p.error {
+  color: red;
+  margin: 5px 0px 0px 0px;
+}
+
+ion-item {
+  --inner-padding-end: 0px;
+  --padding-start: 0px;
+}
+
+// .btn-submit{
+//     margin-left: 20px;
+// }
+
+.ion-margin-bottom {
+  margin-bottom: 115px;
+}
+
+.min-height-col-editor {
+  min-height: 200px;
+}
+
+.margin-auto-img ion-thumbnail {
+  width: 250px !important;
+  margin: 5px 10% !important;
+  height: 150px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .margin-auto-img ion-thumbnail {
+    width: 250px !important;
+    margin: 0px !important;
+    height: 150px;
+  }
+  .ion-margin-bottom {
+    margin-bottom: 70px;
+  }
+  .margin-top-picker {
+    margin-top: -9px !important;
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 769px) {
+  .margin-auto-img ion-thumbnail {
+    width: 250px !important;
+    margin: 0px !important;
+    height: 150px;
+  }
+  .ion-margin-bottom {
+    margin-bottom: 95px;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .margin-auto-img ion-thumbnail {
+    width: 250px !important;
+    margin: 0px !important;
+    height: 150px;
+  }
+  .ion-margin-bottom {
+    margin-bottom: 70px;
+  }
+  .margin-top-picker {
+    margin-top: -9px !important;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .margin-auto-img ion-thumbnail {
+    width: 250px !important;
+    margin: 0px !important;
+    height: 150px;
+  }
+  .ion-margin-bottom {
+    margin-bottom: 70px;
+  }
+  .margin-top-picker {
+    margin-top: -9px !important;
+  }
+}
+
+.time-picker {
+  height: 50px;
+  width: 100%;
+  border: none;
+}
+
+.custom-label-picker {
+  font-size: 12px !important;
+}
+
+.margin-auto-image-multi {
+  margin: 3px auto;
+  width: 120px;
+  height: 120px;
+}
+
+.margin-auto-button-delete {
+  margin: 0px auto;
+}
+
+:host ::ng-deep {
+  .custom-span {
+    color: rgb(94, 89, 89);
+    font-size: 12px;
+  }
+  .custom-label {
+    font-size: 12px;
+    margin: 0;
+  }
+}

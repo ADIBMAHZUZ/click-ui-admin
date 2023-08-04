@@ -1,0 +1,64 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Subscriber.import_csv.title_import' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-content">
+    <ion-row class="ion-justify-content-center">
+      <ion-col
+        class="ion-align-self-center"
+        size-xl="6"
+        size-lg="6"
+        size-md="6"
+        size-sm="8"
+        size-xs="12"
+      >
+        <ion-button (click)="downloadFile()">
+          <ion-icon slot="end" name="download"></ion-icon>
+          {{'Subscriber.import_csv.btn_download' | translate}}
+        </ion-button>
+        <!-- <ion-item>
+            <ion-label position="floating">{{'Subscriber.import_csv.library' | translate}}</ion-label>
+            <ion-select [value]="library" name = "library" [(ngModel)]="library">
+              <div *ngFor="let item of dataLibrary">
+                <ion-select-option [value]="item.id">{{item.name}}</ion-select-option>
+              </div>
+            </ion-select>
+          </ion-item> -->
+        <ion-item lines="none">
+          <input
+            type="file"
+            name="fileupload"
+            value="fileupload"
+            (change)="onChange($event.target.files)"
+            #f
+            style="display: none"
+          />
+          <ion-button (click)="f.click()">
+            {{'Subscriber.import_csv.choose_file' | translate}}
+          </ion-button>
+          <ion-label>{{title}}</ion-label>
+          <!-- <ion-spinner color="primary" name="lines" *ngIf="checkLoading"></ion-spinner> -->
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="ion-align-self-center" size="6">
+        <ion-item lines="none" *ngIf="checkLoading">
+          <ion-label>Loading...</ion-label>
+          <ion-spinner color="primary" name="lines"></ion-spinner>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

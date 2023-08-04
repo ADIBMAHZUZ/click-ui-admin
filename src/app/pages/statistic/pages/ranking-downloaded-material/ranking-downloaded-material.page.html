@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title
+      >{{'Statistic_tab.tab_ranking_downloaded_material.title' |
+      translate}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row [formGroup]="formData">
+      <ion-col size="6" size-md="4" size-sm="4" size-xs="12">
+        <ion-item lines="inset" class="margin-top-picker">
+          <ion-label class="custom-label-picker" position="floating">
+            {{'Statistic_tab.tab_ranking_active_subscriber.from' | translate}}
+          </ion-label>
+          <input
+            class="time-picker"
+            [owlDateTime]="from"
+            [min]="createdDate"
+            [owlDateTimeTrigger]="from"
+            style="margin-top: 5px"
+            placeholder=""
+            required
+            formControlName="from"
+            (dateTimeChange)="loadData()"
+          />
+          <owl-date-time #from [pickerType]="'calendar'"></owl-date-time>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="2" size-md="4" size-sm="4" size-xs="12">
+        <ion-item lines="inset" class="margin-top-picker">
+          <ion-label class="custom-label-picker" position="floating">
+            {{'Statistic_tab.tab_ranking_active_subscriber.to' | translate}}
+          </ion-label>
+          <input
+            class="time-picker"
+            [owlDateTime]="to"
+            [owlDateTimeTrigger]="to"
+            style="margin-top: 5px"
+            formControlName="to"
+            (dateTimeChange)="loadData()"
+          />
+          <owl-date-time #to [pickerType]="'calendar'"></owl-date-time>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row id="print-statistic-top-ranking-download-media">
+      <ion-col size="12">
+        <table mat-table [dataSource]="data" style="width: 100%">
+          <ng-container matColumnDef="no">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="font-weight: bold; font-size: medium"
+            >
+              {{'Statistic_tab.tab_ranking_downloaded_material.table.no'|translate}}
+            </th>
+            <td mat-cell *matCellDef="let row;let i=index">{{i + 1}}</td>
+          </ng-container>
+          <ng-container matColumnDef="title">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="font-weight: bold; font-size: medium"
+            >
+              {{'Statistic_tab.tab_ranking_downloaded_material.table.title'|translate}}
+            </th>
+            <td mat-cell *matCellDef="let row;let i=index">{{row?.title}}</td>
+          </ng-container>
+          <ng-container matColumnDef="number_of_download">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="font-weight: bold; font-size: medium"
+            >
+              {{'Statistic_tab.tab_ranking_downloaded_material.table.number_of_download'|translate}}
+            </th>
+            <td mat-cell *matCellDef="let row;let i=index">
+              {{row?.numberOfDownload}}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columns_name"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns_name;"></tr>
+        </table>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button class="btn-submit" (click)="exportDataToExcel()">
+          <ion-icon slot="end" name="download"></ion-icon>
+          {{'Statistic_tab.tab_top_download.btn_export_excel' | translate}}
+        </ion-button>
+        <ion-button class="btn-submit" (click)="htmltoPDF()">
+          <ion-icon slot="end" name="download"></ion-icon>
+          {{'Statistic_tab.tab_top_download.btn_export_pdf' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

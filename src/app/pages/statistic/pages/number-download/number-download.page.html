@@ -1,0 +1,201 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title
+      >{{'Statistic_tab.tab_number_download.title' | translate}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col size="2" size-md="4" size-sm="4" size-xs="12">
+        <ion-item lines="inset" class="margin-top-picker">
+          <ion-label position="floating" class="custom-label-picker"
+            >{{'Statistic_tab.tab_number_download.from' | translate}}</ion-label
+          >
+          <input
+            class="time-picker"
+            [owlDateTime]="from"
+            [owlDateTimeTrigger]="from"
+            style="margin-top: 5px"
+            placeholder=""
+            [(ngModel)]="dateFrom"
+            [min]="createdDate"
+            (ngModelChange)="changeDateFrom()"
+          />
+          <owl-date-time #from [pickerType]="'calendar'"> </owl-date-time>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2" size-md="4" size-sm="4" size-xs="12">
+        <ion-item lines="inset" class="margin-top-picker">
+          <ion-label position="floating" class="custom-label-picker"
+            >{{'Statistic_tab.tab_number_download.to' | translate}}</ion-label
+          >
+          <input
+            class="time-picker"
+            [owlDateTime]="to"
+            [owlDateTimeTrigger]="to"
+            style="margin-top: 5px"
+            placeholder=""
+            [min]="createdDate"
+            [(ngModel)]="dateTo"
+            (ngModelChange)="changeDateTo()"
+          />
+          <owl-date-time #to [pickerType]="'calendar'"></owl-date-time>
+        </ion-item>
+      </ion-col>
+      <!-- <ion-col  size = "2" size-md = "4" size-sm = "4" size-xs = "12" style="margin-top: 7px;">
+        <ion-item lines = "inset">
+          <ion-label position="floating">{{'Statistic_tab.library' | translate}} <ion-text color="danger">*</ion-text></ion-label>
+          <ion-select name = "library" [(ngModel)]="library" (ionChange)="changeLibrary(library)">
+            <ion-select-option [value]="library_all">All</ion-select-option>
+            <p *ngFor="let item of dataLibrary">
+              <ion-select-option [value]="item.id">{{item.name}}</ion-select-option>
+            </p>
+          </ion-select>
+          </ion-item>
+      </ion-col> -->
+    </ion-row>
+    <ion-row>
+      <ion-col
+        size="2"
+        size-md="4"
+        size-sm="5"
+        size-xs="9"
+        size-lg="5"
+        size-xl="4"
+      >
+        <ion-item lines="none">
+          <h3>{{'Statistic_tab.tab_number_download.total' | translate}}</h3>
+        </ion-item>
+        <ion-item
+          lines="none"
+          *ngFor="let data of pieChartLabels[0]; index as i"
+        >
+          <h3>{{data}}</h3>
+        </ion-item>
+      </ion-col>
+      <ion-col
+        size="2"
+        size-md="1"
+        size-sm="2"
+        size-xs="3"
+        size-lg="2"
+        size-xl="1"
+      >
+        <ion-item lines="none">
+          <h3>{{total}}</h3>
+        </ion-item>
+        <ion-item lines="none" *ngFor="let data of pieChartData[0]; index as i">
+          <h3>{{data}}</h3>
+        </ion-item>
+      </ion-col>
+
+      <hr />
+      <ion-col
+        *ngIf="checkDisplayPie"
+        size="5"
+        size-md="7"
+        size-sm="12"
+        size-lg="12"
+        size-xl="7"
+        size-xs="12"
+      >
+        <div>
+          <div>
+            <div class="chart">
+              <canvas
+                baseChart
+                [data]="pieChartData[0]"
+                [labels]="pieChartLabels[0]"
+                [chartType]="pieChartType"
+                [options]="pieChartOptions"
+                [plugins]="pieChartPlugins"
+                [colors]="pieChartColors"
+                [legend]="pieChartLegend"
+              >
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm="12" size-xs="12">
+        <div id="print-statistic-number-download">
+          <table mat-table [dataSource]="data" style="width: 100%">
+            <ng-container matColumnDef="no">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-weight: bold; font-size: medium"
+              >
+                {{'Statistic_tab.tab_number_download.table.no'|translate}}
+              </th>
+              <td mat-cell *matCellDef="let row;let i=index">{{i+1}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="library">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-weight: bold; font-size: medium"
+              >
+                {{'Statistic_tab.tab_number_download.table.library'|translate}}
+              </th>
+              <td mat-cell *matCellDef="let row;let i=index">
+                {{row?.library}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="audio">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-weight: bold; font-size: medium"
+              >
+                {{'Statistic_tab.tab_number_download.table.audio'|translate}}
+              </th>
+              <td mat-cell *matCellDef="let row;let i=index">{{row?.audio}}</td>
+            </ng-container>
+            <ng-container matColumnDef="book">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-weight: bold; font-size: medium"
+              >
+                {{'Statistic_tab.tab_number_download.table.book'|translate}}
+              </th>
+              <td mat-cell *matCellDef="let row;let i=index">{{row?.book}}</td>
+            </ng-container>
+            <ng-container matColumnDef="video">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-weight: bold; font-size: medium"
+              >
+                {{'Statistic_tab.tab_number_download.table.video'|translate}}
+              </th>
+              <td mat-cell *matCellDef="let row;let i=index">{{row?.video}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsName"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsName;"></tr>
+          </table>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-button class="btn-submit" (click)="exportDataToExcel()">
+          {{'Statistic_tab.tab_number_download.btn_export_excel' | translate}}
+          <ion-icon slot="end" name="download"></ion-icon>
+        </ion-button>
+        <ion-button class="btn-submit" (click)="htmltoPDF()">
+          {{'Statistic_tab.tab_number_download.btn_export_pdf' | translate}}
+          <ion-icon slot="end" name="download"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

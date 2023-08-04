@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'Media.get_new.title_new_audio' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <div class="grid grid-cols-10 gap-5">
+      <div
+        class="col-span-10 sm:col-span-5 md:col-span-2"
+        *ngFor="let item of data; index as index"
+      >
+        <mat-card class="mat-item">
+          <img
+            mat-card-image
+            [src]="images[index]"
+            class="my-0 mx-auto flex-shrink-0"
+          />
+          <mat-card-content class="h-full">
+            <div
+              class="h-full flex flex-col flex-shrink justify-between flex-1"
+            >
+              <div>
+                <p class="font-bold text-base mt-3">
+                  {{ (item.name.length>20)? (item.name |
+                  slice:0:30)+'...':(item.name) }}
+                </p>
+                <p class="m-0">
+                  {{item?.main_category ? item?.main_category:'Public'}}
+                </p>
+                <span>{{item?.category[0]?.name}}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <div *ngIf="item?.price>0;else Free">
+                  <span>RM {{item?.price}}</span>
+                </div>
+
+                <div>
+                  <ion-button
+                    disabled="{{checkDisable[index]}}"
+                    size="small"
+                    fill="outline"
+                    (click)="addToCart(item)"
+                    title="Add to cart"
+                  >
+                    <ion-icon name="add"></ion-icon>
+                  </ion-button>
+
+                  <ion-button
+                    size="small"
+                    fill="outline"
+                    (click)="goToLink(item.preview_url)"
+                    title="Preview book"
+                  >
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </ion-button>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+          <!-- <mat-card-actions>
+          
+          </mat-card-actions> -->
+        </mat-card>
+      </div>
+    </div>
+    <div class="card-footer pb-0 mt-5">
+      <jw-pagination
+        [items]="items"
+        [pageSize]="12"
+        [maxPages]="5"
+        (changePage)="onChangePage($event)"
+      ></jw-pagination>
+    </div>
+  </ion-grid>
+</ion-content>
+
+<ng-template #Free>
+  <div class="free"><span>Free</span></div>
+</ng-template>

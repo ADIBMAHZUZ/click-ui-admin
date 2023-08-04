@@ -1,0 +1,283 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'Media.list_video.title' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col>
+        <div class="mb-5">
+          <ngx-datatable
+            class="material"
+            [limit]="10"
+            [rows]="data"
+            [rowHeight]="'auto'"
+            [columns]="columns"
+            [columnMode]="'force'"
+            [sortType]="'multi'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+          >
+            <ngx-datatable-column
+              [width]="70"
+              name="{{'Media.list_audio.stt' | translate}}"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                let-rowIndex="rowIndex"
+                ngx-datatable-cell-template
+              >
+                {{(pageSize*(curPage-1))+rowIndex+1}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              name="{{'Media.list_audio.thumbnail' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item class="ion-float-left" lines="none">
+                  <ion-thumbnail>
+                    <ion-img
+                      [src]="checkUserType ? row.thumbnail:row.media.thumbnail"
+                    ></ion-img>
+                  </ion-thumbnail>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              name="{{'Media.list_audio.name' | translate}}"
+              prop="name"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <span>{{checkUserType ? value : row.media.name}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              name="{{'Media.list_audio.author' | translate}}"
+              prop="author"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <span>{{checkUserType ? value :row.media.author}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Media.list_audio.price' | translate}}"
+              prop="price"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                {{ (checkUserType ? value:row?.media?.price) | formatNumber}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              *ngIf="!checkUserType"
+              name="{{'Publisher.publisher_name' | translate}}"
+              prop="publisher_name"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <span>{{checkUserType ? value :row.media.publisher_name}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Media.list_audio.category' | translate}}"
+              prop="category"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <p class="font-bold mb-1">
+                  {{row?.main_category ? row?.main_category : 'Public'}}
+                </p>
+                <span>
+                  {{checkUserType ? row.category[0].name :
+                  row.media.category[0].name}}
+                </span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              *ngIf="!checkUserType"
+              name="{{'Media.list_audio.quantity' | translate}}"
+              prop="quantity"
+            >
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              *ngIf="!checkUserType"
+              name="{{'Media.list_audio.expired_date' | translate}}"
+              prop="is_renew"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                {{row?.expired_date |date :'MM/dd/yyyy'}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              *ngIf="!checkUserType"
+              name="{{'Media.list_audio.action' | translate}}"
+              prop="is_renew"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-button
+                  size="small"
+                  color="primary"
+                  [disabled]="!row?.isRenew"
+                  [routerLink]="['/media/cart/',row.id]"
+                  title="{{'renew' | translate}}"
+                >
+                  {{'Media.list_video.renew'|translate}}
+                </ion-button>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Media.list_audio.status' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item
+                  *ngIf="checkUserType"
+                  class="ion-float-left"
+                  lines="none"
+                >
+                  <ion-label class="margin-right-active" *ngIf="row.is_active"
+                    >{{'Media.list_audio.txt_active' | translate}}</ion-label
+                  >
+                  <ion-label *ngIf="!row.is_active"
+                    >{{'Media.list_audio.txt_inactive' | translate}}</ion-label
+                  >
+                  <ion-toggle
+                    class="ion-align-items-center"
+                    [(ngModel)]="row.is_active"
+                    color="primary"
+                    (ngModelChange)="deleteVideo(row)"
+                  ></ion-toggle>
+                </ion-item>
+
+                <ion-item
+                  *ngIf="!checkUserType"
+                  class="ion-float-left"
+                  lines="none"
+                >
+                  <ion-toggle
+                    class="ion-align-items-center"
+                    [(ngModel)]="row.is_active"
+                    color="primary"
+                    (ngModelChange)="deleteVideo(row)"
+                  ></ion-toggle>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Media.list_audio.action' | translate}}"
+              sortable="false"
+              prop="id"
+              *ngIf="checkUserType"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item lines="none">
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/media/view/' + row.id"
+                    title="{{'Media.list_audio.tooltip_view' | translate}}"
+                  >
+                    <ion-icon name="eye"></ion-icon>
+                  </ion-button>
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/media/update/' + row.id"
+                    title="{{'Media.list_audio.tooltip_update' | translate}}"
+                  >
+                    <ion-icon name="create"></ion-icon>
+                  </ion-button>
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    (click)="deleteMedia(row)"
+                    title="{{'Media.list_audio.tooltip_delete' | translate}}"
+                  >
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+            <!-- Footer for datatable -->
+            <ngx-datatable-footer>
+              <ng-template
+                let-rowCount="rowCountPage"
+                let-pageSize="pageSize"
+                let-selectedCount="selectedCount"
+                let-curPage="curPage"
+                let-offset="offset"
+                ngx-datatable-footer-template
+              >
+                <app-datatable-pager
+                  (change)="changePage($event)"
+                  [page]="curPage"
+                  [visiblePagesCount]="5"
+                  [size]="12"
+                  [count]="rowCountPage"
+                  [hidden]="false"
+                >
+                </app-datatable-pager>
+              </ng-template>
+            </ngx-datatable-footer>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

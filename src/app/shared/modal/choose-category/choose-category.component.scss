@@ -1,0 +1,12 @@
+:host ::ng-deep {
+  .select {
+    width: 100%;
+  }
+  mat-form-field {
+    width: 100%;
+  }
+  input:focus-visible {
+    border: none;
+    outline: none;
+  }
+}

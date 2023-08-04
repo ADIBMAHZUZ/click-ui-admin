@@ -1,0 +1,3 @@
+name,type,author,is_active,category,main_category,release_date,price
+123,book,Wendy,TRUE,Primary School - YEAR 1,Public,12/12/2022,10
+333,book,Wendy,TRUE,Primary School - YEAR 1,University/College,12/12/2022,10

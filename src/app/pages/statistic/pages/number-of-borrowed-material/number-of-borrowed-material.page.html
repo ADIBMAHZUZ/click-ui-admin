@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title
+      >{{'Statistic_tab.tab_number_of_borrowed_material.title' |
+      translate}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid class="ion-padding">
+    <div id="print-statistic-number-borrow">
+      <ion-row>
+        <ion-col size-md="3">
+          <div *ngFor="let item of pieChartLabels?.key; index as i">
+            <ion-row>
+              <ion-col size="7">
+                <span>
+                  {{'Statistic_tab.tab_number_of_borrowed_material.'+item|translate}}:
+                </span>
+              </ion-col>
+              <ion-col size="4" class="text-center">
+                <span>{{data[item]}}</span>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+        <ion-col
+          size="12"
+          size-md="5"
+          *ngIf="!(data?.number_of_books==0 &&data?.number_of_audio==0&&data?.number_of_videos==0)"
+        >
+          <canvas
+            baseChart
+            [data]="pieChartData"
+            [labels]="pieChartLabels?.title"
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            [plugins]="pieChartPlugins"
+            [colors]="pieChartColors"
+            [legend]="pieChartLegend"
+          >
+          </canvas>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-row>
+      <ion-col>
+        <ion-button class="btn-submit" (click)="htmltoPDF()">
+          <ion-icon slot="end" name="download"></ion-icon>
+          {{'Statistic_tab.tab_number_of_borrowed_material.btn_export_pdf' |
+          translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

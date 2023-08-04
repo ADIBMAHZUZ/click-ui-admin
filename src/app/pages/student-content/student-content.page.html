@@ -1,0 +1,252 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Student_content.title_header' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <form (ngSubmit)="onSearchStudent()">
+      <ion-row>
+        <ion-col
+          size-lg="7"
+          size-xs="8"
+          size-sm="7"
+          size-md="7"
+          class="ion-no-padding"
+        >
+          <ion-searchbar
+            name="search"
+            [(ngModel)]="searchStudent"
+            placeholder="{{'Student_content.search' | translate}}"
+          ></ion-searchbar>
+        </ion-col>
+        <ion-col
+          size-lg="2"
+          size-xs="4"
+          size-sm="2"
+          size-md="2"
+          class="ion-align-self-center"
+        >
+          <ion-button class="full-width" type="submit">
+            <ion-icon slot="end" name="search"></ion-icon>
+            <!-- Search -->
+            {{'Student_content.search' | translate}}
+          </ion-button>
+        </ion-col>
+
+        <ion-col
+          size-lg="3"
+          size-xs="12"
+          size-sm="3"
+          size-md="3"
+          class="ion-align-self-center"
+        >
+          <ion-button
+            class="ion-float-right"
+            [routerLink]="'/student-content/create'"
+          >
+            <ion-icon slot="end" name="add"></ion-icon>
+            <!-- Create student -->
+            {{'Student_content.create' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+    <ion-row>
+      <ion-col>
+        <div>
+          <ngx-datatable
+            class="material"
+            [limit]="10"
+            [rows]="data"
+            [columns]="columns"
+            [columnMode]="'force'"
+            [rowHeight]="'auto'"
+            [sortType]="'multi'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+          >
+            <ngx-datatable-column
+              [width]="30"
+              name="{{'Student_content.no' | translate}}"
+              prop="id"
+            >
+              <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                {{rowIndex+1}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="350"
+              name="{{'Student_content.title' | translate}}"
+              prop="title"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="200"
+              name="{{'Student_content.publish_date' | translate}}"
+              prop="publish_date"
+            >
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value | date:'MM/dd/yyyy HH:mm':'UTC'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="100"
+              name="{{'Student_content.status' | translate}}"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-label *ngIf="row.status == 'publish'">Published</ion-label>
+                <ion-label *ngIf="row.status == 'draft'">Draft</ion-label>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Student_content.active' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item
+                  *ngIf="!checkStatus"
+                  class="ion-float-left"
+                  lines="none"
+                >
+                  <ion-label class="margin-right-active" *ngIf="row.is_active"
+                    >{{'Student_content.txt_active' | translate}}</ion-label
+                  >
+                  <ion-label *ngIf="!row.is_active"
+                    >{{'Student_content.txt_inactive' | translate}}</ion-label
+                  >
+                  <ion-toggle
+                    [disabled]="true"
+                    class="ion-align-items-center"
+                    [(ngModel)]="row.is_active"
+                    color="primary"
+                    (ngModelChange)="deleteStudent(row)"
+                  ></ion-toggle>
+                </ion-item>
+                <ion-item
+                  *ngIf="checkStatus"
+                  class="ion-float-left"
+                  lines="none"
+                >
+                  <ion-toggle
+                    class="ion-align-items-center"
+                    [(ngModel)]="row.is_active"
+                    color="primary"
+                    (ngModelChange)="deleteStudent(row)"
+                  ></ion-toggle>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Actions" sortable="false" prop="id">
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item lines="none">
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/student-content/view/' + row.id"
+                    title="{{'Student_content.view' | translate}}"
+                  >
+                    <ion-icon name="eye"></ion-icon>
+                  </ion-button>
+                  <!-- *ngIf="row.status == 'draft'" -->
+                  <ion-button
+                    *ngIf="checkStatus"
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/student-content/update/' + row.id"
+                    title="{{'Student_content.edit' | translate}}"
+                  >
+                    <ion-icon name="create"></ion-icon>
+                  </ion-button>
+
+                  <ion-button
+                    *ngIf="!checkStatus"
+                    [disabled]="row.status == 'publish'"
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/student-content/update/' + row.id"
+                    title="{{'Student_content.edit' | translate}}"
+                  >
+                    <ion-icon name="create"></ion-icon>
+                  </ion-button>
+
+                  <ion-button
+                    *ngIf="checkStatus"
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    (click)="deleteStudentReal(row.id)"
+                    title="{{'Student_content.delete' | translate}}"
+                  >
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-button>
+
+                  <ion-button
+                    *ngIf="!checkStatus"
+                    [disabled]="row.status == 'publish'"
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    (click)="deleteStudentReal(row.id)"
+                    title="{{'Student_content.edit' | translate}}"
+                  >
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+            <!-- Footer for datatable -->
+            <ngx-datatable-footer>
+              <ng-template
+                let-rowCount="rowCountPage"
+                let-pageSize="pageSize"
+                let-selectedCount="selectedCount"
+                let-curPage="curPage"
+                let-offset="offset"
+                ngx-datatable-footer-template
+              >
+                <app-datatable-pager
+                  (change)="changePage($event)"
+                  [page]="curPage"
+                  [visiblePagesCount]="currentVisible"
+                  [size]="pageSize"
+                  [count]="rowCountPage"
+                  [hidden]="false"
+                >
+                </app-datatable-pager>
+              </ng-template>
+            </ngx-datatable-footer>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

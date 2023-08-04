@@ -1,0 +1,221 @@
+<ion-content>
+  <div class="form">
+    <form action="" [formGroup]="quotationForm">
+      <div id="print-section" style="padding: 0px 20px">
+        <ion-grid>
+          <ion-row>
+            <div>
+              <img
+                src="../../../assets/img/CLICk_Logo.png"
+                alt=""
+                style="height: 100px; object-fit: cover"
+              />
+            </div>
+          </ion-row>
+        </ion-grid>
+        <div style="display: flex">
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr;
+              gap: 20px;
+              width: 60%;
+            "
+          >
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 3fr;
+                gap: 10px 20px;
+              "
+            >
+              <span>{{'Quotation.publisher_name'|translate}} :</span>
+              <span>{{quotation?.publisher?.name}}</span>
+
+              <span>{{'Quotation.address'|translate}} :</span>
+              <span>{{quotation?.publisher?.address}}</span>
+
+              <span>{{'Quotation.email'|translate}} :</span>
+              <span>{{quotation?.publisher?.email}}</span>
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 3fr;
+                gap: 10px 20px;
+              "
+            >
+              <span>{{'Quotation.library_name'|translate}} :</span>
+              <span>{{quotation?.librarian?.name}}</span>
+
+              <span>{{'Quotation.address'|translate}} :</span>
+              <span>{{quotation?.librarian?.address}}</span>
+
+              <span>{{'Quotation.email'|translate}} :</span>
+              <span>{{quotation?.librarian?.email}}</span>
+            </div>
+          </div>
+          <div style="width: 40%">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 3fr;
+                gap: 10px 20px;
+              "
+            >
+              <div>Date:</div>
+              <div>{{currentDate}}</div>
+              <div>
+                <span>Ref no:</span>
+                <span
+                  *ngIf="userType=='librarian'  && !quotation?.ref_no"
+                  class="text-red-600"
+                  >*</span
+                >
+              </div>
+
+              <div style="width: 60%" *ngIf="!inputRefNo; else nonRef">
+                <span>{{quotation?.ref_no}}</span>
+              </div>
+            </div>
+
+            <ng-template #nonRef>
+              <div>
+                <ion-input formControlName="refNo"></ion-input>
+                <div
+                  *ngIf="quotationForm.hasError('required','refNo') && checkSubmit"
+                  class="text-red-600"
+                >
+                  {{'Quotation.error.refNo_request' | translate}}
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="my-3">
+          <table class="w-full">
+            <thead>
+              <th class="border border-slate-600 text-center">
+                {{'Quotation.no'|translate}}
+              </th>
+              <th class="border border-slate-600 text-center">
+                {{'Quotation.title'|translate}}
+              </th>
+              <th class="border border-slate-600 text-center">
+                {{'Quotation.material'|translate}}
+              </th>
+              <th class="border border-slate-600 text-center">
+                {{'Quotation.price_per_copy'|translate}}
+              </th>
+              <th class="border border-slate-600 text-center">
+                {{'Quotation.quantity'|translate}}
+              </th>
+              <th class="border border-slate-600 text-center">
+                {{'Quotation.rental'|translate}}
+              </th>
+              <th class="border border-slate-600 text-center"></th>
+            </thead>
+            <tbody *ngIf="quotation?.products?.length > 0">
+              <tr *ngFor="let item of quotation?.products; let i = index">
+                <td class="border border-slate-600 text-center px-4">
+                  {{i+1}}
+                </td>
+                <td class="border border-slate-600 text-center px-4">
+                  {{item?.title}}
+                </td>
+                <td class="border border-slate-600 text-center px-4">
+                  {{item?.material}}
+                </td>
+                <td class="border border-slate-600 text-center px-4">
+                  RM {{item?.price|formatNumber}}
+                </td>
+                <td class="border border-slate-600 text-center px-4">
+                  {{item?.quantity}}
+                </td>
+                <td class="border border-slate-600 text-center px-4">
+                  {{item?.period}}
+                </td>
+                <td class="border border-slate-600 text-right pr-5">
+                  RM {{item.price*item?.quantity*item?.period|formatNumber}}
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5" class="border border-slate-600 border-r-0"></td>
+                <td
+                  class="font-medium text-center border border-slate-600 border-l-0"
+                >
+                  Total
+                </td>
+                <td class="border border-slate-600 text-right pr-5">
+                  RM {{total|formatNumber}}
+                </td>
+              </tr>
+              <tr *ngIf="quotation?.quotation_type=='commission'">
+                <td colspan="5" class="border border-slate-600 border-r-0"></td>
+                <td class="font-medium text-center border border-slate-600">
+                  Percent
+                </td>
+                <td
+                  class="border border-slate-600 text-right py-0 pr-5"
+                  [class.text-red-600]="percent.errors"
+                >
+                  <div class="flex items-center">
+                    <input
+                      class="w-full h-full text-right"
+                      formControlName="percent"
+                      type="number"
+                      [readonly]="disableCommission"
+                      (input)="handleChange($event)"
+                    />
+                    <span matSuffix>&nbsp;%</span>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="quotation?.quotation_type=='commission'">
+                <td colspan="5" class="border border-slate-600 border-r-0"></td>
+                <td class="font-medium text-center border border-slate-600">
+                  Commission
+                </td>
+                <td class="border border-slate-600 text-right pr-5">
+                  RM {{commission|formatNumber}}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div style="width: 100%">
+          <p class="font-bold md:p-4 mb-0 pb-0">
+            {{'Quotation.term_condition'|translate}}
+          </p>
+          <ol class="md:p-5">
+            <li>
+              <span>Payment via cash to account {{termRole}} directly</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div>
+        <div class="items-center flex justify-end">
+          <button
+            class="export-button"
+            (click)="onSubmit()"
+            *ngIf="disableSend"
+          >
+            {{ "Quotation.button.send" | translate }}
+          </button>
+          <button
+            printSectionId="print-section"
+            class="export-button"
+            (click)="htmltoPDF()"
+          >
+            {{ "Quotation.button.export" | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ion-content>

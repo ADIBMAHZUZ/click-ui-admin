@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title
+      >{{'Statistic_tab.tab_number_of_register.title' | translate}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid class="ion-padding">
+    <div id="print-statistic-number-register">
+      <ion-row>
+        <ion-col size-md="4" size="12">
+          <div *ngFor="let item of label; index as i">
+            <ion-row>
+              <ion-col size="11">
+                <p>
+                  {{'Statistic_tab.tab_number_of_register.'+item|translate}}:
+                </p>
+              </ion-col>
+              <ion-col size="1" class="text-center">
+                <p>{{data[item]}}</p>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+        <ion-col size-md="3"></ion-col>
+        <ion-col
+          size="12"
+          size-md="5"
+          *ngIf="!(data?.number_of_teachers==0 && data?.number_of_subscribers==0)"
+        >
+          <canvas
+            baseChart
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            [plugins]="pieChartPlugins"
+            [colors]="pieChartColors"
+            [legend]="pieChartLegend"
+          >
+          </canvas>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <ion-button class="btn-submit" (click)="htmltoPDF()">
+          <ion-icon slot="end" name="download"></ion-icon>
+          {{'Statistic_tab.tab_number_of_register.btn_export_pdf' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

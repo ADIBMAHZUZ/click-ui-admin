@@ -1,0 +1,218 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'School_news.create_news.title_create' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="createNews()" novalidate [formGroup]="createNewsForm">
+    <!-- rich text editor -->
+    <ion-grid class="ion-padding ion-content">
+      <ion-row>
+        <ion-col
+          class="ion-align-self-center"
+          size-xl="3"
+          size-lg="3"
+          size-md="3"
+          size-xs="12"
+          size-sm="6"
+        >
+          <ion-item lines="none">
+            <div>
+              <input
+                type="file"
+                name="logo"
+                value="fileupload"
+                (change)="onChange($event.target.files)"
+                #f
+                style="display: none"
+                required
+                formControlName="logo"
+                accept="image/png, image/jpeg"
+              />
+              <ion-button (click)="f.click()">
+                {{'School_news.create_news.file' | translate}}
+              </ion-button>
+              <ion-text color="danger">*</ion-text>
+              <ion-label *ngIf="check_file_type">{{title_update}}</ion-label>
+              <div class="custom-span">
+                <span class=""
+                  >Only png, jpeg, jpg are allowed. (Portrait size – A4)</span
+                >
+              </div>
+            </div>
+          </ion-item>
+          <p class="error" *ngIf="!checkImage && checkSubmit">
+            {{'School_news.create_news.err_logo' | translate}}
+          </p>
+          <p class="error" *ngIf="check_file_type">
+            {{'Subscriber.create_subscriber.err_type_file' | translate}}
+          </p>
+        </ion-col>
+        <ion-col
+          *ngIf="img.src != '' && !check_file_type"
+          size-xl="3"
+          size-lg="3"
+          size-md="3"
+          size-xs="12"
+          size-sm="6"
+          class="margin-auto-img"
+        >
+          <ion-item lines="none">
+            <div class="flex flex-col justify-center">
+              <ion-thumbnail>
+                <ion-img
+                  [src]="img.src"
+                  class="object-contain h-full"
+                ></ion-img>
+              </ion-thumbnail>
+              <div class="text-center">
+                <ion-button
+                  class="margin-auto-button-delete"
+                  size="small"
+                  fill="outline"
+                  (click)="zoomPicture(img.src)"
+                  title="Edit media"
+                >
+                  <ion-icon name="eye"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'School_news.create_news.title' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              name="title"
+              required
+              formControlName="title"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createNewsForm.controls['title'].touched && createNewsForm.hasError('required', 'title')"
+          >
+            {{'School_news.create_news.err_title' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createNewsForm.controls['title'].touched && checkError && createNewsForm.hasError('required', 'title')"
+          >
+            {{'School_news.create_news.err_title' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset" class="margin-top-picker">
+            <!-- <ion-label position = "floating">Publish date <ion-text color="danger">*</ion-text></ion-label>
+            <ion-datetime name="push_date" displayFormat="DD/MM/YYYY" 
+            (ngModelChange)="changePublishDate()"
+            required formControlName="push_date"></ion-datetime> -->
+            <ion-label class="custom-label-picker" position="floating"
+              >{{'School_news.create_news.publish_date' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <input
+              class="time-picker"
+              [owlDateTime]="dt1"
+              [owlDateTimeTrigger]="dt1"
+              placeholder=""
+              name="push_date"
+              required
+              formControlName="push_date"
+            />
+            <owl-date-time #dt1></owl-date-time>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createNewsForm.controls['push_date'].touched && createNewsForm.hasError('required', 'push_date')"
+          >
+            {{'School_news.create_news.err_publish_date' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createNewsForm.controls['push_date'].touched && checkError && createNewsForm.hasError('required', 'push_date')"
+          >
+            {{'School_news.create_news.err_publish_date' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'School_news.create_news.active' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select name="isActive" required formControlName="isActive">
+              <p *ngFor="let item of isActiveArr">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createNewsForm.controls['isActive'].touched && createNewsForm.hasError('required', 'isActive')"
+          >
+            {{'School_news.create_news.err_active' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createNewsForm.controls['isActive'].touched && checkError && createNewsForm.hasError('required', 'isActive')"
+          >
+            {{'School_news.create_news.err_active' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <!--Rich text editor -->
+      <ion-row class="ion-margin-bottom">
+        <ion-col size="12" class="min-height-col-editor">
+          <quill-editor
+            (onEditorCreated)="handleEditorCreated($event)"
+            (onContentChanged)="handleChange($event)"
+          >
+          </quill-editor>
+          <p class="error" *ngIf="!checkQuill && checkSubmit">
+            {{'School_news.create_news.err_content' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-button class="btn-submit" type="submit">
+          <ion-icon slot="end" name="save"></ion-icon>
+          {{'School_news.create_news.btn_create' | translate}}
+        </ion-button>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+<div [style.display]="image?'block':'none'" class="zoom-image-modal">
+  <div
+    (click)="closeZoom()"
+    class="text-white cursor-pointer text-xl font-medium text-right p-4 absolute top-0 right-0"
+  >
+    Close
+  </div>
+  <div class="zoom-image">
+    <img [src]="image" alt="" class="modal-zoom-content" />
+  </div>
+</div>

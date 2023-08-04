@@ -1,0 +1,224 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Teacher.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding ion-content">
+    <form (ngSubmit)="onSearchTeacher()">
+      <ion-row>
+        <ion-col size="4" class="ion-align-self-center">
+          <ion-searchbar
+            name="search"
+            [(ngModel)]="searchTeacher"
+            placeholder="{{'Teacher.search' | translate}}"
+          ></ion-searchbar>
+        </ion-col>
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button class="full-width" type="submit">
+            <ion-icon slot="end" name="search"></ion-icon>
+            <!-- Search -->
+            {{'Teacher.search' | translate}}
+          </ion-button>
+        </ion-col>
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button class="ion-float-right" [routerLink]="'/teacher/create'">
+            <ion-icon slot="end" name="add"></ion-icon>
+            <!-- Create teacher -->
+            {{'Teacher.create' | translate}}
+          </ion-button>
+        </ion-col>
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button
+            class="ion-float-right"
+            [routerLink]="'/teacher/teacher-import-csv'"
+          >
+            <ion-icon slot="end" name="push"></ion-icon>
+            <!-- Import CSV -->
+            {{'Subscriber.import' | translate}}
+          </ion-button>
+        </ion-col>
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button
+            class="ion-float-right"
+            (click)="deleteTeacher()"
+            [disabled]="checkList.length==0"
+          >
+            <ion-icon slot="end" name="trash"></ion-icon>
+            {{'Button.delete' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+    <ion-row>
+      <ion-col>
+        <div>
+          <ngx-datatable
+            class="material"
+            [limit]="10"
+            [rows]="data"
+            [rowHeight]="'auto'"
+            [columns]="columns"
+            [columnMode]="'force'"
+            [sortType]="'multi'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+            [selected]="checkList"
+            [selectionType]="'checkbox'"
+            (select)="onSelect($event)"
+          >
+            <ngx-datatable-column
+              [width]="30"
+              [sortable]="false"
+              [canAutoResize]="false"
+              [draggable]="false"
+              [resizeable]="false"
+            >
+              <ng-template
+                ngx-datatable-header-template
+                let-value="value"
+                let-allRowsSelected="allRowsSelected"
+                let-selectFn="selectFn"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="allRowsSelected"
+                  (change)="selectFn(!allRowsSelected)"
+                />
+              </ng-template>
+              <ng-template
+                ngx-datatable-cell-template
+                let-value="value"
+                let-isSelected="isSelected"
+                let-onCheckboxChangeFn="onCheckboxChangeFn"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="isSelected"
+                  (change)="onCheckboxChangeFn($event)"
+                />
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="70"
+              name="{{'Teacher.no' | translate}}"
+              prop="id"
+            >
+              <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                {{rowIndex+1}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              name="{{'Teacher.username' | translate}}"
+              prop="username"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              name="{{'Teacher.name' | translate}}"
+              prop="name"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              name="{{'Teacher.short_name' | translate}}"
+              prop="short_name"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              name="{{'Teacher.phone' | translate}}"
+              prop="phone"
+            ></ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="200"
+              name="{{'Teacher.email' | translate}}"
+              prop="email"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Teacher.active' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item class="ion-float-left" lines="none">
+                  <ion-toggle
+                    class="ion-align-items-center"
+                    [(ngModel)]="row.is_active"
+                    color="primary"
+                    (ngModelChange)="updateStatusTeacher(row)"
+                  ></ion-toggle>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Teacher.actions' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <ion-item lines="none">
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/teacher/view/' + row.id"
+                    title="{{'Teacher.view' | translate}}"
+                  >
+                    <ion-icon
+                      class="ion-align-items-center"
+                      name="eye"
+                    ></ion-icon>
+                  </ion-button>
+                  <ion-button
+                    size="small"
+                    fill="outline"
+                    [routerLink]="'/teacher/update/' + row.id"
+                    title="{{'Teacher.edit' | translate}}"
+                  >
+                    <ion-icon name="create"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-footer>
+              <ng-template
+                let-rowCount="rowCountPage"
+                let-pageSize="pageSize"
+                let-selectedCount="selectedCount"
+                let-curPage="curPage"
+                let-offset="offset"
+                ngx-datatable-footer-template
+              >
+                <app-datatable-pager
+                  (change)="changePage($event)"
+                  [page]="curPage"
+                  [visiblePagesCount]="currentVisible"
+                  [size]="pageSize"
+                  [count]="rowCountPage"
+                  [hidden]="false"
+                >
+                </app-datatable-pager>
+              </ng-template>
+            </ngx-datatable-footer>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,22 @@
+.custom-label-picker {
+  font-size: 12px !important;
+}
+.time-picker {
+  height: 50px;
+  width: 100%;
+  border: none;
+}
+input:focus,
+select:focus {
+  outline: none;
+}
+.custom-label-select {
+  position: relative;
+  top: 11px;
+}
+.chooseLibrary {
+  height: 100%;
+  width: 100%;
+  border-bottom: 1px #e0e0e0 solid;
+  padding-top: 20px;
+}

@@ -1,0 +1,120 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Teacher.view_teacher.title_view' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        *ngIf="logo != ''"
+        size-xl="3"
+        size-lg="4"
+        size-md="4"
+        size-xs="12"
+        size-sm="6"
+        class="margin-auto-img"
+      >
+        <ion-item lines="none">
+          <!-- <ion-label>Logo</ion-label> -->
+          <ion-thumbnail>
+            <ion-img [src]="logo"></ion-img>
+          </ion-thumbnail>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Teacher.view_teacher.name' | translate}}</ion-label
+          >
+          <ion-input [value]="name" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Teacher.view_teacher.short_name' | translate}}</ion-label
+          >
+          <ion-input [value]="short_name" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Teacher.view_teacher.username' | translate}}</ion-label
+          >
+          <ion-input [value]="username" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Teacher.view_teacher.active' | translate}}</ion-label
+          >
+          <ion-input [value]="isActive" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Teacher.view_teacher.library' | translate}}</ion-label
+          >
+          <ion-input [value]="library" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Teacher.view_teacher.address' | translate}}</ion-label
+          >
+          <ion-input [value]="address" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Teacher.view_teacher.phone' | translate}}</ion-label
+          >
+          <ion-input [value]="phone" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Teacher.view_teacher.email' | translate}}</ion-label
+          >
+          <ion-input [value]="email" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Teacher.view_teacher.storage' | translate}}</ion-label
+          >
+          <ion-input [value]="storage" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

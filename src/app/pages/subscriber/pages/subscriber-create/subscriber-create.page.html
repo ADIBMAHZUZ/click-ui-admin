@@ -1,0 +1,499 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Subscriber.create_subscriber.title_create' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form
+    (ngSubmit)="createSubscriber()"
+    novalidate
+    [formGroup]="createSubscriberForm"
+  >
+    <ion-grid class="ion-padding ion-content">
+      <ion-row>
+        <ion-col size-xl="3" size-lg="4" size-md="4" size-xs="12" size-sm="6">
+          <ion-item lines="none">
+            <input
+              type="file"
+              name="fileupload"
+              value="fileupload"
+              (change)="onChange($event.target.files)"
+              #f
+              style="display: none"
+            />
+            <ion-button (click)="f.click()">
+              {{'Subscriber.create_subscriber.file' | translate}}
+            </ion-button>
+            <ion-label *ngIf="check_file_type">{{title}}</ion-label>
+          </ion-item>
+          <p class="error" *ngIf="check_file_type">
+            {{'Subscriber.create_subscriber.err_type_file' | translate}}
+          </p>
+        </ion-col>
+        <ion-col
+          size-xl="3"
+          size-lg="4"
+          size-md="4"
+          size-xs="12"
+          size-sm="6"
+          class="margin-auto-img"
+          *ngIf="img.src != '' &&  !check_file_type"
+        >
+          <ion-item lines="none">
+            <!-- <ion-label>Logo</ion-label> -->
+            <ion-thumbnail>
+              <ion-img [src]="img.src"></ion-img>
+            </ion-thumbnail>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.username' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="username"
+              name="username"
+              [(ngModel)]="username"
+              required
+              formControlName="username"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['username'].touched && createSubscriberForm.hasError('required', 'username')"
+          >
+            {{'Subscriber.create_subscriber.err_username' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['username'].touched && checkError && createSubscriberForm.hasError('required', 'username')"
+          >
+            {{'Subscriber.create_subscriber.err_username' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['username'].touched && createSubscriberForm.hasError('pattern', 'username')"
+          >
+            {{'Subscriber.create_subscriber.username_valid_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['username'].touched && createSubscriberForm.hasError('pattern', 'username')"
+          >
+            {{'Subscriber.create_subscriber.username_valid_err' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.password' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [type]="getType()"
+              [value]="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+              formControlName="password"
+            >
+            </ion-input>
+            <ion-icon
+              class="ion-align-items-center"
+              [name]="getName()"
+              slot="end"
+              (click)="toggleTextPassword()"
+            ></ion-icon>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['password'].touched && createSubscriberForm.hasError('required', 'password')"
+          >
+            {{'Subscriber.create_subscriber.err_password' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['password'].touched && checkError && createSubscriberForm.hasError('required', 'password')"
+          >
+            {{'Subscriber.create_subscriber.err_password' | translate}}
+          </p>
+
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.hasError('minlength','password')"
+          >
+            {{'Subscriber.create_subscriber.err_password_min' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.name' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="name"
+              name="name"
+              [(ngModel)]="name"
+              required
+              formControlName="name"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['name'].touched && createSubscriberForm.hasError('required', 'name')"
+          >
+            {{'Subscriber.create_subscriber.err_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['name'].touched && checkError && createSubscriberForm.hasError('required', 'name')"
+          >
+            {{'Subscriber.create_subscriber.err_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.hasError('maxlength','name')"
+          >
+            {{'Subscriber.create_subscriber.name_max_length_err' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.short_name' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="short_name"
+              name="short_name"
+              [(ngModel)]="short_name"
+              required
+              formControlName="short_name"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['short_name'].touched && createSubscriberForm.hasError('required', 'short_name')"
+          >
+            {{'Subscriber.create_subscriber.err_short_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['short_name'].touched && checkError && createSubscriberForm.hasError('required', 'short_name')"
+          >
+            {{'Subscriber.create_subscriber.err_short_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.hasError('maxlength','short_name')"
+          >
+            {{'Subscriber.create_subscriber.short_max_length_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.address' | translate}}</ion-label
+            >
+            <ion-input
+              [value]="address"
+              name="address"
+              [(ngModel)]="address"
+              formControlName="address"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.active' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              [value]="isActive"
+              name="isActive"
+              [(ngModel)]="isActive"
+              required
+              formControlName="isActive"
+            >
+              <p *ngFor="let item of isActiveArr">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['isActive'].touched && createSubscriberForm.hasError('required', 'isActive')"
+          >
+            {{'Subscriber.create_subscriber.err_active' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['isActive'].touched && checkError && createSubscriberForm.hasError('required', 'isActive')"
+          >
+            {{'Subscriber.create_subscriber.err_active' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.phone' | translate}}</ion-label
+            >
+            <ion-input
+              [value]="phone"
+              type="text"
+              name="phone"
+              [(ngModel)]="phone"
+              formControlName="phone"
+              (ionChange)="checkPhone()"
+            >
+            </ion-input>
+          </ion-item>
+          <p class="error" *ngIf="!checkPhoneNumber">
+            <!-- Email is required -->
+            {{'Library.create_library.err_phone_number' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.email' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="email"
+              name="email"
+              [(ngModel)]="email"
+              required
+              formControlName="email"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['email'].touched && createSubscriberForm.hasError('required', 'email')"
+          >
+            {{'Subscriber.create_subscriber.err_email' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['email'].touched && checkError && createSubscriberForm.hasError('required', 'email')"
+          >
+            {{'Subscriber.create_subscriber.err_email' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.hasError('email', 'email') && createSubscriberForm.controls['email'].touched && !createSubscriberForm.hasError('required', 'email')"
+          >
+            {{'Subscriber.create_subscriber.err_is_email' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="check_user_type">
+        <ion-col>
+          <ion-item lines="inset" size-md="6" size-xs="12" size-sm="12">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.library' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              [value]="library"
+              name="library"
+              [(ngModel)]="library"
+              required
+              formControlName="library"
+            >
+              <p *ngFor="let item of (libraries$ | async)?.results">
+                <ion-select-option [value]="item.id"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['library'].touched && createSubscriberForm.hasError('required', 'library')"
+          >
+            {{'Subscriber.create_subscriber.err_library' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['library'].touched && checkError && createSubscriberForm.hasError('required', 'library')"
+          >
+            {{'Subscriber.create_subscriber.err_library' | translate}}
+          </p>
+        </ion-col>
+
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.max_device' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              type="text"
+              [value]="maxDevice"
+              name="max_device"
+              formControlName="max_device"
+              (ionChange)="checkMaxDevice()"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['max_device'].touched && createSubscriberForm.hasError('required', 'max_device')"
+          >
+            {{'Subscriber.create_subscriber.err_max_device' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['max_device'].touched && checkError && createSubscriberForm.hasError('required', 'max_device')"
+          >
+            {{'Subscriber.create_subscriber.err_max_device' | translate}}
+          </p>
+          <p class="error" *ngIf="!checkDevice">
+            <!-- Email is required -->
+            {{'Library.create_library.err_phone_number' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="!check_user_type">
+        <ion-col size="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.max_device' | translate}}
+            </ion-label>
+            <ion-input
+              type="text"
+              [value]="maxDevice"
+              name="max_device"
+              formControlName="max_device"
+              (ionChange)="checkMaxDevice()"
+              readonly
+            ></ion-input>
+          </ion-item>
+          <!-- <p class="error" *ngIf="createSubscriberForm.controls['max_device'].touched && createSubscriberForm.hasError('required', 'max_device')">
+            {{'Subscriber.create_subscriber.err_max_device' | translate}}
+          </p>
+          <p class="error" *ngIf="!createSubscriberForm.controls['max_device'].touched && checkError && createSubscriberForm.hasError('required', 'max_device')">
+            {{'Subscriber.create_subscriber.err_max_device' | translate}}
+          </p>
+          <p class="error" *ngIf="!checkDevice">
+            {{'Library.create_library.err_phone_number' | translate}}
+          </p> -->
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.max_download' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              [value]="maxDownload"
+              name="max_download"
+              formControlName="max_download"
+            >
+              <p *ngFor="let item of arr_max_download">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['max_download'].touched && createSubscriberForm.hasError('required', 'max_download')"
+          >
+            {{'Subscriber.create_subscriber.err_max_download' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['max_download'].touched && checkError && createSubscriberForm.hasError('required', 'max_download')"
+          >
+            {{'Subscriber.create_subscriber.err_max_download' | translate}}
+          </p>
+          <p class="error" *ngIf="!checkDownload">
+            <!-- Email is required -->
+            {{'Library.create_library.err_phone_number' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Subscriber.create_subscriber.max_duration' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              [value]="duration"
+              name="max_duration"
+              formControlName="max_duration"
+            >
+              <p *ngFor="let item of arr_max_duration">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createSubscriberForm.controls['max_duration'].touched && createSubscriberForm.hasError('required', 'max_duration')"
+          >
+            {{'Subscriber.create_subscriber.err_max_device' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createSubscriberForm.controls['max_duration'].touched && checkError && createSubscriberForm.hasError('required', 'max_duration')"
+          >
+            {{'Subscriber.create_subscriber.err_max_duration' | translate}}
+          </p>
+          <p class="error" *ngIf="!checkDuration">
+            <!-- Email is required -->
+            {{'Library.create_library.err_phone_number' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <!-- <ion-item lines="none"> -->
+          <ion-button class="btn-submit" type="submit">
+            <ion-icon slot="end" name="save"></ion-icon>
+            {{'Subscriber.create_subscriber.btn_create' | translate}}
+          </ion-button>
+          <!-- </ion-item> -->
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

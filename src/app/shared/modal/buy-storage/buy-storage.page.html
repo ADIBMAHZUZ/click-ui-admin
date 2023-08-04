@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'Publisher.buy_storage' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <form
+      (ngSubmit)="requestBuyStorage()"
+      novalidate
+      [formGroup]="requestStorageForm"
+    >
+      <ion-row>
+        <!-- <ion-col>
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Publisher.storage' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+                [value]="storage"
+                name="storage"
+                [(ngModel)]="storage"
+                (ionChange)="changeStorage(storage)"
+              >
+                <p *ngFor="let item of arr_storage">
+                  <ion-select-option [value]="item.value"
+                    >{{item.name}}</ion-select-option
+                  >
+                </p>
+              </ion-select>
+          </ion-item>
+        </ion-col> -->
+        <ion-col>
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Publisher.create_publisher.storage' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              name="storage"
+              required
+              (ionChange)="checkStorage()"
+              [value]="storage"
+              formControlName="storage"
+            >
+              <span class="absolute right-0 bottom-0">GB</span>
+            </ion-input>
+          </ion-item>
+
+          <p
+            class="error"
+            *ngIf="requestStorageForm.controls['storage'].touched && requestStorageForm.hasError('required', 'storage')"
+          >
+            {{'Publisher.create_publisher.storage_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!requestStorageForm.controls['storage'].touched && checkError && requestStorageForm.hasError('required', 'storage')"
+          >
+            {{'Publisher.create_publisher.storage_err' | translate}}
+          </p>
+          <p class="error" *ngIf="!checkStorageNumber">
+            {{'Publisher.update_publisher.err_storage_positive' | translate}}
+          </p>
+          <p class="error" *ngIf="!checkStorageIndex">
+            {{'Publisher.update_publisher.err_storage_index' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit">
+            <ion-icon slot="end" name="save"></ion-icon>
+            {{'Publisher.buy_storage' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
+</ion-content>

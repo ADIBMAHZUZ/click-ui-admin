@@ -1,0 +1,7 @@
+{
+  "name": "click-ui-admin",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,158 @@
+<ion-content>
+  <ion-grid class="ion-content">
+    <ion-row>
+      <ion-col
+        *ngIf="logo != ''"
+        size-xl="3"
+        size-lg="4"
+        size-md="4"
+        size-xs="12"
+        size-sm="6"
+        class="margin-auto-img"
+      >
+        <ion-item class="ion-align-items-center" lines="none">
+          <div class="flex flex-col">
+            <ion-thumbnail class="ion-align-items-center">
+              <ion-img [src]="logo" class="object-contain h-full"></ion-img>
+            </ion-thumbnail>
+            <div class="text-center">
+              <ion-button
+                class="margin-auto-button-delete"
+                size="small"
+                fill="outline"
+                (click)="zoomPicture(logo)"
+                title="Edit media"
+              >
+                <ion-icon name="eye"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ion-item>
+      </ion-col>
+      <!-- <ion-col *ngFor="let item of images; index as index" size-xs="6" size-sm="3" size-md="3" size-lg="3" size-xl="2">
+        <ion-item lines="none">
+          <ion-thumbnail class="margin-auto-image-multi">
+            <ion-img  [src]="item.image"></ion-img>
+          </ion-thumbnail>
+        </ion-item>
+      </ion-col> -->
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Learning_material.view_material.name' | translate}}</ion-label
+          >
+          <ion-input [value]="name" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Learning_material.view_material.publish_date' |
+            translate}}</ion-label
+          >
+          <ion-input [(ngModel)]="publish_date" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Learning_material.view_material.author' | translate}}</ion-label
+          >
+          <ion-input [value]="author" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <!-- <ion-item>
+          <ion-label position="floating"
+            >{{'Learning_material.view_material.category' |
+            translate}}</ion-label
+          >
+          <ion-input [value]="category" readonly></ion-input>
+        </ion-item> -->
+        <ion-item class="cursor-pointer md:mt-[9px] md:mb-2">
+          <div class="h-full w-full">
+            <ion-label class="custom-label">
+              {{'Media.create_media.category' | translate}}
+            </ion-label>
+            <span *ngIf="mainCategory"> {{mainCategory}} - {{category}} </span>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Learning_material.view_material.number_of_download' |
+            translate}}</ion-label
+          >
+          <ion-input [value]="number_of_download" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Learning_material.view_material.file_size' |
+            translate}}</ion-label
+          >
+          <ion-input [value]="file_size" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Learning_material.view_material.duration' |
+            translate}}</ion-label
+          >
+          <ion-input [value]="duration" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Learning_material.view_material.format_type' |
+            translate}}</ion-label
+          >
+          <ion-input [value]="format_type" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="checkISBN">
+      <ion-col size-xl="6" size-lg="6" size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Media.create_media.isbn' | translate}}</ion-label
+          >
+          <ion-input [value]="isbn" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size-md="6" size-xs="12" size-sm="12">
+        <ion-item>
+          <ion-label position="floating"
+            >{{'Media.view_media.media_type' | translate}}</ion-label
+          >
+          <ion-input [value]="media_type | titlecase" readonly></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<div [style.display]="image?'block':'none'" class="zoom-image-modal">
+  <div
+    (click)="closeZoom()"
+    class="text-white cursor-pointer text-xl font-medium text-right p-4 absolute top-0 right-0"
+  >
+    Close
+  </div>
+  <div class="zoom-image">
+    <img [src]="image" alt="" class="modal-zoom-content" />
+  </div>
+</div>

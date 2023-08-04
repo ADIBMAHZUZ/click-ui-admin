@@ -1,0 +1,185 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Subscriber.view_subscriber.title_view' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="updateMaxDevice()" [formGroup]="updateMaxDeviceForm">
+    <ion-grid class="ion-content">
+      <ion-row>
+        <ion-col
+          *ngIf="logo != ''"
+          size-xl="3"
+          size-lg="4"
+          size-md="4"
+          size-xs="12"
+          size-sm="6"
+          class="margin-auto-img"
+        >
+          <ion-item lines="none">
+            <!-- <ion-label>Logo</ion-label> -->
+            <ion-thumbnail>
+              <ion-img [src]="logo"></ion-img>
+            </ion-thumbnail>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.name' | translate}}</ion-label
+            >
+            <ion-input [value]="subscriber" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.short_name' |
+              translate}}</ion-label
+            >
+            <ion-input [value]="subscribershort" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.username' | translate}}</ion-label
+            >
+            <ion-input [value]="username" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.library' | translate}}</ion-label
+            >
+            <ion-input [value]="library" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.active' | translate}}</ion-label
+            >
+            <ion-input [value]="isActive" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.address' | translate}}</ion-label
+            >
+            <ion-input [value]="address" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.phone' | translate}}</ion-label
+            >
+            <ion-input [value]="phone" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.email' | translate}}</ion-label
+            >
+            <ion-input [value]="email" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12" *ngIf="checkUserType">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.max_device' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              type="text"
+              [(ngModel)]="max_devices"
+              name="max_device"
+              formControlName="max_device"
+              (ionChange)="checkMaxDevice()"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="updateMaxDeviceForm.controls['max_device'].touched && updateMaxDeviceForm.hasError('required', 'max_device')"
+          >
+            {{'Subscriber.update_subscriber.err_max_device' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!updateMaxDeviceForm.controls['max_device'].touched && checkError && updateMaxDeviceForm.hasError('required', 'max_device')"
+          >
+            {{'Subscriber.update_subscriber.err_max_device' | translate}}
+          </p>
+          <p class="error" *ngIf="!checkDevice">
+            {{'Library.create_library.err_phone_number' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12" *ngIf="!checkUserType">
+          <ion-item position="floating">
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.max_device' |
+              translate}}</ion-label
+            >
+            <ion-input [value]="max_devices" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.max_download' |
+              translate}}</ion-label
+            >
+            <ion-input [value]="max_download" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item>
+            <ion-label position="floating"
+              >{{'Subscriber.view_subscriber.max_duration' |
+              translate}}</ion-label
+            >
+            <ion-input [value]="max_duration" readonly></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="checkUserType">
+        <ion-col>
+          <ion-button type="submit">
+            <ion-icon slot="end" name="save"></ion-icon>
+            {{'Subscriber.view_subscriber.update_max_device' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

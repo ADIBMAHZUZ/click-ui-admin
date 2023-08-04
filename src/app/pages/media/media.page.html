@@ -1,0 +1,158 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Media.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<!-- Searchbar with a placeholder -->
+<ion-grid class="ion-content ion-padding m-0">
+  <form (ngSubmit)="onSearchMedia()" class="ion-padding">
+    <ion-row>
+      <ion-col
+        *ngIf="!checkCreate"
+        size-xl="2"
+        size-lg="2"
+        size-xs="6"
+        size-sm="4"
+        size-md="4"
+        style="margin-top: -14px"
+      >
+        <div
+          class="h-full w-full border-b border-gray-400 pt-2"
+          (click)="choosePublisher()"
+        >
+          <div>
+            <span class="text-sm"
+              >{{'Notification.publisher' | translate}}</span
+            >
+          </div>
+          <div class="flex items-center justify-between">
+            <p class="text-base m-0 capitalize">
+              {{this.search_publisher?.name}}
+            </p>
+            <mat-icon class="text-gray-300">keyboard_arrow_down</mat-icon>
+          </div>
+        </div>
+      </ion-col>
+      <ion-col
+        *ngIf="!checkCreate"
+        size-xl="6"
+        size-lg="5"
+        size-xs="12"
+        size-sm="8"
+        size-md="8"
+      >
+        <ion-searchbar
+          name="search"
+          [(ngModel)]="searchMedia"
+          placeholder="{{'Media.search' | translate}}"
+        ></ion-searchbar>
+      </ion-col>
+      <ion-col
+        *ngIf="checkCreate"
+        size-xl="6"
+        size-lg="5"
+        size-xs="12"
+        size-sm="8"
+        size-md="8"
+        class="ion-no-padding"
+      >
+        <ion-searchbar
+          name="search"
+          [(ngModel)]="searchMedia"
+          placeholder="{{'Media.search' | translate}}"
+        ></ion-searchbar>
+      </ion-col>
+      <ion-col
+        size-xl="2"
+        size-lg="2"
+        size-xs="6"
+        size-sm="6"
+        size-md="6"
+        class="ion-align-self-center"
+      >
+        <ion-button class="full-width" type="submit">
+          <ion-icon slot="end" name="search"></ion-icon>
+          {{'Media.search' | translate}}
+        </ion-button>
+      </ion-col>
+
+      <ion-col
+        *ngIf="checkCreate"
+        size-xl="2"
+        size-lg="3"
+        size-xs="12"
+        size-sm="6"
+        size-md="6"
+        class="ion-align-self-center"
+      >
+        <ion-button class="ion-float-right" [routerLink]="'/media/create'">
+          <ion-icon slot="end" name="add"></ion-icon>
+          {{'Media.btn_upload_media' | translate}}
+        </ion-button>
+      </ion-col>
+
+      <ion-col
+        *ngIf="!checkCreate"
+        size-xl="2"
+        size-lg="3"
+        size-xs="12"
+        size-sm="6"
+        size-md="6"
+        class="ion-align-self-center"
+      >
+        <ion-button class="ion-float-right" [routerLink]="'/media/new'">
+          <ion-icon slot="end" name="add"></ion-icon>
+          {{'Media.btn_get_new' | translate}}
+        </ion-button>
+      </ion-col>
+
+      <ion-col
+        *ngIf="checkCreate"
+        size-xl="2"
+        size-lg="2"
+        size-xs="6"
+        size-sm="4"
+        size-md="4"
+        class="ion-align-self-center"
+      >
+        <ion-button
+          class="ion-float-right"
+          [routerLink]="'/media/multi-upload/'"
+        >
+          <ion-icon slot="end" name="push"></ion-icon>
+          {{'Media.btn_multi_upload' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+  <ion-content>
+    <ion-tabs>
+      <ion-tab-bar style="overflow: auto" slot="top">
+        <ion-tab-button tab="book">
+          <ion-icon name="book"></ion-icon>
+          <ion-label>{{'Media.title_book' | translate}}</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="audio">
+          <ion-icon name="musical-note"></ion-icon>
+          <ion-label>{{'Media.title_audio' | translate}}</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="video">
+          <ion-icon name="videocam"></ion-icon>
+          <ion-label>{{'Media.title_video' | translate}}</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-content>
+</ion-grid>

@@ -1,0 +1,316 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Teacher_note.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding ion-content">
+    <form (ngSubmit)="onSearchTeacher()">
+      <ion-row>
+        <ion-col size="6">
+          <ion-searchbar
+            name="search"
+            [(ngModel)]="searchTeacherNote"
+            placeholder="{{'Teacher.search' | translate}}"
+          ></ion-searchbar>
+        </ion-col>
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button class="full-width" type="submit">
+            <ion-icon slot="end" name="search"></ion-icon>
+            <!-- Search -->
+            {{'Teacher_note.search' | translate}}
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="2" class="ion-align-self-center">
+          <!-- (click)="createFolder()" -->
+          <ion-button class="ion-float-right" (click)="createFolderModal()">
+            <ion-icon slot="end" name="add"></ion-icon>
+            {{'Teacher_note.btn_create' | translate}}
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="2" class="ion-align-self-center">
+          <ion-button class="ion-float-right" (click)="uploadFile()">
+            <ion-icon slot="end" name="cloud-upload"></ion-icon>
+            {{'Teacher_note.btn_upload' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-button
+            fill="clear"
+            (click)="backFolder()"
+            [disabled]="checkDisableBack"
+          >
+            <ion-icon slot="start" name="arrow-back"></ion-icon>
+            {{'Teacher_note.btn_back' | translate}}
+          </ion-button>
+          <ion-label>{{urlFolder}}</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-button
+            fill="clear"
+            (click)="DeleteFolderFile()"
+            [disabled]="checkDelete"
+          >
+            <ion-icon slot="start" name="trash"></ion-icon>
+            {{'Teacher_note.btn_delete' | translate}}
+          </ion-button>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-button
+            fill="clear"
+            (click)="renameTeacherNoteModal()"
+            [disabled]="id_forcus.length!=1"
+          >
+            <!-- (click)="RenameFolderFile()" -->
+            <ion-icon slot="start" name="pencil"></ion-icon>
+            {{'Teacher_note.btn_rename' | translate}}
+          </ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <div class="table-scroll-admin">
+      <ion-row>
+        <ion-col
+          *ngFor="let item of data_display; index as index;"
+          size-xs="6"
+          size-sm="4"
+          size-md="3"
+          size-lg="2"
+          size-xl="2"
+          class="item-col"
+        >
+          <!-- <ion-item lines="none"> -->
+          <!-- <ion-button color="danger" fill="clear" style="margin: -40px -10px 0px 0px;" (click)="DeleteFolderFilettt(item)">
+              <ion-icon name="close-circle-outline" style="zoom:1.8;"></ion-icon>
+            </ion-button> -->
+
+          <!-- <ion-button size="small" [color]="color[index]" *ngIf="item.file_type == 'folder'" class="ion-align-items-center" fill="clear" title="Open folder" (click)="checkFocus(index, item.url, item.name, item.id, item.file_type)" (dblclick)="changeFolder(item)">
+              <ion-icon class="ion-align-items-center iconSize" slot="icon-only" name="folder" ></ion-icon>
+            </ion-button>
+            <ion-button size="small" [color]="color[index]"  *ngIf="item.file_type != 'folder'" class="ion-align-items-center" fill="clear" title="Open file" (click)="checkFocus(index, item.url, item.name, item.id, item.file_type)" (dblclick)="viewFileTeacherNote(item)">
+              <ion-icon class="ion-align-items-center iconSize" slot="icon-only" name="document"></ion-icon>
+            </ion-button> -->
+          <!-- Button trigger modal -->
+          <!-- <p class="custom-name">{{item.name}}</p> -->
+          <!-- </ion-item> -->
+
+          <ion-item
+            lines="none"
+            class="d-flex justify-content-center align-items-center"
+          >
+            <ion-button
+              [color]="color[index]"
+              *ngIf="item.file_type == 'folder'"
+              class="ion-align-items-center item-button"
+              [fill]="color[index] == undefined || color[index] == 'primary' ? 'clear' : 'outline'"
+              title="Open folder"
+              (click)="checkFocus(index, item.url, item.name, item.id, item.file_type,$event)"
+              (dblclick)="changeFolder(item)"
+            >
+              <ion-thumbnail class="thumbnail-teacher-note">
+                <ion-img src="assets/icon/folder.svg"></ion-img>
+              </ion-thumbnail>
+            </ion-button>
+
+            <ion-button
+              [color]="color[index]"
+              *ngIf="item.file_type == 'pdf'"
+              class="ion-align-items-center item-button"
+              [fill]="color[index] == undefined || color[index] == 'primary' ? 'clear' : 'outline'"
+              title="Open folder"
+              (click)="checkFocus(index, item.url, item.name, item.id, item.file_type,$event)"
+              (dblclick)="viewFileTeacherNote(item)"
+            >
+              <ion-thumbnail class="thumbnail-teacher-note">
+                <ion-img src="assets/icon/pdf.svg"></ion-img>
+              </ion-thumbnail>
+            </ion-button>
+
+            <ion-button
+              [color]="color[index]"
+              *ngIf="item.file_type == 'mp4'"
+              class="ion-align-items-center item-button"
+              [fill]="color[index] == undefined || color[index] == 'primary' ? 'clear' : 'outline'"
+              title="Open folder"
+              (click)="checkFocus(index, item.url, item.name, item.id, item.file_type,$event)"
+              (dblclick)="viewFileTeacherNote(item)"
+            >
+              <ion-thumbnail class="thumbnail-teacher-note">
+                <ion-img src="assets/icon/mp4.svg"></ion-img>
+              </ion-thumbnail>
+            </ion-button>
+
+            <ion-button
+              [color]="color[index]"
+              *ngIf="item.file_type == 'mp3'"
+              class="ion-align-items-center item-button"
+              [fill]="color[index] == undefined || color[index] == 'primary' ? 'clear' : 'outline'"
+              title="Open folder"
+              (click)="checkFocus(index, item.url, item.name, item.id, item.file_type,$event)"
+              (dblclick)="viewFileTeacherNote(item)"
+            >
+              <ion-thumbnail class="thumbnail-teacher-note">
+                <ion-img src="assets/icon/mp3.svg"></ion-img>
+              </ion-thumbnail>
+            </ion-button>
+
+            <ion-button
+              [color]="color[index]"
+              *ngIf="item.file_type == 'txt'"
+              class="ion-align-items-center item-button"
+              [fill]="color[index] == undefined || color[index] == 'primary' ? 'clear' : 'outline'"
+              title="Open folder"
+              (click)="checkFocus(index, item.url, item.name, item.id, item.file_type,$event)"
+              (dblclick)="viewFileTeacherNote(item)"
+            >
+              <ion-thumbnail class="thumbnail-teacher-note">
+                <ion-img src="assets/icon/txt.svg"></ion-img>
+              </ion-thumbnail>
+            </ion-button>
+
+            <ion-button
+              [color]="color[index]"
+              *ngIf="item.file_type == 'pptx' || item.file_type == 'ppt'"
+              class="ion-align-items-center item-button"
+              [fill]="color[index] == undefined || color[index] == 'primary' ? 'clear' : 'outline'"
+              title="Open folder"
+              (click)="checkFocus(index, item.url, item.name, item.id, item.file_type,$event)"
+              (dblclick)="viewFileTeacherNote(item)"
+            >
+              <ion-thumbnail class="thumbnail-teacher-note">
+                <ion-img src="assets/icon/powerpoint.svg"></ion-img>
+              </ion-thumbnail>
+            </ion-button>
+
+            <ion-button
+              [color]="color[index]"
+              *ngIf="item.file_type == 'xlsx'"
+              class="ion-align-items-center item-button"
+              [fill]="color[index] == undefined || color[index] == 'primary' ? 'clear' : 'outline'"
+              title="Open folder"
+              (click)="checkFocus(index, item.url, item.name, item.id, item.file_type,$event)"
+              (dblclick)="viewFileTeacherNote(item)"
+            >
+              <ion-thumbnail class="thumbnail-teacher-note">
+                <ion-img src="assets/icon/xls.svg"></ion-img>
+              </ion-thumbnail>
+            </ion-button>
+
+            <ion-button
+              [color]="color[index]"
+              *ngIf="item.file_type == 'doc' || item.file_type == 'docx'"
+              class="ion-align-items-center item-button"
+              [fill]="color[index] == undefined || color[index] == 'primary' ? 'clear' : 'outline'"
+              title="Open folder"
+              (click)="checkFocus(index, item.url, item.name, item.id, item.file_type,$event)"
+              (dblclick)="viewFileTeacherNote(item)"
+            >
+              <ion-thumbnail class="thumbnail-teacher-note">
+                <ion-img src="assets/icon/doc.svg"></ion-img>
+              </ion-thumbnail>
+            </ion-button>
+
+            <ion-button
+              [color]="color[index]"
+              class="ion-align-items-center item-button"
+              [fill]="color[index] == undefined || color[index] == 'primary' ? 'clear' : 'outline'"
+              title="Open folder"
+              (click)="checkFocus(index, item.url, item.name, item.id, item.file_type,$event)"
+              (dblclick)="viewFileTeacherNote(item)"
+              *ngIf="item.file_type != 'txt' && item.file_type != 'folder' && item.file_type != 'mp3' 
+              && item.file_type != 'pdf' && item.file_type != 'mp4' && item.file_type != 'pptx' && item.file_type != 'xlsx'
+              && item.file_type != 'doc' && item.file_type != 'docx' && item.file_type != 'ppt'"
+            >
+              <ion-thumbnail class="thumbnail-teacher-note">
+                <ion-img src="assets/icon/undefined-icon.png"></ion-img>
+              </ion-thumbnail>
+            </ion-button>
+            <div class="ion-margin-start custom-name ml-4">
+              {{item.name | slice:0:60}} {{item.name.length > 60 ? '...': ''}}
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="checkUpload" class="ion-margin-top">
+        <ion-col
+          size-xs="12"
+          size-sm="12"
+          size-md="12"
+          size-lg="12"
+          size-xl="12"
+        >
+          <div class="center">
+            <ngx-file-drop
+              dropZoneLabel="Drop files here"
+              (onFileDrop)="dropped($event)"
+              (onFileOver)="fileOver($event)"
+              (onFileLeave)="fileLeave($event)"
+            >
+              <ng-template
+                ngx-file-drop-content-tmp
+                let-openFileSelector="openFileSelector"
+              >
+                {{'Teacher_note.drop_file' | translate}}
+              </ng-template>
+            </ngx-file-drop>
+            <input
+              hidden
+              type="file"
+              #fileInput
+              (change)="uploadFileMulti($event.target.files)"
+              multiple
+            />
+            <input
+              hidden
+              type="file"
+              #folderInput
+              (change)="uploadFolder($event.target.files)"
+              webkitDirectory
+            />
+            <ion-item lines="none">
+              <div style="margin: 5px auto">
+                <ion-button (click)="fileInput.click()">
+                  {{'Teacher_note.browse_file' | translate}}
+                </ion-button>
+                <ion-button (click)="folderInput.click()">
+                  {{'Teacher_note.browse_folder' | translate}}
+                </ion-button>
+              </div>
+            </ion-item>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="card-footer pb-0 pt-3 position-paging">
+      <jw-pagination
+        [items]="items"
+        [pageSize]="20"
+        [maxPages]="5"
+        (changePage)="onChangePage($event)"
+      ></jw-pagination>
+    </div>
+  </ion-grid>
+</ion-content>

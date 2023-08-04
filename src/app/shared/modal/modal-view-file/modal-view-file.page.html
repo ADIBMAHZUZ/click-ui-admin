@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>View file</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col>
+        <!-- <iframe class="embed-responsive-item" [src]="photoURL()" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
+        <video
+          *ngIf="check_type == 1"
+          controls
+          autoplay
+          style="width: 100%"
+          class="ion-margin-top"
+        >
+          <source [src]="url" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <audio
+          *ngIf="check_type == 2"
+          controls
+          autoplay
+          style="width: 100%"
+          class="ion-margin-top"
+        >
+          <source [src]="url" type="video/mp4" />
+          Your browser does not support the video tag.
+        </audio>
+
+        <pdf-viewer
+          *ngIf="check_type == 3"
+          [src]="url"
+          [render-text]="true"
+          [autoresize]="true"
+          style="width: 100%"
+          class="width-pdf-view"
+        ></pdf-viewer>
+
+        <ngx-doc-viewer
+          *ngIf="check_type == 4"
+          [url]="url"
+          viewer="office"
+          style="width: 100%"
+          class="width-pdf-view"
+        ></ngx-doc-viewer>
+
+        <div *ngIf="check_type==5" class="flex justify-center h-full">
+          <img class="" [src]="photoURL()" alt="" class="h-full object-cover" />
+        </div>
+
+        <pre class="width-pdf-view" style="width: 100%" *ngIf="check_type == 6">
+{{ fileContent }}</pre
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

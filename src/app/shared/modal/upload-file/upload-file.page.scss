@@ -1,0 +1,113 @@
+p.error{
+    color: red;
+    // margin: 5px 0px 0px 0px;
+}
+
+ion-item {
+    --inner-padding-end: 0px;
+    --padding-start:0px
+}
+
+.margin-auto-img ion-thumbnail{
+    height: auto; /* change this to 'auto'*/
+    max-width:130px; /* add this for 'making sure'*/
+    vertical-align: middle;
+    width: 100%;
+}
+
+
+.drop-zone { 
+    background-color: #f6f6f6;
+    border: dotted 3px #dedddd; 
+    height: 30vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.file-input-container {
+
+    text-align: right;
+
+    input[type="file"] {
+        display: none;
+    }
+
+    label {
+        border: 1px solid #ccc;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+}
+
+.nv-file-over { 
+    border: dotted 3px red; 
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.area {
+    width: 95%;
+    padding: 15px;
+    margin: 15px;
+    border: 1px solid #333;
+    background: rgba(0,0,0,0.7);
+}
+
+#dropZone {
+    border: 2px dashed #bbb;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 50px;
+    text-align: center;
+    font: 21pt bold arial;
+    color: #bbb;
+}
+
+.drop-file-over{
+  background: #333;
+}
+
+.uploadfilecontainer {
+    background-image: url("/assets/img/cloud-2044823_960_720.png");
+    background-repeat: no-repeat;
+    height: auto; /* change this to 'auto'*/
+    max-width:130px; /* add this for 'making sure'*/
+    vertical-align: middle;
+    width: 100%;
+    background-size: 100px;
+    background-position: center;
+    margin: 20px auto;
+    border: 2px dashed #1C8ADB;
+    border-radius: 10px;
+  }
+  
+  .uploadfilecontainer:hover {
+    cursor: pointer;
+    background-color: #9ecbec !important;
+    opacity: 0.8;
+  }
+  
+  .files-list {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 10px auto;
+    background: #ffffff;
+    border: 1px dashed;
+    border-radius: 12px;
+    padding: 5px;
+    color: #1c8adb;
+  }
+  
+  .files-list .delete-file {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .files-list .delete-file img{
+    width:30px;
+  }

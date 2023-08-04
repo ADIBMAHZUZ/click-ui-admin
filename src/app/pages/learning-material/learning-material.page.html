@@ -1,0 +1,80 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Learning_material.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<form (ngSubmit)="onSearchLearningMaterial()" class="ion-padding ion-content">
+  <ion-row>
+    <ion-col
+      size-lg="7"
+      size-xs="8"
+      size-sm="7"
+      size-md="7"
+      class="ion-no-padding"
+    >
+      <ion-searchbar
+        name="search"
+        [(ngModel)]="searchLearningMaterial"
+        placeholder="{{'Learning_material.search' | translate}}"
+      ></ion-searchbar>
+    </ion-col>
+    <ion-col
+      size-lg="2"
+      size-xs="4"
+      size-sm="2"
+      size-md="2"
+      class="ion-align-self-center"
+    >
+      <ion-button type="submit" class="full-width">
+        <ion-icon slot="end" name="search"></ion-icon>
+        {{'Learning_material.search' | translate}}
+      </ion-button>
+    </ion-col>
+
+    <ion-col
+      size-lg="3"
+      size-xs="12"
+      size-sm="3"
+      size-md="3"
+      class="ion-align-self-center"
+    >
+      <ion-button
+        class="ion-float-right"
+        [routerLink]="'/learning-material/create'"
+      >
+        <ion-icon slot="end" name="add"></ion-icon>
+        {{'Learning_material.create' | translate}}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</form>
+
+<ion-content>
+  <ion-tabs class="ion-content">
+    <ion-tab-bar style="overflow: auto" slot="top">
+      <ion-tab-button tab="book">
+        <ion-icon name="book"></ion-icon>
+        <ion-label>{{'Learning_material.title_book' | translate}}</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="audio">
+        <ion-icon name="musical-note"></ion-icon>
+        <ion-label>{{'Learning_material.title_audio' | translate}}</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="video">
+        <ion-icon name="videocam"></ion-icon>
+        <ion-label>{{'Learning_material.title_video' | translate}}</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>

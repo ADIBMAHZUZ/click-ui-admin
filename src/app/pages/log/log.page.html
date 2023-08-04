@@ -1,0 +1,157 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Log.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding ion-content">
+    <ion-row *ngIf="checkUserTypeAdmin">
+      <ion-col size-xl="2" size-lg="2" size-xs="12" size-sm="6" size-md="6">
+        <ion-item lines="full">
+          <ion-label position="floating"
+            >{{'Notification.publisher' | translate}}
+            <ion-text color="danger">*</ion-text></ion-label
+          >
+          <ion-select
+            [value]="publisher"
+            name="publisher"
+            [(ngModel)]="publisher"
+            (ionChange)="changePublisher(publisher)"
+          >
+            <ion-select-option [value]="publisher_all">All</ion-select-option>
+            <p *ngFor="let item of dataPublisher">
+              <ion-select-option [value]="item.id"
+                >{{item.name}}</ion-select-option
+              >
+            </p>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size-xl="2" size-lg="2" size-xs="12" size-sm="6" size-md="6">
+        <ion-item lines="full">
+          <ion-label position="floating"
+            >{{'Notification.library' | translate}}
+            <ion-text color="danger">*</ion-text></ion-label
+          >
+          <ion-select
+            [value]="library"
+            name="library"
+            [(ngModel)]="library"
+            (ionChange)="changeLibrary(library)"
+          >
+            <ion-select-option [value]="library_all">All</ion-select-option>
+            <p *ngFor="let item of dataLibrary">
+              <ion-select-option [value]="item.id"
+                >{{item.name}}</ion-select-option
+              >
+            </p>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="checkUserTypePub">
+      <ion-col size-xl="2" size-lg="2" size-xs="12" size-sm="6" size-md="6">
+        <ion-item lines="full">
+          <ion-label position="floating"
+            >{{'Notification.library' | translate}}
+            <ion-text color="danger">*</ion-text></ion-label
+          >
+          <ion-select
+            [value]="library"
+            name="library"
+            [(ngModel)]="library"
+            (ionChange)="changeLibrary(library)"
+          >
+            <ion-select-option [value]="library_all">All</ion-select-option>
+            <p *ngFor="let item of dataLibrary">
+              <ion-select-option [value]="item.id"
+                >{{item.name}}</ion-select-option
+              >
+            </p>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!checkUserTypeLib">
+      <ion-col size="2">
+        <ion-label> {{'Log.id' | translate}} </ion-label>
+      </ion-col>
+      <ion-col size="10">
+        <ion-label> {{'Log.message' | translate}} </ion-label>
+      </ion-col>
+    </ion-row>
+    <div *ngIf="!checkUserTypeLib" class="line-log-top"></div>
+
+    <div class="table-scroll-admin" *ngIf="!checkUserTypeLib">
+      <ion-row
+        class="ion-margin-top"
+        *ngFor="let item of data_log; index as index"
+      >
+        <ion-col size="2">
+          <ion-label> {{item.id}} </ion-label>
+        </ion-col>
+        <ion-col size="10">
+          <ion-label> {{item.message}} </ion-label>
+        </ion-col>
+        <div class="line-log-bottom"></div>
+      </ion-row>
+    </div>
+
+    <ion-row *ngIf="checkUserTypeLib">
+      <ion-col size="2">
+        <ion-label> {{'Log.user_id' | translate}} </ion-label>
+      </ion-col>
+      <ion-col size="4">
+        <ion-label> {{'Log.name' | translate}} </ion-label>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-label> {{'Log.action' | translate}} </ion-label>
+      </ion-col>
+      <ion-col size="4">
+        <ion-label> {{'Log.time' | translate}} </ion-label>
+      </ion-col>
+    </ion-row>
+    <div *ngIf="checkUserTypeLib" class="line-log-top"></div>
+
+    <div *ngIf="checkUserTypeLib" class="table-scroll">
+      <ion-row
+        class="ion-margin-top"
+        *ngFor="let item of data_tracking; index as index"
+      >
+        <ion-col size="2">
+          <ion-label> {{item.user_id}} </ion-label>
+        </ion-col>
+        <ion-col size="4">
+          <ion-label> {{item.name | titlecase}} </ion-label>
+        </ion-col>
+        <ion-col size="2">
+          <ion-label> {{item.action | titlecase}} </ion-label>
+        </ion-col>
+        <ion-col size="4">
+          <ion-label> {{item.time | date:'M/d/y, h:mm a'}} </ion-label>
+        </ion-col>
+        <div class="line-log-bottom"></div>
+      </ion-row>
+    </div>
+
+    <div class="card-footer pb-0 position-paging">
+      <jw-pagination
+        [items]="items"
+        [pageSize]="12"
+        [maxPages]="5"
+        (changePage)="onChangePage($event)"
+      ></jw-pagination>
+    </div>
+  </ion-grid>
+</ion-content>

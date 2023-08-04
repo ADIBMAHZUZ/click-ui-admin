@@ -1,0 +1,197 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Media.cart.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding ion-content">
+    <form (ngSubmit)="onSubmit()">
+      <ion-row>
+        <ion-col
+          size-lg="3"
+          size-xs="12"
+          size-sm="3"
+          size-md="3"
+          class="ion-align-self-center"
+        >
+          <ion-button
+            disabled="{{checkSubmit}}"
+            class="ion-float-right"
+            type="submit"
+          >
+            <ion-icon slot="end" name="add"></ion-icon>
+            {{'Media.cart.btn_submit' | translate}}
+          </ion-button>
+        </ion-col>
+        <ion-col
+          size-lg="3"
+          size-xs="12"
+          size-sm="3"
+          size-md="3"
+          class="ion-align-self-center"
+        >
+          <ion-button class="ion-float-right" (click)="addMore()">
+            {{'Media.cart.btn_add_more' | translate}}
+            <ion-icon slot="end" name="add"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+    <ion-row>
+      <ion-col>
+        <div>
+          <ngx-datatable
+            class="material"
+            [limit]="10"
+            [rows]="data"
+            [rowHeight]="'auto'"
+            [columns]="columns"
+            [columnMode]="'force'"
+            [sortType]="'multi'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+          >
+            <ngx-datatable-column
+              [width]="50"
+              name="{{'Media.cart.id' | translate}}"
+              prop="id"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="250"
+              name="{{'Media.cart.name' | translate}}"
+              prop="name"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Media.cart.price' | translate}}"
+              prop="price"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                ngx-datatable-cell-template
+              >
+                <span> RM {{value |formatNumber}} </span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Media.cart.quantity' | translate}}"
+              prop="quantity"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                let-rowIndex="rowIndex"
+                ngx-datatable-cell-template
+              >
+                <ion-item lines="inset">
+                  <ion-input
+                    type="number"
+                    name="count"
+                    [value]="row.count"
+                    min="1"
+                    [(ngModel)]="row.count"
+                    class="text-right w-full"
+                  >
+                  </ion-input>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Media.cart.rental_period' | translate}}"
+              prop="rental_period"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                let-rowIndex="rowIndex"
+                ngx-datatable-cell-template
+                class="text-right"
+              >
+                <ion-item lines="inset">
+                  <ion-select
+                    name="media_type_name"
+                    required
+                    [value]="row.rental_period"
+                    [(ngModel)]="row.rental_period"
+                    class="w-full text-right"
+                  >
+                    <p *ngFor="let item of rental_period">
+                      <ion-select-option [value]="item"
+                        >{{item}}</ion-select-option
+                      >
+                    </p>
+                  </ion-select>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="{{'Media.cart.publisher_name' | translate}}"
+              prop="publisher_name"
+            ></ngx-datatable-column>
+
+            <ngx-datatable-column
+              [width]="50"
+              name="{{'Media.cart.action' | translate}}"
+              sortable="false"
+              prop="id"
+            >
+              <ng-template
+                let-row="row"
+                let-value="value"
+                let-rowIndex="rowIndex"
+                ngx-datatable-cell-template
+              >
+                <ion-item lines="none">
+                  <ion-button
+                    class="ion-align-items-center"
+                    size="small"
+                    fill="outline"
+                    (click)="deleteMediaCart(rowIndex, row.id)"
+                    title="{{'Library.view' | translate}}"
+                  >
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- <ngx-datatable-footer>
+              <ng-template
+                let-rowCount="rowCountPage"
+                let-pageSize="pageSize"
+                let-selectedCount="selectedCount"
+                let-curPage="curPage"
+                let-offset="offset"
+                ngx-datatable-footer-template
+              >
+                <app-datatable-pager (change)="changePage($event)"
+                [page]="curPage"
+                [visiblePagesCount]="currentVisible"
+                [size]="pageSize"
+                [count]="rowCountPage"
+                [hidden]="false"
+                >
+                </app-datatable-pager>
+              </ng-template>
+            </ngx-datatable-footer> -->
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

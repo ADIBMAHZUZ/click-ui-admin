@@ -1,0 +1,173 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Notification.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding ion-content">
+    <ion-row>
+      <ion-col size="3" *ngIf="checkUserType">
+        <div
+          class="h-full w-full border-b border-gray-400 pt-2"
+          (click)="choosePublisher()"
+        >
+          <div>
+            <span class="text-sm"
+              >{{'Notification.publisher' | translate}}</span
+            >
+          </div>
+          <div class="flex items-center justify-between">
+            <p class="text-base m-0">{{this.publisher?.name}}</p>
+            <mat-icon class="text-gray-300">keyboard_arrow_down</mat-icon>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="3" *ngIf="userType!='librarian'">
+        <div
+          class="h-full w-full border-b border-gray-400 pt-2"
+          (click)="chooseLibrary()"
+        >
+          <div>
+            <span class="text-sm">{{'Notification.library' | translate}}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <p class="text-base m-0">{{this.library?.name}}</p>
+            <mat-icon class="text-gray-300">keyboard_arrow_down</mat-icon>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="2" class="flex items-center">
+        <ion-button class="btn-submit" (click)="reset()">
+          <ion-icon name="refresh-outline"></ion-icon>
+          {{ "Button.reset" | translate }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="1">
+        <ion-label> {{'Notification.no' | translate}} </ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label> {{'Notification.message' | translate}} </ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <div style="margin-left: -5%">
+          <ion-label> {{'Notification.time' | translate}} </ion-label>
+        </div>
+      </ion-col>
+      <ion-col size="1">
+        <div style="margin-left: -14%">
+          <ion-label> {{'Notification.quotation' | translate}} </ion-label>
+        </div>
+      </ion-col>
+      <ion-col size="1">
+        <div style="margin-left: -14%">
+          <ion-label> {{'Notification.ref_no' | translate}} </ion-label>
+        </div>
+      </ion-col>
+      <ion-col size="1">
+        <ion-label> {{'Notification.action' | translate}} </ion-label>
+      </ion-col>
+    </ion-row>
+    <div
+      style="
+        width: 100%;
+        border: solid #e6e6e6;
+        border-width: 1px 0px 0px 0px;
+        margin: 5px 0px 5px 5px;
+      "
+    ></div>
+    <div class="h-full">
+      <ion-row *ngFor="let item of dataNotification; index as index">
+        <ion-col size="1" class="flex items-center">
+          <ion-label [ngClass]="{'font-bold': item?.is_important}">
+            {{(pageSize*(pageIndex-1))+index+1}}
+          </ion-label>
+        </ion-col>
+
+        <ion-col class="flex items-center">
+          <ion-label [ngClass]="{'font-bold': item?.is_important}">
+            {{item.message}}
+          </ion-label>
+        </ion-col>
+
+        <ion-col size="2" class="flex items-center">
+          <ion-label [ngClass]="{'font-bold': item?.is_important}">
+            {{item.time | date:'M/d/y, h:mm a'}}
+          </ion-label>
+        </ion-col>
+
+        <ion-col size="1" class="flex items-center">
+          <ion-label>
+            <span
+              [routerLink]="['/quotation/view',item.id]"
+              class="underline cursor-pointer"
+              [ngClass]="{'font-bold': item?.is_important}"
+              *ngIf="item.have_quotation"
+            >
+              {{userType=='librarian'?(item.is_active?'Quotation':""):'Generate'}}
+            </span>
+          </ion-label>
+        </ion-col>
+
+        <ion-col size="1" class="flex items-center justify-between">
+          <ion-label class="text-center"> {{item?.ref_no }} </ion-label>
+        </ion-col>
+
+        <ion-col size="1" class="flex items-center">
+          <ion-item lines="none">
+            <ion-button
+              size="small"
+              [fill]="notification_arr[index]?.fill_acc"
+              (click)="acceptNotification(item.id)"
+              color="primary"
+              [disabled]="notification_arr[index]?.disable_acc"
+              title="{{'Notification.title_accept' | translate}}"
+            >
+              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            </ion-button>
+
+            <ion-button
+              size="small"
+              [fill]="notification_arr[index]?.fill_re"
+              color="danger"
+              (click)="rejectNotification(item.id)"
+              [ngStyle]="{'display:none':!notification_arr[index]?.display}"
+              [disabled]="notification_arr[index]?.disable_re"
+              title="{{'Notification.title_reject' | translate}}"
+            >
+              <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col>
+        <div
+          style="
+            width: 100%;
+            border: solid #e6e6e6;
+            border-width: 1px 0px 0px 0px;
+            margin: 0px 0px 5px 5px;
+          "
+        ></div>
+      </ion-row>
+      <div class="card-footer pb-0">
+        <jw-pagination
+          [items]="items"
+          [pageSize]="pageSize"
+          [maxPages]="maxPage"
+          (changePage)="onChangePage($event)"
+        ></jw-pagination>
+      </div>
+    </div>
+  </ion-grid>
+</ion-content>

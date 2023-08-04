@@ -1,0 +1,373 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Learning_material.create_material.title' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form
+    (ngSubmit)="createLearningMaterial()"
+    novalidate
+    [formGroup]="createLearningMaterialForm"
+  >
+    <ion-grid class="ion-padding ion-content">
+      <ion-row>
+        <ion-col size-xl="4" size-lg="6" size-md="6" size-xs="12" size-sm="6">
+          <ion-item lines="none">
+            <div>
+              <input
+                type="file"
+                name="fileupload"
+                value="fileupload"
+                (change)="onChange($event.target.files)"
+                #f
+                style="display: none"
+                formControlName="thumbnail"
+                accept="image/png, image/jpeg"
+                multiple
+              />
+              <ion-button (click)="f.click()">
+                {{'Learning_material.create_material.file' | translate}}
+              </ion-button>
+              <ion-text color="danger">*</ion-text>
+              <!-- <div *ngFor="let item of countImage">
+                      <ion-label>{{item.name}}</ion-label>
+                    </div> -->
+              <div class="custom-span">
+                <span class=""
+                  >Only png, jpeg, jpg are allowed. (Portrait size – A4)</span
+                >
+              </div>
+            </div>
+          </ion-item>
+          <p class="error" *ngIf="!checkImage && checkSubmit">
+            {{'Learning_material.create_material.file_err' | translate}}
+          </p>
+        </ion-col>
+        <ion-col
+          *ngFor="let item of images; index as index"
+          size-xs="6"
+          size-sm="3"
+          size-md="3"
+          size-lg="3"
+          size-xl="2"
+        >
+          <ion-item lines="none">
+            <ion-thumbnail class="margin-auto-image-multi">
+              <ion-img [src]="item" class="object-contain h-full"></ion-img>
+            </ion-thumbnail>
+          </ion-item>
+          <div class="text-center">
+            <ion-button
+              class="margin-auto-button-delete"
+              size="small"
+              fill="outline"
+              (click)=" zoomPicture(item)"
+              title="Edit media"
+            >
+              <ion-icon name="eye"></ion-icon>
+            </ion-button>
+
+            <ion-button
+              class="margin-auto-button-delete"
+              size="small"
+              fill="outline"
+              (click)="deleteImage(index)"
+              title="Edit media"
+            >
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Learning_material.create_material.name' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input name="name" required formControlName="name"></ion-input>
+          </ion-item>
+
+          <p
+            class="error"
+            *ngIf="createLearningMaterialForm.controls['name'].touched && createLearningMaterialForm.hasError('required', 'name')"
+          >
+            {{'Learning_material.create_material.name_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLearningMaterialForm.controls['name'].touched && checkError && createLearningMaterialForm.hasError('required', 'name')"
+          >
+            {{'Learning_material.create_material.name_err' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset" class="margin-top-picker">
+            <ion-label class="custom-label-picker" position="floating"
+              >{{'Learning_material.create_material.publish_date' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <input
+              class="time-picker"
+              [owlDateTime]="dt1"
+              [owlDateTimeTrigger]="dt1"
+              style="margin-top: 5px"
+              placeholder=""
+              name="published_date"
+              required
+              formControlName="published_date"
+            />
+            <owl-date-time #dt1></owl-date-time>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createLearningMaterialForm.controls['published_date'].touched && createLearningMaterialForm.hasError('required', 'published_date')"
+          >
+            {{'Learning_material.create_material.publish_date_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLearningMaterialForm.controls['published_date'].touched && checkError && createLearningMaterialForm.hasError('required', 'published_date')"
+          >
+            {{'Learning_material.create_material.publish_date_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <!-- <ion-col size-md="6" size-xs="12" size-sm="12">
+                <ion-item lines="inset">
+                    <ion-label position="floating">Publisher </ion-label>
+                    <ion-input  name="publisher" formControlName="publisher">
+                    </ion-input>
+                </ion-item>
+            </ion-col> -->
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Learning_material.create_material.media_type' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              name="media_type_name"
+              required
+              [(ngModel)]="mediaType"
+              formControlName="media_type"
+              (ionChange)="changeMediaType()"
+            >
+              <p *ngFor="let item of mediaTypeArr">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createLearningMaterialForm.controls['media_type'].touched && createLearningMaterialForm.hasError('required', 'media_type')"
+          >
+            {{'Learning_material.create_material.media_type_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLearningMaterialForm.controls['media_type'].touched && checkError && createLearningMaterialForm.hasError('required', 'media_type')"
+          >
+            {{'Learning_material.create_material.media_type_err' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Learning_material.create_material.active' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              [value]="isActive"
+              name="isActive"
+              [(ngModel)]="isActive"
+              required
+              formControlName="is_active"
+            >
+              <p *ngFor="let item of isActiveArr">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createLearningMaterialForm.controls['is_active'].touched && createLearningMaterialForm.hasError('required', 'is_active')"
+          >
+            {{'Learning_material.create_material.active_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLearningMaterialForm.controls['is_active'].touched && checkError && createLearningMaterialForm.hasError('required', 'is_active')"
+          >
+            {{'Learning_material.create_material.active_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Media.create_media.isbn' | translate}}</ion-label
+            >
+            <ion-input name="isbn" formControlName="isbn"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Learning_material.create_material.author' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input name="author" required formControlName="author">
+            </ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="createLearningMaterialForm.controls['author'].touched && createLearningMaterialForm.hasError('required', 'author')"
+          >
+            {{'Learning_material.create_material.author_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!createLearningMaterialForm.controls['author'].touched && checkError && createLearningMaterialForm.hasError('required', 'author')"
+          >
+            {{'Learning_material.create_material.author_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item
+            class="cursor-pointer md:mt-[9px] md:mb-2"
+            (click)="chooseCategory()"
+          >
+            <div class="h-full w-full">
+              <ion-label class="custom-label">
+                {{'Media.create_media.category' | translate}}
+                <span style="color: red">*</span>
+              </ion-label>
+              <span *ngIf="mainCategory.value">
+                {{mainCategory.value}} - {{specificCategory?.value.name}}
+              </span>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col
+          class="ion-align-self-center"
+          size-xl="3"
+          size-lg="3"
+          size-md="3"
+          size-xs="12"
+          size-sm="6"
+        >
+          <ion-item lines="none">
+            <ion-grid>
+              <ion-col
+                class="ion-align-self-center"
+                size-xl="6"
+                size-lg="6"
+                size-md="6"
+                size-xs="12"
+                size-sm="6"
+              >
+                <ion-row>
+                  <div class="flex items-center">
+                    <input
+                      type="file"
+                      name="file_media"
+                      value="fileupload111"
+                      (change)="onChangeMedia($event.target.files)"
+                      #g
+                      style="display: none"
+                      [accept]="acceptType"
+                    />
+                    <ion-button (click)="g.click()">
+                      {{'Learning_material.create_material.file_media' |
+                      translate}}
+                    </ion-button>
+                    <ion-text color="danger">*</ion-text>
+                    <ion-label>{{title}}</ion-label>
+                  </div>
+                </ion-row>
+                <ion-row class="custom-span">
+                  Only {{formatType}} are allowed.
+                </ion-row>
+              </ion-col>
+            </ion-grid>
+          </ion-item>
+          <p class="error" *ngIf="!checkImage1 && checkSubmit">
+            {{'Learning_material.create_material.file_err' | translate}}
+          </p>
+
+          <p class="error" *ngIf="check_file_type">
+            {{'Learning_material.create_material.file_type_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-button class="" type="submit" [disabled]="uploading">
+          <ion-icon slot="end" name="save"></ion-icon>
+          {{'Learning_material.create_material.btn_create' | translate}}
+        </ion-button>
+        <ion-spinner
+          style="margin-top: 10px"
+          name="lines"
+          color="primary"
+          *ngIf="uploading"
+        ></ion-spinner>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-label>{{labelProgress}}</ion-label>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="uploading">
+        <ion-progress-bar
+          color="primary"
+          [value]="progress"
+          style="height: 30px !important; width: 100%"
+        ></ion-progress-bar>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+<div [style.display]="image?'block':'none'" class="zoom-image-modal">
+  <div
+    (click)="closeZoom()"
+    class="text-white cursor-pointer text-xl font-medium text-right p-4 absolute top-0 right-0"
+  >
+    Close
+  </div>
+  <div class="zoom-image">
+    <img [src]="image" alt="" class="modal-zoom-content" />
+  </div>
+</div>

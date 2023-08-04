@@ -1,0 +1,315 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="new-background-color">
+    <ion-grid class="px-4">
+      <ion-row>
+        <ion-col size="12">
+          <ion-title class="pageTitle ion-toolbar">
+            {{'Teacher.update_teacher.title_update' | translate}}
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="updateTeacher()" novalidate [formGroup]="updateTeacherForm">
+    <ion-grid class="ion-padding ion-content">
+      <ion-row>
+        <ion-col size-xl="3" size-lg="4" size-md="4" size-xs="12" size-sm="6">
+          <ion-item lines="none">
+            <input
+              type="file"
+              name="fileupload"
+              value="fileupload"
+              (change)="onChange($event.target.files)"
+              #f
+              style="display: none"
+              accept="image/png, image/jpeg"
+            />
+            <ion-button (click)="f.click()">
+              {{'Teacher.update_teacher.file' | translate}}
+            </ion-button>
+            <ion-label *ngIf="check_file_type">{{title}}</ion-label>
+          </ion-item>
+          <p class="error" *ngIf="check_file_type">
+            {{'Subscriber.create_subscriber.err_type_file' | translate}}
+          </p>
+        </ion-col>
+        <ion-col
+          *ngIf="checkImage && !check_file_type"
+          size-xl="3"
+          size-lg="4"
+          size-md="4"
+          size-xs="12"
+          size-sm="6"
+          class="margin-auto-img"
+        >
+          <ion-item lines="none">
+            <!-- <ion-label>Logo</ion-label> -->
+            <ion-thumbnail>
+              <ion-img [src]="img.src"></ion-img>
+            </ion-thumbnail>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Teacher.update_teacher.username' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="username"
+              name="username"
+              [(ngModel)]="username"
+              required
+              formControlName="username"
+              readonly
+            ></ion-input>
+          </ion-item>
+
+          <p
+            class="error"
+            *ngIf="updateTeacherForm.controls['username'].touched && updateTeacherForm.hasError('required', 'username')"
+          >
+            {{'Teacher.update_teacher.err_username' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!updateTeacherForm.controls['username'].touched && checkError && updateTeacherForm.hasError('required', 'username')"
+          >
+            {{'Teacher.update_teacher.err_username' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Teacher.update_teacher.password' | translate}}</ion-label
+            >
+            <ion-input
+              [type]="getType()"
+              [value]="password"
+              name="password"
+              [(ngModel)]="password"
+              formControlName="password"
+            ></ion-input>
+            <ion-icon
+              class="ion-align-items-center"
+              [name]="getName()"
+              slot="end"
+              (click)="toggleTextPassword()"
+            ></ion-icon>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="updateTeacherForm.hasError('minlength','password')"
+          >
+            {{'Teacher.update_teacher.err_password_min' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Teacher.update_teacher.name' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="name"
+              name="name"
+              [(ngModel)]="name"
+              required
+              formControlName="name"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="updateTeacherForm.controls['name'].touched && updateTeacherForm.hasError('required', 'name')"
+          >
+            {{'Teacher.update_teacher.err_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!updateTeacherForm.controls['name'].touched && checkError && updateTeacherForm.hasError('required', 'name')"
+          >
+            {{'Teacher.update_teacher.err_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="updateTeacherForm.hasError('maxlength','name')"
+          >
+            {{'Teacher.update_teacher.short_max_length_err' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Teacher.update_teacher.short_name' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              [value]="short_name"
+              name="short_name"
+              [(ngModel)]="short_name"
+              required
+              formControlName="short_name"
+            ></ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="updateTeacherForm.controls['short_name'].touched && updateTeacherForm.hasError('required', 'short_name')"
+          >
+            {{'Teacher.update_teacher.err_short_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!updateTeacherForm.controls['short_name'].touched && checkError && updateTeacherForm.hasError('required', 'short_name')"
+          >
+            {{'Teacher.update_teacher.err_short_name' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="updateTeacherForm.hasError('maxlength','short_name')"
+          >
+            {{'Teacher.update_teacher.short_max_length_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Teacher.update_teacher.phone' | translate}}</ion-label
+            >
+            <ion-input
+              type="text"
+              [value]="phone"
+              name="phone"
+              [(ngModel)]="phone"
+              formControlName="phone"
+              (ionChange)="checkPhone()"
+            >
+            </ion-input>
+          </ion-item>
+          <p class="error" *ngIf="!checkPhoneNumber">
+            <!-- Email is required -->
+            {{'Library.create_library.err_phone_number' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Teacher.update_teacher.email' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input
+              readonly
+              [value]="email"
+              name="email"
+              [(ngModel)]="email"
+              required
+              formControlName="email"
+            >
+            </ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="updateTeacherForm.controls['email'].touched && updateTeacherForm.hasError('required', 'email')"
+          >
+            {{'Teacher.update_teacher.err_email' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!updateTeacherForm.controls['email'].touched && checkError && updateTeacherForm.hasError('required', 'email')"
+          >
+            {{'Teacher.update_teacher.err_email' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="updateTeacherForm.hasError('email', 'email') && updateTeacherForm.controls['email'].touched && !updateTeacherForm.hasError('required', 'email')"
+          >
+            {{'Teacher.update_teacher.err_is_email' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Teacher.update_teacher.active' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select
+              [value]="isActive"
+              name="isActive"
+              [(ngModel)]="isActive"
+              required
+              formControlName="isActive"
+            >
+              <p *ngFor="let item of isActiveArr">
+                <ion-select-option [value]="item.value"
+                  >{{item.name}}</ion-select-option
+                >
+              </p>
+            </ion-select>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="updateTeacherForm.controls['isActive'].touched && updateTeacherForm.hasError('required', 'isActive')"
+          >
+            {{'Teacher.update_teacher.err_active' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="!updateTeacherForm.controls['isActive'].touched && checkError && updateTeacherForm.hasError('required', 'isActive')"
+          >
+            {{'Teacher.update_teacher.err_active' | translate}}
+          </p>
+        </ion-col>
+
+        <ion-col size-md="6" size-xs="12" size-sm="12">
+          <ion-item lines="inset">
+            <ion-label position="floating"
+              >{{'Teacher.create_teacher.storage' | translate}}
+              <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-input required formControlName="storage" type="number">
+            </ion-input>
+          </ion-item>
+          <p
+            class="error"
+            *ngIf="storage.touched && updateTeacherForm.hasError('required', 'storage') || checkError && updateTeacherForm.hasError('required', 'storage')"
+          >
+            {{'Teacher.create_teacher.storage_required_err' | translate}}
+          </p>
+          <p
+            class="error"
+            *ngIf="storage.touched && updateTeacherForm.hasError('max', 'storage')"
+          >
+            {{'Teacher.create_teacher.storage_max_err' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row> </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <!-- <ion-item lines="none"> -->
+          <ion-button class="btn-submit" type="submit">
+            <ion-icon slot="end" name="save"></ion-icon>
+            {{'Teacher.update_teacher.btn_update' | translate}}
+          </ion-button>
+          <!-- </ion-item> -->
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
